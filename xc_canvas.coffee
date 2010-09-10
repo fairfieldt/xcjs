@@ -1,3 +1,5 @@
+sprites = []
+
 _draw = (node) ->
 
 	if node.visible
@@ -16,3 +18,24 @@ _draw = (node) ->
 
 		for child in node.children
 			_draw(child)
+
+_loadSprite = (spriteName) ->
+	sprite = null
+	if sprites[spriteName]?
+		sprite = sprites[spriteName]
+	else
+		sprite = new Image()
+		sprite.src = spriteName
+
+		while !sprite.complete
+			continue
+		sprites[spriteName] = sprite
+	
+	return sprite
+	
+_xcHandleMouseDown = (event) ->
+	x = event.pageX
+	y = event.pageY
+	alert('a mouse down at ' + x + "," + y)
+	e = new XCTapDownEvent(0, 0, 0)
+	xc.dispatchEvent(e)

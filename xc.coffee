@@ -1,10 +1,7 @@
 class xc
 	constructor: ->
-
 	loadSprite: (spriteName) ->
-		sprite = new Image()
-		sprite.src = spriteName
-		return sprite
+		return _loadSprite(spriteName)
 
 	draw: (node) ->
 		_draw(node)
@@ -13,3 +10,16 @@ class xc
 		return sprite.width
 	getSpriteHeight: (sprite) ->
 		return sprite.height
+		
+	addEventListener: (eventName, listener) ->
+		if not this[eventName]
+			this[eventName] = []
+		this[eventName].push(listener)
+		
+	dispatchEvent: (event) ->
+		for listener in this[event.name]
+			if listener[event.name](event)
+				break
+
+		
+		

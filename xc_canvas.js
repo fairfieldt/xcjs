@@ -1,4 +1,5 @@
-var _draw;
+var _draw, _loadSprite, _xcHandleMouseDown, sprites;
+sprites = [];
 _draw = function(node) {
   var _a, _b, _c, _d, child, destinationX, destinationY, parentX, parentY, sizeX, sizeY;
   if (node.visible) {
@@ -19,4 +20,27 @@ _draw = function(node) {
     }
     return _a;
   }
+};
+_loadSprite = function(spriteName) {
+  var _a, sprite;
+  sprite = null;
+  if (typeof (_a = sprites[spriteName]) !== "undefined" && _a !== null) {
+    sprite = sprites[spriteName];
+  } else {
+    sprite = new Image();
+    sprite.src = spriteName;
+    while (!sprite.complete) {
+      continue;
+    }
+    sprites[spriteName] = sprite;
+  }
+  return sprite;
+};
+_xcHandleMouseDown = function(event) {
+  var e, x, y;
+  x = event.pageX;
+  y = event.pageY;
+  alert('a mouse down at ' + x + "," + y);
+  e = new XCTapDownEvent(0, 0, 0);
+  return xc.dispatchEvent(e);
 };
