@@ -1,4 +1,4 @@
-var XCEvent, XCTapDownEvent;
+var XCEvent, XCTapDownEvent, XCTapMovedEvent, XCTapUpEvent;
 var __extends = function(child, parent) {
     var ctor = function(){};
     ctor.prototype = parent.prototype;
@@ -19,3 +19,21 @@ XCTapDownEvent = function(_a, _b, _c) {
   return this;
 };
 __extends(XCTapDownEvent, XCEvent);
+XCTapMovedEvent = function(_a, _b, _c, _d, _e) {
+  this.tapNumber = _e;
+  this.moveY = _d;
+  this.moveX = _c;
+  this.y = _b;
+  this.x = _a;
+  XCTapMovedEvent.__super__.constructor.call(this, "tapMoved");
+  return this;
+};
+__extends(XCTapMovedEvent, XCEvent);
+XCTapUpEvent = function(_a, _b, _c) {
+  this.tapNumber = _c;
+  this.y = _b;
+  this.x = _a;
+  XCTapUpEvent.__super__.constructor.call(this, "tapUp");
+  return this;
+};
+__extends(XCTapUpEvent, XCEvent);

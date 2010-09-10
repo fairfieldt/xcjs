@@ -2,21 +2,35 @@ canvas = document.getElementById('gameCanvas')
 
 context = canvas.getContext('2d')
 
-mouseHandler = (event) -> _xcHandleMouseDown(event)
-$(canvas).mousedown(mouseHandler)
+$(canvas).mousedown(_xcHandleMouseDown)
+$(canvas).mousemove(_xcHandleMouseMoved)
+$(canvas).mouseup(_xcHandleMouseUp)
 
 xc = new xc()
 root = new XCNode()
 bob = new XCSpriteNode('bob.png')
 bob.onUpdate = (delta) ->
-	@x += .06 * delta
+	#@x += .06 * delta
 	#this.scaleBy(1.1)
 
 bob.tapDown = (event) ->
-	this.scaleTo(2.0)
-	return false
+#	this.moveTo(event.x, event.y)
+	return true
+	
+bob.tapMoved = (event) ->
+	this.moveBy(event.moveX, event.moveY)
+	
+bob.tapUp = (event) ->
+	this.scaleBy(1.5)
+	
+xc.addEventListener('tapMoved', bob)
 	
 xc.addEventListener('tapDown', bob)
+
+#xc.addEventListener('tapUp', bob)
+
+bad = new XCEvent('doesntExist')
+xc.dispatchEvent(bad)
 
 man2 = new XCSpriteNode('bob.png') 
 

@@ -17,9 +17,10 @@ class xc
 		this[eventName].push(listener)
 		
 	dispatchEvent: (event) ->
-		for listener in this[event.name]
-			if listener[event.name](event)
-				break
+		if this[event.name]?
+			for listener in this[event.name]
+				if listener[event.name](event)
+					break
 
 		
 		

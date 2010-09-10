@@ -1,21 +1,27 @@
-var bob, canvas, clear, context, date, event, fps, man2, mouseHandler, previousTime, root, update, xc;
+var bad, bob, canvas, clear, context, date, event, fps, man2, previousTime, root, update, xc;
 canvas = document.getElementById('gameCanvas');
 context = canvas.getContext('2d');
-mouseHandler = function(event) {
-  return _xcHandleMouseDown(event);
-};
-$(canvas).mousedown(mouseHandler);
+$(canvas).mousedown(_xcHandleMouseDown);
+$(canvas).mousemove(_xcHandleMouseMoved);
+$(canvas).mouseup(_xcHandleMouseUp);
 xc = new xc();
 root = new XCNode();
 bob = new XCSpriteNode('bob.png');
-bob.onUpdate = function(delta) {
-  return this.x += .06 * delta;
-};
+bob.onUpdate = function(delta) {};
 bob.tapDown = function(event) {
-  this.scaleTo(2.0);
-  return false;
+  return true;
 };
+bob.tapMoved = function(event) {
+  return this.moveBy(event.moveX, event.moveY);
+};
+bob.tapUp = function(event) {
+  return this.scaleBy(1.5);
+};
+xc.addEventListener('tapMoved', bob);
 xc.addEventListener('tapDown', bob);
+xc.addEventListener('tapUp', bob);
+bad = new XCEvent('doesntExist');
+xc.dispatchEvent(bad);
 man2 = new XCSpriteNode('bob.png');
 man2.testEvent = function(event) {
   this.scaleBy(.5);
