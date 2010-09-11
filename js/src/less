@@ -1,0 +1,4 @@
+cd editline; make -f Makefile.ref all
+make[1]: Nothing to be done for `all'.
+make -f Makefile.ref  Darwin_DBG.OBJ/libjs.a Darwin_DBG.OBJ/libjs.dylib Darwin_DBG.OBJ/js  Darwin_DBG.OBJ/jsautocfg.h Darwin_DBG.OBJ/jscpucfg Darwin_DBG.OBJ/jscpucfg.o
+/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin9-gcc-4.2.1 -o Darwin_DBG.OBJ/jsapi.o -c -Wall -Wno-format -MMD -g3 -DXP_UNIX -DSVR4 -DSYSV -D_BSD_SOURCE -DPOSIX_SOURCE -DDARWIN -DX86_LINUX  -DDEBUG -DDEBUG_fairfieldt -DEDITLINE -IDarwin_DBG.OBJ  jsapi.c
