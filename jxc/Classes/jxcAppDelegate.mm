@@ -10,7 +10,7 @@
 
 #import "jxcAppDelegate.h"
 #import "GameConfig.h"
-#import "HelloWorldScene.h"
+#import "XCScene.h"
 #import "RootViewController.h"
 
 @implementation jxcAppDelegate
@@ -81,7 +81,7 @@
 	
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [HelloWorld scene]];		
+	[[CCDirector sharedDirector] runWithScene: [XC scene]];		
 }
 
 
