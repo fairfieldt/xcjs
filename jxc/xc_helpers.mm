@@ -39,10 +39,10 @@ JSBool xc_draw(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rva
 	double y = 0;
 	double scale = 0;
 	double rotation = 0;
-	printf("calling draw\n");
+
 	if (!JS_ConvertArguments(cx, argc, argv, "udddd", &id, &x, &y, &scale, &rotation))
 		return JS_FALSE;
-	printf("id: %i x: %f y: %f scale: %f rotation: %f\n", id, x, y, scale, rotation);
+
 	sprite = [the_scene getChildByTag:id];
 
 	[sprite setPosition:ccp(x, y)];
@@ -94,23 +94,26 @@ JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *
 		jsdouble ox = t.offset_x;
 		jsdouble oy = t.offset_y;
 		jsdouble count = t.tapCount;
+		jsdouble type = t.type;
 		
-		jsval xval, yval, oxval, oyval, countval;
+		jsval xval, yval, oxval, oyval, countval, typeval;
 		
 		JS_NewNumberValue(cx, x, &xval);
 		JS_NewNumberValue(cx, y, &yval);
 		JS_NewNumberValue(cx, ox, &oxval);
 		JS_NewNumberValue(cx, oy, &oyval);
 		JS_NewNumberValue(cx, count, &countval);
+		JS_NewNumberValue(cx, type, &typeval);
+
 		
 		JSObject *tap = JS_NewObject(cx, NULL, NULL, NULL);
 		
 		JS_DefineProperty(cx, tap, "x", xval, NULL, NULL, 0);
 		JS_DefineProperty(cx, tap, "y", yval, NULL, NULL, 0);
-		JS_DefineProperty(cx, tap, "xMove", oxval, NULL, NULL, 0);
-		JS_DefineProperty(cx, tap, "yMove", oyval, NULL, NULL, 0);
-		JS_DefineProperty(cx, tap, "Number", countval, NULL, NULL, 0);
-
+		JS_DefineProperty(cx, tap, "moveX", oxval, NULL, NULL, 0);
+		JS_DefineProperty(cx, tap, "moveY", oyval, NULL, NULL, 0);
+		JS_DefineProperty(cx, tap, "number", countval, NULL, NULL, 0);
+		JS_DefineProperty(cx, tap, "type", typeval, NULL, NULL, 0);
 
 		ret = OBJECT_TO_JSVAL(tap);
 	}
@@ -140,6 +143,7 @@ void xc_touch_ended(float x, float y)
 	tap.offset_x = 0;
 	tap.offset_y = 0;
 	tap.tapCount = 0;
+	tap.type = TAPUP;
 	taps.push(tap);
 }
 
@@ -151,6 +155,7 @@ void xc_touch_began(float x, float y)
 	tap.offset_x = 0;
 	tap.offset_y = 0;
 	tap.tapCount = 0;
+	tap.type = TAPDOWN;
 	taps.push(tap);
 }
 
@@ -162,5 +167,6 @@ void xc_touch_moved(float x, float y, float offset_x, float offset_y)
 	tap.offset_x = offset_x;
 	tap.offset_y = offset_y;
 	tap.tapCount = 0;
+	tap.type = TAPMOVED;
 	taps.push(tap);
 }

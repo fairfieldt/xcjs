@@ -11,6 +11,10 @@
 #import "jsapi.h"
 #import <queue>
 
+#define TAPDOWN 0
+#define TAPMOVED 1
+#define TAPUP 2
+
 extern id the_scene;
 extern JSRuntime *rt;
 extern JSObject  *global;
@@ -36,4 +40,5 @@ typedef struct {
 	float offset_x;
 	float offset_y;
 	int tapCount;
+	int type;
 } tap;

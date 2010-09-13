@@ -1,20 +1,73 @@
-var s1 = xc_add_sprite('Icon.png', 1);
-
-for (i = 0; i < 20; i++)
+xc_init = function()
 {
-	for (j = 0; j < 20; j++)
-	{
-		var s2 = xc_add_sprite('Icon.png', 2);
-		xc_draw(s2, i * 57, j*57, 1.0, 180);
-	}
+	xc = new xc();
+	root = new XCNode();
+	bob = new XCSpriteNode('bob.png');
+	bob.onUpdate = function(delta) {};
+	bob.tapDown = function(event) {
+		return true;
+	};
+	bob.tapMoved = function(event) {
+		
+		return this.moveBy(event.moveX, event.moveY);
+	};
+	bob.tapUp = function(event) {
+		return this.scaleBy(1.5);
+	};
+	xc.addEventListener('tapMoved', bob);
+	xc.addEventListener('tapDown', bob);
+	xc.addEventListener('tapUp', bob);
+	bad = new XCEvent('doesntExist');
+	xc.dispatchEvent(bad);
+	man2 = new XCSpriteNode('bob.png');
+	man2.testEvent = function(event) {
+	  this.scaleBy(.5);
+	  return false;
+	};
+	xc.addEventListener('testEvent', man2);
+	event = [];
+	event.name = 'testEvent';
+	xc.dispatchEvent(event);
+	root.addChild(man2);
+	man2.moveTo(300, 200);
+	root.addChild(bob);
+	bob.moveBy(60, 60);
+
+	bob.addChild(man2);
+	date = new Date();
+	previousTime = date.getTime();
 }
-function xc_update(dt)
-{
-	xc_print(dt);
 
+handle_input = function() {
 	var tap = xc_get_tap();
-	if (tap)
+	while (tap != null)
 	{
-		xc_draw(s1, tap.x, tap.y, 1.0, 0);
+		xc_print(tap.type);
+		var t;
+		if (tap.type == 0)
+		{
+			t = new XCTapDownEvent(tap.x, tap.y, tap.number);
+		}
+		else if (tap.type == 1)
+		{
+			xc_print(tap.moveX + " " + tap.moveY);
+			t = new XCTapMovedEvent(tap.x, tap.y, tap.moveX, tap.moveY, tap.number);
+		}
+		else
+		{
+			t = new XCTapUpEvent(tap.x, tap.y, tap.number)
+		}
+		
+		xc.dispatchEvent(t);
+		tap = xc_get_tap();
 	}
 }
+	xc_update = function() {
+	  var currentTime, delta;
+	  currentTime = new Date().getTime();
+		delta = 1;//currentTime - previousTime;
+	  previousTime = currentTime;
+		handle_input();
+	  root.update(delta);
+	  return xc.draw(root);
+	};

@@ -165,6 +165,12 @@
 		D5696526123EB14400076149 /* xc_helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5696525123EB14400076149 /* xc_helpers.mm */; };
 		D56966F4123EC59100076149 /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = D5696647123EBFE000076149 /* test.js */; };
 		D5696711123EC5F900076149 /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = D5696647123EBFE000076149 /* test.js */; };
+		D5696963123EE1F700076149 /* node.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694A123EDFE000076149 /* node.js */; };
+		D5696964123EE1F700076149 /* server.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694B123EDFE000076149 /* server.js */; };
+		D5696965123EE1F700076149 /* xc.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694D123EDFE000076149 /* xc.js */; };
+		D5696966123EE1F700076149 /* xc_event.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694E123EDFE000076149 /* xc_event.js */; };
+		D5696967123EE1F700076149 /* xc_node.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694F123EDFE000076149 /* xc_node.js */; };
+		D5696991123EE2AC00076149 /* bob.png in Resources */ = {isa = PBXBuildFile; fileRef = D5696990123EE2AC00076149 /* bob.png */; };
 		DC6640030F83B3EA000B3E49 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		DC6640050F83B3EA000B3E49 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640040F83B3EA000B3E49 /* OpenAL.framework */; };
 		DCCBF1B70F6022AE0040855A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -523,6 +529,12 @@
 		D5696524123EB14400076149 /* xc_helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xc_helpers.h; sourceTree = "<group>"; };
 		D5696525123EB14400076149 /* xc_helpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = xc_helpers.mm; sourceTree = "<group>"; };
 		D5696647123EBFE000076149 /* test.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test.js; sourceTree = "<group>"; };
+		D569694A123EDFE000076149 /* node.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = node.js; sourceTree = "<group>"; };
+		D569694B123EDFE000076149 /* server.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = server.js; sourceTree = "<group>"; };
+		D569694D123EDFE000076149 /* xc.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xc.js; sourceTree = "<group>"; };
+		D569694E123EDFE000076149 /* xc_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xc_event.js; sourceTree = "<group>"; };
+		D569694F123EDFE000076149 /* xc_node.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xc_node.js; sourceTree = "<group>"; };
+		D5696990123EE2AC00076149 /* bob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bob.png; sourceTree = "<group>"; };
 		DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DC6640040F83B3EA000B3E49 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -776,6 +788,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D5696990123EE2AC00076149 /* bob.png */,
 				1F3B9A820EF2151B00286867 /* jxc_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				D56964B6123EABE600076149 /* xc.h */,
@@ -1086,6 +1099,11 @@
 		D56966E3123EC4B800076149 /* scripts */ = {
 			isa = PBXGroup;
 			children = (
+				D569694A123EDFE000076149 /* node.js */,
+				D569694B123EDFE000076149 /* server.js */,
+				D569694D123EDFE000076149 /* xc.js */,
+				D569694E123EDFE000076149 /* xc_event.js */,
+				D569694F123EDFE000076149 /* xc_node.js */,
 				D5696647123EBFE000076149 /* test.js */,
 			);
 			name = scripts;
@@ -1514,12 +1532,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5696963123EE1F700076149 /* node.js in Resources */,
+				D5696964123EE1F700076149 /* server.js in Resources */,
+				D5696965123EE1F700076149 /* xc.js in Resources */,
+				D5696966123EE1F700076149 /* xc_event.js in Resources */,
+				D5696967123EE1F700076149 /* xc_node.js in Resources */,
 				D56966F4123EC59100076149 /* test.js in Resources */,
 				50F4144810692EE7002A0D5E /* blocks.png in Resources */,
 				50F4144910692EE7002A0D5E /* Default.png in Resources */,
 				50F4144A10692EE7002A0D5E /* fps_images.png in Resources */,
 				50F4144B10692EE7002A0D5E /* Icon.png in Resources */,
 				D56964D9123EACC500076149 /* jsproto.tbl in Resources */,
+				D5696991123EE2AC00076149 /* bob.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

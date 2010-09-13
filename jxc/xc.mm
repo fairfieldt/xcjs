@@ -91,12 +91,18 @@ int run_js()
 	
 	jsval rval;
 	//JSBool ok;
-	NSString *filePath =  [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/test.js"];
-	NSFileManager *fm = [NSFileManager defaultManager];
-	BOOL success = [fm fileExistsAtPath:filePath];
-	if (success) printf("found the file\n");
-	JSScript *script = JS_CompileFile(cx, global, [filePath cString]);
-	JS_ExecuteScript(cx, global, script, &rval);
+	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+	NSArray *dirContents = [[NSFileManager defaultManager] directoryContentsAtPath:bundleRoot];
+	for (NSString *tString in dirContents) {
+		if ([tString hasSuffix:@".js"])
+		{
+			JSScript *script = JS_CompileFile(cx, global,[[[bundleRoot stringByAppendingString:@"/"] stringByAppendingString:tString] cString]);
+			JS_ExecuteScript(cx, global, script, &rval);
+		}
+	}
+	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_init", 0, NULL, &rval);
+	
+
 	
 
 	
