@@ -171,6 +171,15 @@
 		D5696966123EE1F700076149 /* xc_event.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694E123EDFE000076149 /* xc_event.js */; };
 		D5696967123EE1F700076149 /* xc_node.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694F123EDFE000076149 /* xc_node.js */; };
 		D5696991123EE2AC00076149 /* bob.png in Resources */ = {isa = PBXBuildFile; fileRef = D5696990123EE2AC00076149 /* bob.png */; };
+		D5696A72123EE90E00076149 /* xc.mm in Sources */ = {isa = PBXBuildFile; fileRef = D56964B7123EABE600076149 /* xc.mm */; };
+		D5696A73123EE90E00076149 /* xc_helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5696525123EB14400076149 /* xc_helpers.mm */; };
+		D5696A83123EE93A00076149 /* node.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694A123EDFE000076149 /* node.js */; };
+		D5696A84123EE93A00076149 /* server.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694B123EDFE000076149 /* server.js */; };
+		D5696A85123EE93A00076149 /* xc.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694D123EDFE000076149 /* xc.js */; };
+		D5696A86123EE93A00076149 /* xc_event.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694E123EDFE000076149 /* xc_event.js */; };
+		D5696A87123EE93A00076149 /* xc_node.js in Resources */ = {isa = PBXBuildFile; fileRef = D569694F123EDFE000076149 /* xc_node.js */; };
+		D5696A89123EE95400076149 /* bob.png in Resources */ = {isa = PBXBuildFile; fileRef = D5696A88123EE95400076149 /* bob.png */; };
+		D5696A9A123EE98000076149 /* bob.png in Resources */ = {isa = PBXBuildFile; fileRef = D5696A88123EE95400076149 /* bob.png */; };
 		DC6640030F83B3EA000B3E49 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		DC6640050F83B3EA000B3E49 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640040F83B3EA000B3E49 /* OpenAL.framework */; };
 		DCCBF1B70F6022AE0040855A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -535,6 +544,7 @@
 		D569694E123EDFE000076149 /* xc_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xc_event.js; sourceTree = "<group>"; };
 		D569694F123EDFE000076149 /* xc_node.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xc_node.js; sourceTree = "<group>"; };
 		D5696990123EE2AC00076149 /* bob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bob.png; sourceTree = "<group>"; };
+		D5696A88123EE95400076149 /* bob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bob.png; sourceTree = "<group>"; };
 		DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DC6640040F83B3EA000B3E49 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1067,6 +1077,7 @@
 		50F4144210692EE7002A0D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D5696A88123EE95400076149 /* bob.png */,
 				D56966E3123EC4B800076149 /* scripts */,
 				50F4144310692EE7002A0D5E /* blocks.png */,
 				50F4144410692EE7002A0D5E /* Default.png */,
@@ -1462,6 +1473,7 @@
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				D56966D8123EC44200076149 /* CopyFiles */,
 				D56966EC123EC4E700076149 /* CopyFiles */,
+				D5696AB2123EEABB00076149 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1544,6 +1556,7 @@
 				50F4144B10692EE7002A0D5E /* Icon.png in Resources */,
 				D56964D9123EACC500076149 /* jsproto.tbl in Resources */,
 				D5696991123EE2AC00076149 /* bob.png in Resources */,
+				D5696A89123EE95400076149 /* bob.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1551,6 +1564,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5696A83123EE93A00076149 /* node.js in Resources */,
+				D5696A84123EE93A00076149 /* server.js in Resources */,
+				D5696A85123EE93A00076149 /* xc.js in Resources */,
+				D5696A86123EE93A00076149 /* xc_event.js in Resources */,
+				D5696A87123EE93A00076149 /* xc_node.js in Resources */,
+				D5696A9A123EE98000076149 /* bob.png in Resources */,
 				D5696711123EC5F900076149 /* test.js in Resources */,
 				D569648E123EAB3B00076149 /* blocks.png in Resources */,
 				D569648F123EAB3B00076149 /* Default.png in Resources */,
@@ -1560,6 +1579,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D5696AB2123EEABB00076149 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
@@ -1714,6 +1749,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5696A72123EE90E00076149 /* xc.mm in Sources */,
+				D5696A73123EE90E00076149 /* xc_helpers.mm in Sources */,
 				D5696493123EAB3B00076149 /* main.m in Sources */,
 				D5696494123EAB3B00076149 /* jxcAppDelegate.mm in Sources */,
 				D5696495123EAB3B00076149 /* XCScene.mm in Sources */,

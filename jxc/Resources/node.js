@@ -33,13 +33,16 @@ Node.prototype.update = function(delta) {
 };
 Node.prototype.onUpdate = function() {};
 Node.prototype.moveBy = function(xOffset, yOffset) {
-	xc_print("moving by " + xOffset + " " + yOffset);
   this.x += xOffset;
-  return this.y += yOffset;
+  this.y += yOffset;
+	xc_update_sprite(this.sprite, this.x, this.y, this.scaleX, this.rotation);
+
 };
 Node.prototype.moveTo = function(xPosition, yPosition) {
   this.x = xPosition;
-  return (this.y = yPosition);
+ this.y = yPosition;
+xc_update_sprite(this.sprite, this.x, this.y, this.scaleX, this.rotation);
+
 };
 Node.prototype.scaleXBy = function(factor) {
   return (this.scaleX = this.scaleX * factor);
@@ -55,11 +58,13 @@ Node.prototype.scaleYTo = function(newScale) {
 };
 Node.prototype.scaleBy = function(factor) {
   this.scaleX = this.scaleX * factor;
-  return (this.scaleY = this.scaleY * factor);
+  this.scaleY = this.scaleY * factor;
+	xc_update_sprite(this.sprite, this.x, this.y, this.scaleX, this.rotation);
 };
 Node.prototype.scaleTo = function(newScale) {
   this.scaleX = newScale;
-  return (this.scaleY = newScale);
+  this.scaleY = newScale;
+	xc_update_sprite(this.sprite, this.x, this.y, this.scaleX, this.rotation);
 };
 Node.prototype.rotateBy = function(offset) {
   return (this.rotation = rotation + offset);

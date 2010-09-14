@@ -20,6 +20,10 @@
 		<data>
 		TNSTFd9lltUgfC3ItCoHWKt4fRM=
 		</data>
+		<key>bob.png</key>
+		<data>
+		bSdnYPAbT5ogNwEDw0k+vVZVYRo=
+		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
 		iFTEZLaRExQdViBHp/il0c04bNg=
@@ -27,6 +31,30 @@
 		<key>fps_images.png</key>
 		<data>
 		df+X61fyIPq6c17u1Duc22Sp4Hs=
+		</data>
+		<key>node.js</key>
+		<data>
+		zDOboVtfyuM76CnmEb5TNcdazX0=
+		</data>
+		<key>server.js</key>
+		<data>
+		SiwWfvYCzLF3HcWsVLZ/fZheqW0=
+		</data>
+		<key>test.js</key>
+		<data>
+		bWGBaPRXSzK5qF6SOcjISvobfRQ=
+		</data>
+		<key>xc.js</key>
+		<data>
+		oNM9ZPnIJhgau2onHyGhhPwImmo=
+		</data>
+		<key>xc_event.js</key>
+		<data>
+		WWLbeC7qGNw0+SVZPZ5Kzmvbtn0=
+		</data>
+		<key>xc_node.js</key>
+		<data>
+		8ZAA74eJMep0szIc1z8bozvweXs=
 		</data>
 	</dict>
 	<key>rules</key>

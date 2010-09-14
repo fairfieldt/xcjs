@@ -23,6 +23,7 @@ extern JSContext *cx;
 
 JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 JSBool xc_draw(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+JSBool xc_update_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 JSBool xc_get_sprite_width(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 JSBool xc_get_sprite_height(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 

@@ -52,6 +52,27 @@ JSBool xc_draw(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rva
 	return JS_TRUE;
 }
 
+JSBool xc_update_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+	CCNode *sprite = nil;
+	unsigned int id = 0;
+	double x = 0;
+	double y = 0;
+	double scale = 0;
+	double rotation = 0;
+	
+	if (!JS_ConvertArguments(cx, argc, argv, "udddd", &id, &x, &y, &scale, &rotation))
+		return JS_FALSE;
+	
+	sprite = [the_scene getChildByTag:id];
+	
+	[sprite setPosition:ccp(x, y)];
+	sprite.scale = scale;
+	sprite.rotation = rotation;
+	
+	return JS_TRUE;
+}
+
 JSBool xc_get_sprite_width(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
 	id sprite = nil;

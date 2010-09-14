@@ -51,8 +51,10 @@ void tick(ccTime delta)
 
 static JSFunctionSpec global_functions[] = 
 {
+
 	JS_FS("xc_add_sprite", xc_add_sprite, 2, 0, 0),
 	JS_FS("xc_draw", xc_draw, 5, 0, 0),
+	JS_FS("xc_update_sprite", xc_update_sprite, 5, 0, 0),
 	JS_FS("xc_get_sprite_width", xc_get_sprite_width, 1, 0, 0),
 	JS_FS("xc_get_sprite_height", xc_get_sprite_height, 1, 0, 0),
 	JS_FS("xc_get_tap", xc_get_tap, 0, 0, 0),

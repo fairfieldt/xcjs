@@ -36,6 +36,17 @@ xc_init = function()
 	bob.addChild(man2);
 	date = new Date();
 	previousTime = date.getTime();
+	
+	for (i = 0; i < 10; i++)
+	{
+		for (j = 0; j < 10; j++)
+		{
+			var m = new XCSpriteNode('bob.png');
+			root.addChild(m);
+			m.moveTo(i * 32, j * 32);
+		}
+	}
+	xc.draw(root);
 }
 
 handle_input = function() {
@@ -69,5 +80,5 @@ handle_input = function() {
 	  previousTime = currentTime;
 		handle_input();
 	  root.update(delta);
-	  return xc.draw(root);
+	 // return xc.draw(root);
 	};
