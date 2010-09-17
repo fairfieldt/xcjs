@@ -8,7 +8,15 @@ $(canvas).mouseup(_xcHandleMouseUp)
 
 xc = new xc()
 root = new XCNode()
-bob = new XCSpriteNode('bob.png')
+
+class BobSprite
+	constructor: ->
+		super('bob.png')
+	sayHi: ->
+		@message = "Hi!"
+		alert(@message)
+
+bob = new BobSprite('bob.png')
 bob.onUpdate = (delta) ->
 	#@x += .06 * delta
 	#this.scaleBy(1.1)
