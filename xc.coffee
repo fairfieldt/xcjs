@@ -1,5 +1,6 @@
 class xc
 	constructor: ->
+		@scene = new XCScene()
 	loadSprite: (spriteName) ->
 		return _loadSprite(spriteName)
 
@@ -21,6 +22,12 @@ class xc
 			for listener in this[event.name]
 				if listener[event.name](event)
 					break
+
+	replaceScene: (newScene) ->
+		@scene.close()
+		@scene = newScene
+
+	
 
 		
 		
