@@ -1,8 +1,10 @@
 class xc
 	constructor: ->
-		@scene = new XCScene()
-	loadSprite: (spriteName) ->
-		return _loadSprite(spriteName)
+		@scenes = []
+		@scenes.push new XCScene()
+	loadSprite: (imageName, width, height, frameCount) ->
+		console.log('loading sprite')
+		return new Sprite(imageName, width, height, frameCount, 1)
 
 	draw: (node) ->
 		_draw(node)
@@ -24,8 +26,17 @@ class xc
 					break
 
 	replaceScene: (newScene) ->
-		@scene.close()
-		@scene = newScene
+		@scenes.pop().close()
+		@scenes.push(newScene)
+		
+	pushScene: (scene) ->
+		scenes.push(scene)
+		
+	popScene: ->
+		@scenes.pop()
+		
+	getCurrentScene: -> 
+		@scenes[@scenes.length-1]
 
 	
 

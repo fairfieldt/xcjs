@@ -1,9 +1,12 @@
 var xc;
 xc = function() {
+  this.scenes = [];
+  this.scenes.push(new XCScene());
   return this;
 };
-xc.prototype.loadSprite = function(spriteName) {
-  return _loadSprite(spriteName);
+xc.prototype.loadSprite = function(imageName, width, height, frameCount) {
+  console.log('loading sprite');
+  return new Sprite(imageName, width, height, frameCount, 1);
 };
 xc.prototype.draw = function(node) {
   return _draw(node);
@@ -32,4 +35,17 @@ xc.prototype.dispatchEvent = function(event) {
     }
     return _a;
   }
+};
+xc.prototype.replaceScene = function(newScene) {
+  this.scenes.pop().close();
+  return this.scenes.push(newScene);
+};
+xc.prototype.pushScene = function(scene) {
+  return scenes.push(scene);
+};
+xc.prototype.popScene = function() {
+  return this.scenes.pop();
+};
+xc.prototype.getCurrentScene = function() {
+  return this.scenes[this.scenes.length - 1];
 };

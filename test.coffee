@@ -7,55 +7,35 @@ $(canvas).mousemove(_xcHandleMouseMoved)
 $(canvas).mouseup(_xcHandleMouseUp)
 
 xc = new xc()
-root = new XCNode()
 
-class BobSprite
+root = xc.getCurrentScene()
+
+class BobSprite extends XCSpriteNode
 	constructor: ->
-		super('bob.png')
+		super('bob.png', 34, 48, 1)
 	sayHi: ->
 		@message = "Hi!"
 		alert(@message)
 
 bob = new BobSprite('bob.png')
-bob.onUpdate = (delta) ->
-	#@x += .06 * delta
-	#this.scaleBy(1.1)
 
-bob.tapDown = (event) ->
-#	this.moveTo(event.x, event.y)
-	return true
 	
 bob.tapMoved = (event) ->
 	this.moveBy(event.moveX, event.moveY)
+	this.rotateBy(1)
+	this.scaleTo(2.0)
 	
 bob.tapUp = (event) ->
-	this.scaleBy(1.5)
+	this.scaleBy(2.0)
 	
-xc.addEventListener('tapMoved', bob)
-	
-xc.addEventListener('tapDown', bob)
+console.log('got here')
 
-#xc.addEventListener('tapUp', bob)
+xc.addEventListener('tapMoved', bob)
+
 
 bad = new XCEvent('doesntExist')
 xc.dispatchEvent(bad)
 
-man2 = new XCSpriteNode('bob.png') 
-
-man2.testEvent = (event) -> 
-	this.scaleBy(.5) 
-	return false
-xc.addEventListener('testEvent', man2)
-
-
-event = []
-event.name = 'testEvent'
-xc.dispatchEvent(event)
-
-
-root.addChild(man2)
-
-man2.moveTo(300, 400)
 root.addChild(bob)
 bob.moveBy(60, 60)
 

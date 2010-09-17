@@ -19,40 +19,52 @@ class XCNode
 
 	onUpdate: ->
 
-
 	moveBy: (xOffset, yOffset) ->
 		@x += xOffset
 		@y += yOffset
+		@sprite.SetPosition(@x, @y)
 
 	moveTo: (xPosition, yPosition) ->
 		@x = xPosition
 		@y = yPosition
+		@sprite.SetPosition(@x, @y)
 
 	scaleXBy: (factor) ->
 		@scaleX = @scaleX * factor
+		@sprite.xScale = @scaleX
 
 	scaleXTo: (newScale) ->
 		@scaleX = newScale
+		@sprite.xScale = @scaleX
 
 	scaleYBy: (factor) ->
 		@scaleY = @scaleY * factor
+		@sprite.yScale = @scaleY
 
 	scaleYTo: (newScale) ->
 		@scaleY = newScale
+		@sprite.yScale = @scaleY
 
 	scaleBy: (factor) ->
 		@scaleX = @scaleX * factor
 		@scaleY = @scaleY * factor
+		@sprite.xScale = @scaleX
+		@sprite.yScale = @scaleY
 
 	scaleTo: (newScale) ->
 		@scaleX = newScale
 		@scaleY = newScale
+		@sprite.xScale = @scaleX
+		@sprite.yScale = @scaleY
+		
 
 	rotateBy: (offset) ->
-		@rotation = rotation + offset
+		@rotation = @rotation + offset
+		@sprite.rotation = @rotation
 
 	rotateTo: (newRotation) ->
 		@rotation = newRotation
+		@sprite.rotation = @rotation
 
 	setAnchorX: (anchor) ->
 		@anchorX = anchor
@@ -71,9 +83,15 @@ class XCNode
 		child.parent = null
 
 class XCSpriteNode extends XCNode
-	constructor: (imageName) ->
+	constructor: (imageName, @width, @height) ->
 		super()
-		@sprite = xc.loadSprite(imageName)
-		@width =  xc.getSpriteWidth(@sprite)
-		@height = xc.getSpriteHeight(@sprite)
+		@sprite = xc.loadSprite(imageName, @width, @height, 1, 1)
+		@frame = 0
+		
+
+class XCScene extends XCNode
+	constructor: ->
+
+	close: ->
+
 

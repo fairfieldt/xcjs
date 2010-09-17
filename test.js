@@ -1,38 +1,41 @@
-var bad, bob, canvas, clear, context, date, event, fps, man2, previousTime, root, update, xc;
+var BobSprite, bad, bob, canvas, clear, context, date, fps, previousTime, root, update, xc;
+var __extends = function(child, parent) {
+    var ctor = function(){};
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor();
+    child.prototype.constructor = child;
+    if (typeof parent.extended === "function") parent.extended(child);
+    child.__super__ = parent.prototype;
+  };
 canvas = document.getElementById('gameCanvas');
 context = canvas.getContext('2d');
 $(canvas).mousedown(_xcHandleMouseDown);
 $(canvas).mousemove(_xcHandleMouseMoved);
 $(canvas).mouseup(_xcHandleMouseUp);
 xc = new xc();
-root = new XCNode();
-bob = new XCSpriteNode('bob.png');
-bob.onUpdate = function(delta) {};
-bob.tapDown = function(event) {
-  return true;
+root = xc.getCurrentScene();
+BobSprite = function() {
+  BobSprite.__super__.constructor.call(this, 'bob.png', 34, 48, 1);
+  return this;
 };
+__extends(BobSprite, XCSpriteNode);
+BobSprite.prototype.sayHi = function() {
+  this.message = "Hi!";
+  return alert(this.message);
+};
+bob = new BobSprite('bob.png');
 bob.tapMoved = function(event) {
-  return this.moveBy(event.moveX, event.moveY);
+  this.moveBy(event.moveX, event.moveY);
+  this.rotateBy(1);
+  return this.scaleTo(2.0);
 };
 bob.tapUp = function(event) {
-  return this.scaleBy(1.5);
+  return this.scaleBy(2.0);
 };
+console.log('got here');
 xc.addEventListener('tapMoved', bob);
-xc.addEventListener('tapDown', bob);
-xc.addEventListener('tapUp', bob);
 bad = new XCEvent('doesntExist');
 xc.dispatchEvent(bad);
-man2 = new XCSpriteNode('bob.png');
-man2.testEvent = function(event) {
-  this.scaleBy(.5);
-  return false;
-};
-xc.addEventListener('testEvent', man2);
-event = [];
-event.name = 'testEvent';
-xc.dispatchEvent(event);
-root.addChild(man2);
-man2.moveTo(300, 400);
 root.addChild(bob);
 bob.moveBy(60, 60);
 date = new Date();
