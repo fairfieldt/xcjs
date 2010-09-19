@@ -1,28 +1,30 @@
-9b49a5cfdaac0ca2992a3a55d6d2ce0f f7c5b5ae2d7f269908553ae9489e8487 ffffffffffffffffffffffffffffffff 680 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app
-00000000000000000000000000000000 cb7ca9c14f766bda3c2c2ff2c9ff84e8 ffffffffffffffffffffffffffffffff 1750 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/test.js
 0cbab27c07f756fb85f65c6cc337b059 c5c682fbfe0b363c1129951fb479700f ffffffffffffffffffffffffffffffff 41536 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/RootViewController.o
 d0bb5bf2752bb110547a46b8724e9f43 12ca7baf11cbff3cfea7edea4397d80f ffffffffffffffffffffffffffffffff 41072 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/GLES-Render.o
-d0bb5bf238046a43547a46b8724f5c31 6db763cbbdf030bc0b1df07ff0bcfa75 ffffffffffffffffffffffffffffffff 40800 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/XCScene.o
+d0bb5bf2380472b5547a46b8724f5c96 6db763cbbdf030bc0b1df07ff0bcfa75 ffffffffffffffffffffffffffffffff 40800 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/XCScene.o
 d0bb5bf2752b78e4547a46b8724eccd3 8019e139c3e34803f567b9701ece6214 ffffffffffffffffffffffffffffffff 70708 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/jxcAppDelegate.o
 0cbab27c07f75d9a85f65c6cc3379391 cb6a71d883f535e51a0a3a248d4af9a7 ffffffffffffffffffffffffffffffff 6668 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/main.o
-d0bb5bf277780436547a46b8724fd7a6 f65640f3aa52d6976282930a83b507bf ffffffffffffffffffffffffffffffff 109432 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/xc_helpers.o
-d0bb5bf23a556785547a46b8724e74c0 a65e26194dc3fd09d4908d000ab1eaef ffffffffffffffffffffffffffffffff 31660 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/xc.o
-d58316bf6dad452e664cbddabec09630 31e59c4c7c09ff52b9bc2bf16e4e8753 ffffffffffffffffffffffffffffffff 307 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/jxc.xcent
+d0bb5bf277781881547a46b8724fc8df f65640f3aa52d6976282930a83b507bf ffffffffffffffffffffffffffffffff 110776 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/xc_helpers.o
+d0bb5bf23a55617b547a46b8724e742f a65e26194dc3fd09d4908d000ab1eaef ffffffffffffffffffffffffffffffff 31772 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/Objects-normal/armv6/xc.o
+000000004c90e0a90000000000000035 f2418433ed6062d161d95ca17f232d9b ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/DerivedSources/Resources/*.js
 00000000000000000000000000000000 876918a532abaeb0e99d1fbb6b625bf8 ffffffffffffffffffffffffffffffff 102 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app.dSYM
+9b49a5cfdaac0e1d992a3a55d6d2d13e f7c5b5ae2d7f269908553ae9489e8487 ffffffffffffffffffffffffffffffff 680 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7160 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/embedded.mobileprovision
-717b376681a75f14e996536c6e00d839 43e9206d71cb516f4b7432d31a408aab ffffffffffffffffffffffffffffffff 2994368 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/jxc
+717b376681a75dabe996536c6e00c708 43e9206d71cb516f4b7432d31a408aab ffffffffffffffffffffffffffffffff 2994528 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/jxc
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7823488 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-cpulfdzspgxqptbrqwtddtetxuwy/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 8319076 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-gscgldewihtnwlazwdvilyirtdkf/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 10022 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Icon.png
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7188 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/fps_images.png
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 31932 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Default.png
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1734 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/blocks.png
+00000000000000000000000000000000 cb7ca9c14f766bda3c2c2ff2c9ff84e8 ffffffffffffffffffffffffffffffff 1768 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/test.js
 00000000000000000000000000000000 4daa3aa456c8009486c7b88231479caa ffffffffffffffffffffffffffffffff 702 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/bob.png
 00000000000000000000000000000000 a6aa5b4abbf58dce9043db119cad90b7 ffffffffffffffffffffffffffffffff 2726 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_node.js
 00000000000000000000000000000000 27620343c897e3e67982b73f2d743281 ffffffffffffffffffffffffffffffff 1090 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_event.js
 00000000000000000000000000000000 db801f82ea8d9ca0b018feb867114418 ffffffffffffffffffffffffffffffff 1125 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc.js
 00000000000000000000000000000000 51d3a0e93bbc7f90db9626741e96bd7e ffffffffffffffffffffffffffffffff 4074 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/server.js
-00000000000000000000000000000000 11f065a73d43fc1b369dfe5c2c70b3ec ffffffffffffffffffffffffffffffff 2731 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/node.js
+00000000000000000000000000000000 11f065a73d43fc1b369dfe5c2c70b3ec ffffffffffffffffffffffffffffffff 2950 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/node.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 485 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/ResourceRules.plist
 00000000000000000000000000000000 d58316bf6dad452e664cbddabec09630 ffffffffffffffffffffffffffffffff 8 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/PkgInfo
 00000000000000000000000000000000 d58316bf6dad452e664cbddabec09630 ffffffffffffffffffffffffffffffff 660 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Info.plist
+d58316bf6dad452e664cbddabec09630 31e59c4c7c09ff52b9bc2bf16e4e8753 ffffffffffffffffffffffffffffffff 307 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/jxc.xcent
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc device.build/DerivedSources/myfile

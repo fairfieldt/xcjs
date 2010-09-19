@@ -1509,6 +1509,7 @@
 				D569648D123EAB3B00076149 /* Resources */,
 				D5696492123EAB3B00076149 /* Sources */,
 				D5696498123EAB3B00076149 /* Frameworks */,
+				D5696ADD124117CD00076149 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1593,6 +1594,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "";
+		};
+		D5696ADD124117CD00076149 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../*.coffee",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Resources/*.js",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "coffee -c --no-wrap $(SRCROOT)/../*.coffee";
 		};
 /* End PBXShellScriptBuildPhase section */
 
