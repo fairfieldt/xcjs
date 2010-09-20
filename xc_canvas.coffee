@@ -43,6 +43,17 @@ _xcHandleMouseMoved = (event) ->
 		e = new XCTapMovedEvent(x, y, moveX, moveY, 0)
 		xc.dispatchEvent(e)
 
+_xcHandleKeyDown = (event) ->
+	key = event.which
+	e = new XCKeyDownEvent(key)
+	xc.dispatchEvent(e)
+
+_xcHandleKeyUp = (event) ->
+	key = event.which
+
+	e = new XCKeyUpEvent(key)
+	xc.dispatchEvent(e)
+
 
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')
@@ -52,6 +63,8 @@ xc_init = ->
 	$(canvas).mousedown(_xcHandleMouseDown)
 	$(canvas).mousemove(_xcHandleMouseMoved)
 	$(canvas).mouseup(_xcHandleMouseUp)
+	$(document).keydown(_xcHandleKeyDown)
+	$(document).keyup(_xcHandleKeyUp)
 
 
 	#load images here

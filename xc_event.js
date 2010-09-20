@@ -1,4 +1,4 @@
-var XCEvent, XCTapDownEvent, XCTapMovedEvent, XCTapUpEvent;
+var XCEvent, XCKeyDownEvent, XCKeyUpEvent, XCTapDownEvent, XCTapMovedEvent, XCTapUpEvent;
 var __extends = function(child, parent) {
     var ctor = function(){};
     ctor.prototype = parent.prototype;
@@ -37,3 +37,15 @@ XCTapUpEvent = function(_a, _b, _c) {
   return this;
 };
 __extends(XCTapUpEvent, XCEvent);
+XCKeyDownEvent = function(_a) {
+  this.key = _a;
+  XCKeyDownEvent.__super__.constructor.call(this, "keyDown");
+  return this;
+};
+__extends(XCKeyDownEvent, XCEvent);
+XCKeyUpEvent = function(_a) {
+  this.key = _a;
+  XCKeyUpEvent.__super__.constructor.call(this, "keyUp");
+  return this;
+};
+__extends(XCKeyUpEvent, XCEvent);

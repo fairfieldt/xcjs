@@ -1,4 +1,4 @@
-var _draw, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, oldX, oldY, sprites, tapDown, xc, xc_init;
+var _draw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
@@ -49,6 +49,18 @@ _xcHandleMouseMoved = function(event) {
     return xc.dispatchEvent(e);
   }
 };
+_xcHandleKeyDown = function(event) {
+  var e, key;
+  key = event.which;
+  e = new XCKeyDownEvent(key);
+  return xc.dispatchEvent(e);
+};
+_xcHandleKeyUp = function(event) {
+  var e, key;
+  key = event.which;
+  e = new XCKeyUpEvent(key);
+  return xc.dispatchEvent(e);
+};
 xc_init = function() {
   var clear, date, fps, previousTime, update;
   window.canvas = document.getElementById('gameCanvas');
@@ -56,6 +68,8 @@ xc_init = function() {
   $(canvas).mousedown(_xcHandleMouseDown);
   $(canvas).mousemove(_xcHandleMouseMoved);
   $(canvas).mouseup(_xcHandleMouseUp);
+  $(document).keydown(_xcHandleKeyDown);
+  $(document).keyup(_xcHandleKeyUp);
   onLoad();
   date = new Date();
   previousTime = date.getTime();

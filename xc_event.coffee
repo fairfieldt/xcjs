@@ -13,3 +13,11 @@ class XCTapMovedEvent extends XCEvent
 class XCTapUpEvent extends XCEvent
 	constructor: (@x, @y, @tapNumber) ->
 		super("tapUp")
+
+class XCKeyDownEvent extends XCEvent
+	constructor: (@key) ->
+		super("keyDown")
+
+class XCKeyUpEvent extends XCEvent
+	constructor: (@key) ->
+		super("keyUp")
