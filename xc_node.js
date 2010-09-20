@@ -1,4 +1,4 @@
-var XCNode, XCScene, XCSpriteNode;
+var XCNode, XCScene, XCSpriteNode, XCTextNode;
 var __extends = function(child, parent) {
     var ctor = function(){};
     ctor.prototype = parent.prototype;
@@ -17,7 +17,7 @@ XCNode = function() {
   this.anchorX = 0.0;
   this.anchorY = 0.0;
   this.parent = null;
-  this.children = [];
+  this.children = new Array();
   this.index = -1;
   return this;
 };
@@ -34,49 +34,37 @@ XCNode.prototype.update = function(delta) {
 XCNode.prototype.onUpdate = function() {};
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
   this.x += xOffset;
-  this.y += yOffset;
-  return this.sprite.SetPosition(this.x, this.y);
+  return this.y += yOffset;
 };
 XCNode.prototype.moveTo = function(xPosition, yPosition) {
   this.x = xPosition;
-  this.y = yPosition;
-  return this.sprite.SetPosition(this.x, this.y);
+  return (this.y = yPosition);
 };
 XCNode.prototype.scaleXBy = function(factor) {
-  this.scaleX = this.scaleX * factor;
-  return (this.sprite.xScale = this.scaleX);
+  return (this.scaleX = this.scaleX * factor);
 };
 XCNode.prototype.scaleXTo = function(newScale) {
-  this.scaleX = newScale;
-  return (this.sprite.xScale = this.scaleX);
+  return (this.scaleX = newScale);
 };
 XCNode.prototype.scaleYBy = function(factor) {
-  this.scaleY = this.scaleY * factor;
-  return (this.sprite.yScale = this.scaleY);
+  return (this.scaleY = this.scaleY * factor);
 };
 XCNode.prototype.scaleYTo = function(newScale) {
-  this.scaleY = newScale;
-  return (this.sprite.yScale = this.scaleY);
+  return (this.scaleY = newScale);
 };
 XCNode.prototype.scaleBy = function(factor) {
   this.scaleX = this.scaleX * factor;
-  this.scaleY = this.scaleY * factor;
-  this.sprite.xScale = this.scaleX;
-  return (this.sprite.yScale = this.scaleY);
+  return (this.scaleY = this.scaleY * factor);
 };
 XCNode.prototype.scaleTo = function(newScale) {
   this.scaleX = newScale;
-  this.scaleY = newScale;
-  this.sprite.xScale = this.scaleX;
-  return (this.sprite.yScale = this.scaleY);
+  return (this.scaleY = newScale);
 };
 XCNode.prototype.rotateBy = function(offset) {
-  this.rotation = this.rotation + offset;
-  return (this.sprite.rotation = this.rotation);
+  return (this.rotation = this.rotation + offset);
 };
 XCNode.prototype.rotateTo = function(newRotation) {
-  this.rotation = newRotation;
-  return (this.sprite.rotation = this.rotation);
+  return (this.rotation = newRotation);
 };
 XCNode.prototype.setAnchorX = function(anchor) {
   return (this.anchorX = anchor);
@@ -97,14 +85,37 @@ XCNode.prototype.removeChild = function(child) {
 XCSpriteNode = function(imageName, _a, _b) {
   this.height = _b;
   this.width = _a;
+  this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
-  this.sprite = xc.loadSprite(imageName, this.width, this.height, 1, 1);
+  this.sprite = xc.loadSprite(imageName);
+  console.log('loaded sprite');
   this.frame = 0;
   return this;
 };
 __extends(XCSpriteNode, XCNode);
+XCSpriteNode.prototype.draw = function(context) {
+  console.log('drawing a sprite');
+  context.save();
+  context.translate(this.x - (this.x * this.anchorX), this.y - (this.x * this.anchorY));
+  context.rotate(this.rotation * Math.PI / 180);
+  context.drawImage(this.sprite, 0, 0, this.width, this.height, 0, 0, this.width * this.scaleX, this.height * this.scaleY);
+  return context.restore();
+};
 XCScene = function() {
+  XCScene.__super__.constructor.call(this);
   return this;
 };
 __extends(XCScene, XCNode);
 XCScene.prototype.close = function() {};
+XCTextNode = function(_a, _b) {
+  this.font = _b;
+  this.text = _a;
+  this.drawable = true;
+  XCTextNode.__super__.constructor.call(this);
+  return this;
+};
+__extends(XCTextNode, XCNode);
+XCTextNode.prototype.draw = function(context) {
+  context.font = this.font;
+  return context.fillText(this.text, this.x, this.y);
+};

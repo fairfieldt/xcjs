@@ -1,4 +1,4 @@
-var _draw, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, oldX, oldY, sprites, tapDown;
+var _draw, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
@@ -6,8 +6,8 @@ tapDown = false;
 _draw = function(node) {
   var _a, _b, _c, _d, child;
   if (node.visible) {
-    if (node.sprite) {
-      node.sprite.Draw(context);
+    if (node.drawable) {
+      node.draw(context);
     }
     _a = []; _c = node.children;
     for (_b = 0, _d = _c.length; _b < _d; _b++) {
@@ -48,3 +48,31 @@ _xcHandleMouseMoved = function(event) {
     return xc.dispatchEvent(e);
   }
 };
+xc_init = function() {
+  var clear, date, fps, previousTime, update;
+  window.canvas = document.getElementById('gameCanvas');
+  window.context = canvas.getContext('2d');
+  $(canvas).mousedown(_xcHandleMouseDown);
+  $(canvas).mousemove(_xcHandleMouseMoved);
+  $(canvas).mouseup(_xcHandleMouseUp);
+  onLoad();
+  date = new Date();
+  previousTime = date.getTime();
+  update = function() {
+    var currentScene, currentTime, delta;
+    currentTime = new Date().getTime();
+    delta = currentTime - previousTime;
+    previousTime = currentTime;
+    currentScene = xc.getCurrentScene();
+    currentScene.update(delta);
+    clear();
+    return xc.draw(currentScene);
+  };
+  clear = function() {
+    return context.clearRect(0, 0, 640, 480);
+  };
+  fps = 60;
+  return setInterval(update, 1000 / fps);
+};
+xc = new xc();
+xc_init();

@@ -4,9 +4,11 @@ xc = function() {
   this.scenes.push(new XCScene());
   return this;
 };
-xc.prototype.loadSprite = function(imageName, width, height, frameCount) {
-  console.log('loading sprite');
-  return new Sprite(imageName, width, height, frameCount, 1);
+xc.prototype.loadSprite = function(imageName) {
+  var sprite;
+  sprite = new Image();
+  sprite.src = imageName;
+  return sprite;
 };
 xc.prototype.draw = function(node) {
   return _draw(node);
