@@ -4,17 +4,18 @@ oldX = 0;
 oldY = 0;
 tapDown = false;
 _draw = function(node) {
-  var _a, _b, _c, _d, child;
+  var _a, _b, _c, child;
   if (node.visible) {
+    context.save();
     if (node.drawable) {
       node.draw(context);
     }
-    _a = []; _c = node.children;
-    for (_b = 0, _d = _c.length; _b < _d; _b++) {
-      child = _c[_b];
-      _a.push(_draw(child));
+    _b = node.children;
+    for (_a = 0, _c = _b.length; _a < _c; _a++) {
+      child = _b[_a];
+      _draw(child);
     }
-    return _a;
+    return context.restore();
   }
 };
 _xcHandleMouseDown = function(event) {
@@ -61,7 +62,7 @@ xc_init = function() {
   update = function() {
     var currentScene, currentTime, delta;
     currentTime = new Date().getTime();
-    delta = currentTime - previousTime;
+    delta = (currentTime - previousTime) / 1000;
     previousTime = currentTime;
     currentScene = xc.getCurrentScene();
     currentScene.update(delta);

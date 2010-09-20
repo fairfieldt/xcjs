@@ -18,18 +18,23 @@ XCNode = function() {
   this.anchorY = 0.0;
   this.parent = null;
   this.children = new Array();
-  this.index = -1;
+  this.actions = [];
   return this;
 };
 XCNode.prototype.update = function(delta) {
-  var _a, _b, _c, _d, child;
+  var _a, _b, _c, _d, _e, _f, _g, action, child;
   this.onUpdate(delta);
-  _a = []; _c = this.children;
-  for (_b = 0, _d = _c.length; _b < _d; _b++) {
-    child = _c[_b];
-    _a.push(child.update(delta));
+  _b = this.actions;
+  for (_a = 0, _c = _b.length; _a < _c; _a++) {
+    action = _b[_a];
+    action.tick(delta);
   }
-  return _a;
+  _d = []; _f = this.children;
+  for (_e = 0, _g = _f.length; _e < _g; _e++) {
+    child = _f[_e];
+    _d.push(child.update(delta));
+  }
+  return _d;
 };
 XCNode.prototype.onUpdate = function() {};
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
@@ -74,13 +79,24 @@ XCNode.prototype.setAnchorY = function(anchor) {
 };
 XCNode.prototype.addChild = function(child) {
   this.children.push(child);
-  child.index = this.children.length;
   return (child.parent = this);
 };
 XCNode.prototype.removeChild = function(child) {
-  this.children = this.children.slice(0, child.index).concat(this.children.slice(child.index, this.children.length));
-  child.index = -1;
-  return (child.parent = null);
+  var pos;
+  pos = this.children.indexOf(child);
+  if (pos !== -1) {
+    this.children = this.children.slice(0, pos).concat(this.children.slice(pos + 1, this.children.length));
+    return (child.parent = null);
+  }
+};
+XCNode.prototype.runAction = function(action) {
+  action.owner = this;
+  return this.actions.push(action);
+};
+XCNode.prototype.removeAction = function(action) {
+  var pos;
+  pos = this.actions.indexOf(action);
+  return pos !== -1 ? (this.actions = this.actions.slice(0, pos).concat(this.actions.slice(pos + 1, this.actions.length))) : null;
 };
 XCSpriteNode = function(imageName, _a, _b) {
   this.height = _b;
@@ -88,18 +104,14 @@ XCSpriteNode = function(imageName, _a, _b) {
   this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
   this.sprite = xc.loadSprite(imageName);
-  console.log('loaded sprite');
   this.frame = 0;
   return this;
 };
 __extends(XCSpriteNode, XCNode);
 XCSpriteNode.prototype.draw = function(context) {
-  console.log('drawing a sprite');
-  context.save();
   context.translate(this.x - (this.x * this.anchorX), this.y - (this.x * this.anchorY));
   context.rotate(this.rotation * Math.PI / 180);
-  context.drawImage(this.sprite, 0, 0, this.width, this.height, 0, 0, this.width * this.scaleX, this.height * this.scaleY);
-  return context.restore();
+  return context.drawImage(this.sprite, 0, 0, this.width, this.height, 0, 0, this.width * this.scaleX, this.height * this.scaleY);
 };
 XCScene = function() {
   XCScene.__super__.constructor.call(this);
@@ -117,5 +129,7 @@ XCTextNode = function(_a, _b) {
 __extends(XCTextNode, XCNode);
 XCTextNode.prototype.draw = function(context) {
   context.font = this.font;
-  return context.fillText(this.text, this.x, this.y);
+  context.translate(this.x - (this.x * this.anchorX), this.y - (this.x * this.anchorY));
+  context.rotate(this.rotation * Math.PI / 180);
+  return context.fillText(this.text, 0, 0);
 };

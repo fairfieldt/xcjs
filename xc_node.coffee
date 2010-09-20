@@ -10,10 +10,13 @@ class XCNode
 		@anchorY = 0.0
 		@parent = null
 		@children = new Array() 
-		@index = -1
+
+		@actions = []
 
 	update: (delta) ->
 		this.onUpdate(delta)
+		for action in @actions
+			action.tick(delta)
 		for child in @children
 			child.update(delta)
 
@@ -62,34 +65,37 @@ class XCNode
 
 	addChild: (child) ->
 		@children.push(child)
-		child.index = @children.length
 		child.parent = this
 
 	removeChild: (child) ->
-		@children = @children[0...child.index].concat(@children[child.index...@children.length])
-		child.index = -1
-		child.parent = null
+		pos = @children.indexOf(child)
+		if pos != -1
+			@children = @children[0...pos].concat(@children[pos+1...@children.length])
+			child.parent = null
+
+	runAction: (action) ->
+		action.owner = this
+		@actions.push(action)
+
+	removeAction: (action) ->
+		pos = @actions.indexOf(action)
+		if pos != -1
+			@actions = @actions[0...pos].concat(@actions[pos+1...@actions.length]) 
+
 
 class XCSpriteNode extends XCNode
 	constructor: (imageName, @width, @height) ->
 		@drawable = true
 		super()
 		@sprite = xc.loadSprite(imageName)
-		console.log('loaded sprite')
 		@frame = 0
 
 	draw: (context) ->
-		console.log('drawing a sprite')
-		context.save()
-		
 		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
 		
 		context.rotate(@rotation * Math.PI / 180)
 
 		context.drawImage(@sprite, 0, 0, @width, @height, 0, 0, @width * @scaleX, @height * @scaleY)
-
-		context.restore()
-		
 
 class XCScene extends XCNode
 	constructor: ->
@@ -105,5 +111,10 @@ class XCTextNode extends XCNode
 		
 	draw: (context) ->
 		context.font = @font
-		context.fillText(@text, @x, @y)
+
+		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
+		context.rotate(@rotation * Math.PI / 180)
+
+		context.fillText(@text, 0, 0)
+
 	

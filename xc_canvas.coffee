@@ -5,12 +5,12 @@ tapDown = false
 _draw = (node) ->
 
 	if node.visible
-
+		context.save()
 		if node.drawable
 			node.draw(context)
-			
 		for child in node.children
 			_draw(child)
+		context.restore()	
 
 
 _xcHandleMouseDown = (event) ->
@@ -62,7 +62,7 @@ xc_init = ->
 	previousTime = date.getTime()
 	update =  ->
 		currentTime = new Date().getTime()
-		delta = currentTime - previousTime
+		delta = (currentTime - previousTime) / 1000
 		previousTime = currentTime
 		currentScene = xc.getCurrentScene()
 		currentScene.update(delta)
