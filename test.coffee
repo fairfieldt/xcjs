@@ -2,45 +2,25 @@ onLoad = ->
 
 	currentScene = xc.getCurrentScene()
 
-	i = 1 
-	men = []
-	while i > 0
-		x = Math.floor(Math.random()*640)
-		y = Math.floor(Math.random()*480)
-		x2 = Math.floor(Math.random()*640)
-		y2 = Math.floor(Math.random()*480)
-		man = new XCSpriteNode('bob.png', 34, 48)
-
-		console.log(x2 + ' ' + y2)
-		currentScene.addChild(man)
-
-		man.moveTo(320,240)	
-
-		men.push(man)
-		i--
-
-	t = new XCTextNode("Hello, World!!!", "bold 36px sans-serif")
-	man.addChild(t)
-	t.moveTo(32, 10)
-	man.scaleTo(2.0)
-	man2 = new XCSpriteNode('bob.png', 34, 48)
-	man2.moveTo(50, 50)
-	currentScene.addChild(man2)
+	map = new Map()
+	currentScene.addChild(map)
 	
-#	man2.scaleTo(2.0)
-
-	t.onUpdate = (dt) ->
-		this.rotateBy(.2)
-
-	moveIt = new XCMoveTo(2.0, 320, 240)
-
-	rotateIt = new XCScaleBy(2.0, .5)
-	r = new XCRotateBy(1.0, 37)
-#	man2.runAction(r)
-	man2.runAction(moveIt)
-	currentScene.keyDown = (event) ->
-		t.runAction(rotateIt)
+	man = new Man(map, 6, 2)
+	map.man = man
+	man.keyDown = (event) ->
+		if event.key == 37
+			if man.movedBlocks("left")
+				man.gridMove(-1, 0)
+		else if event.key == 39
+			if man.movedBlocks("right")
+				man.gridMove(1, 0)
+		else if event.key == 38
+			if man.movedBlocks("up")
+				man.gridMove(0, -1)
+		else if event.key == 40
+			if man.movedBlocks("down")
+				man.gridMove(0, 1)
 	
-	
-	xc.addEventListener("keyDown", currentScene)
+	xc.addEventListener('keyDown', man)
 
+	alien = new Alien(map, 10, 15)
