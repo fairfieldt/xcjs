@@ -76,8 +76,10 @@ class XCRotateAction extends XCAction
 			@et = 0
 		if @positiveRotation and (@angle - rotation <= 0)
 			rotation = @angle
+			@owner.removeAction(this)
 		else if (not @positiveRotation) and @angle - rotation >= 0
 			rotation = @angle
+			@owner.removeAction(this)
 		@angle -= rotation
 		@owner.rotateBy(rotation)
 
@@ -99,3 +101,44 @@ class XCRotateBy extends XCRotateAction
 		super("XCRotateBy")
 		@stepAngle = @angle / @duration
 		@positiveRotation = @angle > 0
+		
+class XCScaleAction extends XCAction
+	constructor: (name) ->
+		super(name)
+		@et = 0
+		@firstTick = true
+	
+	tick: (dt) ->
+		
+		if @scale == 0
+			@owner.removeAction(this)
+		@et += dt
+		newScale = @et * @stepScale
+		if newScale > 0
+			@et = 0
+		if @scale - newScale <= 0
+			newScale = @scale
+		@scale -= newScale
+		@owner.scaleTo(@owner.scaleX + newScale)
+
+class XCScaleTo extends XCScaleAction
+	constructor: (@duration, @scale) ->
+		super("XCScaleTo")
+		
+	tick: (dt) ->
+		if @firstTick
+			@scale -= @owner.scaleX
+			@stepScale = @scale / @duration
+			@firstTick = false
+		super(dt)
+
+class XCScaleBy extends XCScaleAction
+	constructor: (@duration, @scale) ->
+		super("XCScaleTo")
+
+	tick: (dt) ->
+		if @firstTick
+			@scale = (@scale * @owner.scaleX) - @owner.scaleX
+			@stepScale = @scale / @duration
+			@firstTick = false
+		super(dt)
