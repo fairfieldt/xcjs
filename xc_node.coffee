@@ -114,7 +114,7 @@ class XCTextNode extends XCNode
 
 		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
 		context.rotate(@rotation * Math.PI / 180)
-
+		context.scale(@scaleX, @scaleY)
 		context.fillText(@text, 0, 0)
 
 	

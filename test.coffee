@@ -34,12 +34,12 @@ onLoad = ->
 
 	moveIt = new XCMoveTo(2.0, 320, 240)
 
-	rotateIt = new XCScaleBy(20.0, 2.0)
+	rotateIt = new XCScaleBy(2.0, .5)
 	r = new XCRotateBy(1.0, 37)
 #	man2.runAction(r)
 	man2.runAction(moveIt)
 	currentScene.keyDown = (event) ->
-		man2.runAction(rotateIt)
+		t.runAction(rotateIt)
 	
 	
 	xc.addEventListener("keyDown", currentScene)

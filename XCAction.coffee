@@ -109,14 +109,13 @@ class XCScaleAction extends XCAction
 		@firstTick = true
 	
 	tick: (dt) ->
-		
 		if @scale == 0
 			@owner.removeAction(this)
 		@et += dt
 		newScale = @et * @stepScale
-		if newScale > 0
+		if Math.abs(newScale) > 0
 			@et = 0
-		if @scale - newScale <= 0
+		if Math.abs(@scale) - Math.abs(newScale) <= 0
 			newScale = @scale
 		@scale -= newScale
 		@owner.scaleTo(@owner.scaleX + newScale)
@@ -138,7 +137,8 @@ class XCScaleBy extends XCScaleAction
 
 	tick: (dt) ->
 		if @firstTick
-			@scale = (@scale * @owner.scaleX) - @owner.scaleX
+			@scale =  (@scale * @owner.scaleX) - @owner.scaleX
 			@stepScale = @scale / @duration
+			console.log('new scale ' + @scale + ' stepScale ' + @stepScale)
 			@firstTick = false
 		super(dt)

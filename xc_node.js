@@ -131,5 +131,6 @@ XCTextNode.prototype.draw = function(context) {
   context.font = this.font;
   context.translate(this.x - (this.x * this.anchorX), this.y - (this.x * this.anchorY));
   context.rotate(this.rotation * Math.PI / 180);
+  context.scale(this.scaleX, this.scaleY);
   return context.fillText(this.text, 0, 0);
 };
