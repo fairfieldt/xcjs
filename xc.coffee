@@ -3,9 +3,7 @@ class xc
 		@scenes = []
 		@scenes.push new XCScene()
 	loadSprite: (imageName) ->
-		sprite = new Image()
-		sprite.src = imageName
-		return sprite
+		return _loadSprite(imageName)
 
 	draw: (node) ->
 		_draw(node)

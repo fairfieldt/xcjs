@@ -1,18 +1,4 @@
 onLoad = ->
-	
-	testNode = new XCScene()
-
-	a1 = new XCAction("Action1")
-	a2 = new XCAction("Action2")
-
-	testNode.runAction(a1)
-	testNode.runAction(a2)
-	console.log(testNode.actions.length)
-	testNode.removeAction(a2)
-	for action in testNode.actions 
-		console.log(action.name)
-	console.log(testNode.actions.length)
-	
 
 	currentScene = xc.getCurrentScene()
 
@@ -38,6 +24,9 @@ onLoad = ->
 	xc.addEventListener('keyDown', man)
 
 	alien = new Alien(map, 10, 15)
-
-	r = new XCRotateBy(20.0, 720)
-	alien.runAction(r)
+	
+	for child in currentScene.children
+		console.log(child)
+	test = new XCSpriteNode('dude.png', 16, 16)
+	currentScene.addChild(test)
+	test.moveTo(160, 240)
