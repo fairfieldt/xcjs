@@ -24,3 +24,5 @@ onLoad = ->
 	xc.addEventListener('keyDown', man)
 
 	alien = new Alien(map, 10, 15)
+	
+	test = new XCSpriteNode('dude.png', 16, 16)
