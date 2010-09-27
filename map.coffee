@@ -39,6 +39,7 @@ class Map extends XCNode
 	`
 		width = map.width
 		height = map.height
+		@gridSize = 16
 		console.log(map.tiles.length + " " + map.tiles[0].length)
 		@tiles = new Array(width)
 		for i in [0 .. width]
@@ -55,6 +56,7 @@ class Map extends XCNode
 					fileName = "blocktile.png"
 				
 				if fileName != ""
+					console.log(x + ' ' + y)
 					@tiles[x][y] = new GridEntity(fileName, this, type, x, y)
 				else
 					empty = []

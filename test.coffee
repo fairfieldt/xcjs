@@ -25,4 +25,8 @@ onLoad = ->
 
 	alien = new Alien(map, 10, 15)
 	
+	for child in currentScene.children
+		console.log(child)
 	test = new XCSpriteNode('dude.png', 16, 16)
+	currentScene.addChild(test)
+	test.moveTo(160, 240)
