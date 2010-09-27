@@ -69,7 +69,6 @@ class Alien extends GridEntity
 		
 	validMove: (x, y) ->
 		if @map.tiles[@gridX + x][@gridY + y] == "empty" or @map.tiles[@gridX + x][@gridY + y].type == "$"
-			console.log("I can move to " + (@gridX + x) + " " + (@gridY + y) + " " + @map.tiles[@gridX + x][@gridY + y].type)
 			return true
 		else
 			return false
