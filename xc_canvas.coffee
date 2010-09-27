@@ -2,6 +2,12 @@ sprites = []
 oldX = 0
 oldY = 0
 tapDown = false
+
+_loadSprite = (imageName) ->
+	sprite = new Image()
+	sprite.src = imageName
+	return sprite
+	
 _draw = (node) ->
 
 	if node.visible
