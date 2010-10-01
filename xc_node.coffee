@@ -157,4 +157,9 @@ class XCTextNode extends XCNode
 		
 		context.fillText(@text, 0, 0)
 
+class XCLayer extends XCNode
+	constructor: ->
+		super()
+		
+	
 	

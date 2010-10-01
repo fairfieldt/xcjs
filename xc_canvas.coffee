@@ -60,7 +60,7 @@ _xcHandleKeyUp = (event) ->
 	e = new XCKeyUpEvent(key)
 	xc.dispatchEvent(e)
 
-################# XCNode platform specific Implementations #################
+################# XCNode platform specific implementations #################
 
 _xcNodeX = (node) ->
 	node.X

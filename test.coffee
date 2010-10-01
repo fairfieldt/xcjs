@@ -38,4 +38,4 @@ onLoad = ->
 	currentScene.addChild(test)
 	test.moveTo(160, 240)
 	
-	xc.replaceScene(new JazzScene())
+#	xc.replaceScene(new JazzScene())
