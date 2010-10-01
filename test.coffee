@@ -24,6 +24,13 @@ onLoad = ->
 	xc.addEventListener('keyDown', man)
 
 	alien = new Alien(map, 10, 15)
+	alien.opacity = .5
+	
+	text = new XCTextNode("This is some text", "25pt Arial")
+	currentScene.addChild(text)
+	text.moveTo(160, 200)
+	text.opacity = .2
+	text.color = new XCColor(255, 0, 0)
 	
 	for child in currentScene.children
 		console.log(child)

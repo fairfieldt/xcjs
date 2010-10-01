@@ -6,9 +6,11 @@ class XCNode
 		@scaleX = 1.0
 		@scaleY = 1.0
 		@rotation = 0.0
+		@opacity = 1.0
 		@anchorX = 0.0
 		@anchorY = 0.0
 		@parent = null
+		@color = new XCColor(0.0, 0.0, 0.0)
 		@children = new Array() 
 
 		@actions = []
@@ -94,6 +96,7 @@ class XCSpriteNode extends XCNode
 		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
 		
 		context.rotate(@rotation * Math.PI / 180)
+		context.globalAlpha = this.opacity
 
 		context.drawImage(@sprite, 0, 0, @width, @height, 0, 0, @width * @scaleX, @height * @scaleY)
 
@@ -115,6 +118,9 @@ class XCTextNode extends XCNode
 		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
 		context.rotate(@rotation * Math.PI / 180)
 		context.scale(@scaleX, @scaleY)
+		context.globalAlpha = @opacity
+		context.fillStyle = "rgb(" + @color.r +"," + @color.g + "," + @color.b +")"
+		
 		context.fillText(@text, 0, 0)
 
 	
