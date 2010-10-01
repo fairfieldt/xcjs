@@ -3,6 +3,7 @@ class XCNode
 		@visible = true
 		@x = 0
 		@y = 0
+		@z = 0
 		@scaleX = 1.0
 		@scaleY = 1.0
 		@rotation = 0.0
@@ -10,7 +11,7 @@ class XCNode
 		@anchorX = 0.0
 		@anchorY = 0.0
 		@parent = null
-		@color = new XCColor(0.0, 0.0, 0.0)
+		@color = new XCColor(0, 0, 0)
 		@children = new Array() 
 
 		@actions = []
@@ -31,6 +32,14 @@ class XCNode
 	moveTo: (xPosition, yPosition) ->
 		@x = xPosition
 		@y = yPosition
+		
+	x: ->
+		_xcNodeX(this)
+	y: ->
+		_xcNodeY(this)
+		
+	color: ->
+		_xcNodeColor(this)
 
 	scaleXBy: (factor) ->
 		@scaleX = @scaleX * factor
@@ -52,18 +61,40 @@ class XCNode
 		@scaleX = newScale
 		@scaleY = newScale
 		
+	scaleX: ->
+		_xcNodeScaleX(this)		
 
+	scaleY: ->
+		_xcNodeScaleY(this)
+		
 	rotateBy: (offset) ->
 		@rotation = @rotation + offset
 
 	rotateTo: (newRotation) ->
 		@rotation = newRotation
+	
+	rotation: ->
+		_xcNodeRotation(this)
+		
+	fadeTo: (newOpacity) ->
+		@opacity = newOpacity
+	
+	fadeBy: (opacity) ->
+		@opacity = Math.max(@opacity + newOpacity, 0)
+		
+	opacity: -> _xcNodeOpacity(this)
 
 	setAnchorX: (anchor) ->
 		@anchorX = anchor
 
 	setAnchorY: (anchor) ->
 		@anchorY = anchor
+		
+	anchorX: ->
+		_xcNodeAnchorX(this)
+	
+	anchorY: ->
+		_xcNodeAnchorY(this)
 
 	addChild: (child) ->
 		@children.push(child)
@@ -108,11 +139,14 @@ class XCScene extends XCNode
 
 
 class XCTextNode extends XCNode
-	constructor: (@text, @font) ->
+	constructor: (@text, @fontName, @fontSize) ->
 		@drawable = true
+		
 		super()
 		
+		
 	draw: (context) ->
+		@font = @fontSize + "pt " + @fontName
 		context.font = @font
 
 		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))

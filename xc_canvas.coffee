@@ -60,6 +60,34 @@ _xcHandleKeyUp = (event) ->
 	e = new XCKeyUpEvent(key)
 	xc.dispatchEvent(e)
 
+################# XCNode platform specific Implementations #################
+
+_xcNodeX = (node) ->
+	node.X
+
+_xcNodeY = (node) ->
+	node.y
+	
+_xcNodeColor = (node) ->
+	node.color
+
+_xcNodeScaleX = (node) ->
+	node.scaleX
+	
+_xcNodeScaleY = (node) ->
+	node.scaleY
+
+_xcNodeRotation = (node) ->
+	node.rotation
+	
+_xcNodeOpacity = (node) ->
+	node.opacity
+	
+_xcNodeAnchorX = (node) -> 
+	node.anchorX
+
+_xcNodeAnchorY = (node) -> 
+	node.anchorY
 
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')

@@ -37,3 +37,5 @@ onLoad = ->
 	test = new XCSpriteNode('dude.png', 16, 16)
 	currentScene.addChild(test)
 	test.moveTo(160, 240)
+	
+	xc.replaceScene(new JazzScene())
