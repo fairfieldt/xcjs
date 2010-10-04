@@ -2,8 +2,6 @@ class xc
 	constructor: ->
 		@scenes = []
 		@scenes.push new XCScene()
-	loadSprite: (imageName) ->
-		return _loadSprite(imageName)
 
 	draw: (node) ->
 		_draw(node)

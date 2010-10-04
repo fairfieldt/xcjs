@@ -30,3 +30,6 @@ class HuntScene extends XCScene
 		this.addChild(dpad)
 		dpad.moveTo(320-96, 384)
 		
+		update: (delta) ->
+			console.log('updating')
+			super(delta)

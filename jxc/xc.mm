@@ -52,13 +52,13 @@ void tick(ccTime delta)
 static JSFunctionSpec global_functions[] = 
 {
 
-	JS_FS("xc_add_sprite", xc_add_sprite, 2, 0, 0),
-	JS_FS("xc_draw", xc_draw, 5, 0, 0),
-	JS_FS("xc_update_sprite", xc_update_sprite, 5, 0, 0),
+	JS_FS("xc_load_sprite", xc_add_sprite, 2, 0, 0),
+	JS_FS("xc_update_sprite", xc_update_sprite, 9, 0, 0),
 	JS_FS("xc_get_sprite_width", xc_get_sprite_width, 1, 0, 0),
 	JS_FS("xc_get_sprite_height", xc_get_sprite_height, 1, 0, 0),
 	JS_FS("xc_get_tap", xc_get_tap, 0, 0, 0),
 	JS_FS("xc_print", xc_print, 1, 0, 0),
+		JS_FS("xc_gc", xc_gc, 0, 0, 0),
 	JS_FS_END
 
 };
@@ -95,13 +95,38 @@ int run_js()
 	//JSBool ok;
 	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
 	NSArray *dirContents = [[NSFileManager defaultManager] directoryContentsAtPath:bundleRoot];
-	for (NSString *tString in dirContents) {
-		if ([tString hasSuffix:@".js"])
-		{
-			JSScript *script = JS_CompileFile(cx, global,[[[bundleRoot stringByAppendingString:@"/"] stringByAppendingString:tString] cString]);
-			JS_ExecuteScript(cx, global, script, &rval);
-		}
-	}
+	
+	JSScript *script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_node.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_action.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_color.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_event.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/GridEntity.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/Alien.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/DPad.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/Man.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/map.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/HuntScene.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/test.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	
+	script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_ios.js"] cString]);
+	JS_ExecuteScript(cx, global, script, &rval);
+	
 	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_init", 0, NULL, &rval);
 	
 

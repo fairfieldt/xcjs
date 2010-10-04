@@ -120,17 +120,12 @@ class XCSpriteNode extends XCNode
 	constructor: (imageName, @width, @height) ->
 		@drawable = true
 		super()
-		@sprite = xc.loadSprite(imageName)
+		@sprite = _xcLoadSprite(imageName)
 		@frame = 0
 
-	draw: (context) ->
-		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
+	draw: ->
+		_xcSpriteDraw(this)
 		
-		context.rotate(@rotation * Math.PI / 180)
-		context.globalAlpha = this.opacity
-
-		context.drawImage(@sprite, 0, 0, @width, @height, 0, 0, @width * @scaleX, @height * @scaleY)
-
 class XCScene extends XCNode
 	constructor: ->
 		super()
@@ -142,20 +137,13 @@ class XCTextNode extends XCNode
 	constructor: (@text, @fontName, @fontSize) ->
 		@drawable = true
 		
+		@ref = _xcLoadText(this)
+		
 		super()
 		
 		
-	draw: (context) ->
-		@font = @fontSize + "pt " + @fontName
-		context.font = @font
-
-		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
-		context.rotate(@rotation * Math.PI / 180)
-		context.scale(@scaleX, @scaleY)
-		context.globalAlpha = @opacity
-		context.fillStyle = "rgb(" + @color.r +"," + @color.g + "," + @color.b +")"
-		
-		context.fillText(@text, 0, 0)
+	draw: ->
+		_xcTextDraw(this)
 
 class XCLayer extends XCNode
 	constructor: ->

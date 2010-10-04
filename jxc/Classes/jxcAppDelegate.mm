@@ -55,12 +55,7 @@
 	// VERY IMPORTANT:
 	// If the rotation is going to be controlled by a UIViewController
 	// then the device orientation should be "Portrait".
-	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
-	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
-#else
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
-#endif
+		[director setDeviceOrientation:kCCDeviceOrientationPortrait];
 	
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];

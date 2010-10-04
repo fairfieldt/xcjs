@@ -3,17 +3,20 @@ oldX = 0
 oldY = 0
 tapDown = false
 
-_loadSprite = (imageName) ->
+_xcloadSprite = (imageName) ->
 	sprite = new Image()
 	sprite.src = imageName
 	return sprite
+	
+_xcLoadText = (node) ->
+	return null
 	
 _draw = (node) ->
 
 	if node.visible
 		context.save()
 		if node.drawable
-			node.draw(context)
+			node.draw()
 		for child in node.children
 			_draw(child)
 		context.restore()	
@@ -88,6 +91,25 @@ _xcNodeAnchorX = (node) ->
 
 _xcNodeAnchorY = (node) -> 
 	node.anchorY
+	
+_xcSpriteDraw = (node) ->
+	context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY))
+	
+	context.rotate(node.rotation * Math.PI / 180)
+	context.globalAlpha = node.opacity
+
+	context.drawImage(node.sprite, 0, 0, node.width, node.height, 0, 0, node.width * node.scaleX, node.height * node.scaleY)
+	
+_xcTextDraw = (node) ->
+	node.font = node.fontSize + "pt " + node.fontName
+	context.font = node.font
+
+	context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY))
+	context.rotate(node.rotation * Math.PI / 180)
+	context.scale(node.scaleX, node.scaleY)
+	context.globalAlpha = node.opacity
+	
+	context.fillText(node.text, 0, 0)
 
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')
