@@ -3,7 +3,7 @@ oldX = 0
 oldY = 0
 tapDown = false
 
-_xcloadSprite = (imageName) ->
+_xcLoadSprite = (imageName) ->
 	sprite = new Image()
 	sprite.src = imageName
 	return sprite
