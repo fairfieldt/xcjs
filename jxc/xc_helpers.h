@@ -29,6 +29,7 @@ JSBool xc_get_sprite_height(JSContext *cx, JSObject *obj, uintN argc, jsval *arg
 
 JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 JSBool xc_print(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+JSBool xc_gc(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 
 void xc_touch_ended(float x, float y);
 void xc_touch_began(float x, float y);
@@ -43,3 +44,4 @@ typedef struct {
 	int tapCount;
 	int type;
 } tap;
+

@@ -3,12 +3,15 @@ class XCNode
 		@visible = true
 		@x = 0
 		@y = 0
+		@z = 0
 		@scaleX = 1.0
 		@scaleY = 1.0
 		@rotation = 0.0
+		@opacity = 1.0
 		@anchorX = 0.0
 		@anchorY = 0.0
 		@parent = null
+		@color = new XCColor(0, 0, 0)
 		@children = new Array() 
 
 		@actions = []
@@ -29,6 +32,14 @@ class XCNode
 	moveTo: (xPosition, yPosition) ->
 		@x = xPosition
 		@y = yPosition
+		
+	x: ->
+		_xcNodeX(this)
+	y: ->
+		_xcNodeY(this)
+		
+	color: ->
+		_xcNodeColor(this)
 
 	scaleXBy: (factor) ->
 		@scaleX = @scaleX * factor
@@ -50,18 +61,40 @@ class XCNode
 		@scaleX = newScale
 		@scaleY = newScale
 		
+	scaleX: ->
+		_xcNodeScaleX(this)		
 
+	scaleY: ->
+		_xcNodeScaleY(this)
+		
 	rotateBy: (offset) ->
 		@rotation = @rotation + offset
 
 	rotateTo: (newRotation) ->
 		@rotation = newRotation
+	
+	rotation: ->
+		_xcNodeRotation(this)
+		
+	fadeTo: (newOpacity) ->
+		@opacity = newOpacity
+	
+	fadeBy: (opacity) ->
+		@opacity = Math.max(@opacity + newOpacity, 0)
+		
+	opacity: -> _xcNodeOpacity(this)
 
 	setAnchorX: (anchor) ->
 		@anchorX = anchor
 
 	setAnchorY: (anchor) ->
 		@anchorY = anchor
+		
+	anchorX: ->
+		_xcNodeAnchorX(this)
+	
+	anchorY: ->
+		_xcNodeAnchorY(this)
 
 	addChild: (child) ->
 		@children.push(child)
@@ -87,16 +120,12 @@ class XCSpriteNode extends XCNode
 	constructor: (imageName, @width, @height) ->
 		@drawable = true
 		super()
-		@sprite = xc.loadSprite(imageName)
+		@sprite = _xcLoadSprite(imageName)
 		@frame = 0
 
-	draw: (context) ->
-		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
+	draw: ->
+		_xcSpriteDraw(this)
 		
-		context.rotate(@rotation * Math.PI / 180)
-
-		context.drawImage(@sprite, 0, 0, @width, @height, 0, 0, @width * @scaleX, @height * @scaleY)
-
 class XCScene extends XCNode
 	constructor: ->
 		super()
@@ -105,19 +134,23 @@ class XCScene extends XCNode
 
 
 class XCTextNode extends XCNode
-	constructor: (@text, @font) ->
+	constructor: (@text, @fontName, @fontSize) ->
 		@drawable = true
+		
+		@ref = _xcLoadText(this)
+		
 		super()
 
 	setText: (newText) ->
 		@text = newText
 		
-	draw: (context) ->
-		context.font = @font
+		
+	draw: ->
+		_xcTextDraw(this)
 
-		context.translate(@x - (@x * @anchorX), @y - (@x * @anchorY))
-		context.rotate(@rotation * Math.PI / 180)
-		context.scale(@scaleX, @scaleY)
-		context.fillText(@text, 0, 0)
-
+class XCLayer extends XCNode
+	constructor: ->
+		super()
+		
+	
 	

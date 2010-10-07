@@ -1,43 +1,31 @@
-var _draw, _loadSprite, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, oldX, oldY, sprites, tapDown;
+var _draw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadText, _xcNodeAnchorX, _xcNodeAnchorY, _xcNodeColor, _xcNodeOpacity, _xcNodeRotation, _xcNodeScaleX, _xcNodeScaleY, _xcNodeX, _xcNodeY, _xcSpriteDraw, _xcTextDraw, _xcloadSprite, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
 tapDown = false;
+_xcloadSprite = function(imageName) {
+  var sprite;
+  sprite = new Image();
+  sprite.src = imageName;
+  return sprite;
+};
+_xcLoadText = function(node) {
+  return null;
+};
 _draw = function(node) {
-  var _a, _b, _c, _d, child, destinationX, destinationY, parentX, parentY, sizeX, sizeY;
+  var _i, _len, _ref, child;
   if (node.visible) {
     context.save();
-    if (node.sprite) {
-      parentX = node.parent ? node.parent.x : 0;
-      parentY = node.parent ? node.parent.y : 0;
-      destinationX = Math.floor((node.width * node.anchorX) + node.x + parentX);
-      destinationY = Math.floor((node.height * node.anchorY) + node.y + parentY);
-      sizeX = Math.floor(node.scaleX * node.width);
-      sizeY = Math.floor(node.scaleY * node.height);
-      context.drawImage(node.sprite, destinationX, destinationY, sizeX, sizeY);
+    if (node.drawable) {
+      node.draw(context);
     }
-    _a = []; _c = node.children;
-    for (_b = 0, _d = _c.length; _b < _d; _b++) {
-      child = _c[_b];
-      _a.push(_draw(child));
+    _ref = node.children;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      child = _ref[_i];
+      _draw(child);
     }
-    return _a;
+    return context.restore();
   }
-};
-_loadSprite = function(spriteName) {
-  var _a, sprite;
-  sprite = null;
-  if (typeof (_a = sprites[spriteName]) !== "undefined" && _a !== null) {
-    sprite = sprites[spriteName];
-  } else {
-    sprite = new Image();
-    sprite.src = spriteName;
-    while (!sprite.complete) {
-      continue;
-    }
-    sprites[spriteName] = sprite;
-  }
-  return sprite;
 };
 _xcHandleMouseDown = function(event) {
   var e, x, y;
@@ -70,3 +58,87 @@ _xcHandleMouseMoved = function(event) {
     return xc.dispatchEvent(e);
   }
 };
+_xcHandleKeyDown = function(event) {
+  var e, key;
+  key = event.which;
+  e = new XCKeyDownEvent(key);
+  return xc.dispatchEvent(e);
+};
+_xcHandleKeyUp = function(event) {
+  var e, key;
+  key = event.which;
+  e = new XCKeyUpEvent(key);
+  return xc.dispatchEvent(e);
+};
+_xcNodeX = function(node) {
+  return node.X;
+};
+_xcNodeY = function(node) {
+  return node.y;
+};
+_xcNodeColor = function(node) {
+  return node.color;
+};
+_xcNodeScaleX = function(node) {
+  return node.scaleX;
+};
+_xcNodeScaleY = function(node) {
+  return node.scaleY;
+};
+_xcNodeRotation = function(node) {
+  return node.rotation;
+};
+_xcNodeOpacity = function(node) {
+  return node.opacity;
+};
+_xcNodeAnchorX = function(node) {
+  return node.anchorX;
+};
+_xcNodeAnchorY = function(node) {
+  return node.anchorY;
+};
+_xcSpriteDraw = function(node) {
+  context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY));
+  context.rotate(node.rotation * Math.PI / 180);
+  context.globalAlpha = node.opacity;
+  return context.drawImage(node.sprite, 0, 0, node.width, node.height, 0, 0, node.width * node.scaleX, node.height * node.scaleY);
+};
+_xcTextDraw = function(node) {
+  node.font = node.fontSize + "pt " + node.fontName;
+  context.font = node.font;
+  context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY));
+  context.rotate(node.rotation * Math.PI / 180);
+  context.scale(node.scaleX, node.scaleY);
+  context.globalAlpha = node.opacity;
+  return context.fillText(node.text, 0, 0);
+};
+xc_init = function() {
+  var clear, date, fps, previousTime, update;
+  window.canvas = document.getElementById('gameCanvas');
+  window.context = canvas.getContext('2d');
+  $(canvas).mousedown(_xcHandleMouseDown);
+  $(canvas).mousemove(_xcHandleMouseMoved);
+  $(canvas).mouseup(_xcHandleMouseUp);
+  $(document).keydown(_xcHandleKeyDown);
+  $(document).keyup(_xcHandleKeyUp);
+  onLoad();
+  date = new Date();
+  previousTime = date.getTime();
+  update = function() {
+    var currentScene, currentTime, delta;
+    currentTime = new Date().getTime();
+    delta = (currentTime - previousTime) / 1000;
+    previousTime = currentTime;
+    currentScene = xc.getCurrentScene();
+    currentScene.update(delta);
+    clear();
+    return xc.draw(currentScene);
+  };
+  clear = function() {
+    return context.clearRect(0, 0, 640, 480);
+  };
+  fps = 60;
+  return setInterval(update, 1000 / fps);
+};
+xc = new xc();
+xc_init();

@@ -8,6 +8,7 @@ class GridEntity extends XCSpriteNode
 		@map.addChild(this)
 		
 	gridMove: (x, y) ->
+		console.log("gridmover moving")
 		@map.tiles[@gridX][@gridY] = "empty"
 		@map.tiles[@gridX+x][@gridY+y] = this
 		this.moveBy(x * @map.gridSize, y * @map.gridSize)

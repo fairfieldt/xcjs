@@ -11,11 +11,12 @@
 #import "cocos2d.h"
 
 std::queue<tap> taps;
+static unsigned int currentId = 0;
+
 
 
 JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
-	static unsigned int id = 0;
 	CCSprite *sprite = nil;
 	const char *file_name;
 	int z;
@@ -24,54 +25,69 @@ JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 		return JS_FALSE;
 	
 	sprite = [CCSprite spriteWithFile:[NSString stringWithCString:file_name]];
-	[the_scene addChild:sprite z:z tag:id];
+	[the_scene addChild:sprite z:z tag:currentId];
 	
-	jsdouble jid = id++;
+	jsdouble jid = currentId++;
 	
 	return JS_NewNumberValue(cx, jid, rval);
 }
 
-JSBool xc_draw(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
-{
-	CCNode *sprite = nil;
-	unsigned int id = 0;
-	double x = 0;
-	double y = 0;
-	double scale = 0;
-	double rotation = 0;
-
-	if (!JS_ConvertArguments(cx, argc, argv, "udddd", &id, &x, &y, &scale, &rotation))
-		return JS_FALSE;
-
-	sprite = [the_scene getChildByTag:id];
-
-	[sprite setPosition:ccp(x, y)];
-	sprite.scale = scale;
-	sprite.rotation = rotation;
-		
-	return JS_TRUE;
-}
-
 JSBool xc_update_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
-	CCNode *sprite = nil;
+	
+	CCSprite *sprite = nil;
 	unsigned int id = 0;
 	double x = 0;
 	double y = 0;
-	double scale = 0;
+	double scaleX, scaleY = 0;
 	double rotation = 0;
+	double opacity = 0;
+	double anchorX, anchorY = 0;
 	
-	if (!JS_ConvertArguments(cx, argc, argv, "udddd", &id, &x, &y, &scale, &rotation))
+	if (!JS_ConvertArguments(cx, argc, argv, "udddddddd", &id, &x, &y, &scaleX, &scaleY, &rotation, &opacity, &anchorX, &anchorY))
 		return JS_FALSE;
 	
 	sprite = [the_scene getChildByTag:id];
 	
-	[sprite setPosition:ccp(x, y)];
-	sprite.scale = scale;
+	[sprite setPosition:ccp(x, 480-y)];
+	sprite.scaleX = scaleX;
+	sprite.scaleY = scaleY;
 	sprite.rotation = rotation;
-	
+	sprite.opacity = opacity * 255;
+	sprite.anchorPoint = ccp(anchorX, 1.0 - anchorY);
 	return JS_TRUE;
 }
+/*
+JSBool xc_update_text(JSContext *cs, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+	CCLabelTTF *text = nil;
+	unsigned int id = 0;
+	double x = 0;
+	double y = 0;
+	double scaleX, scaleY = 0;
+	double rotation = 0;
+	double opacity = 0;
+	int red, green, blue = 0;
+	int fontSize = 0;
+
+	
+	if (!JS_ConvertArguments(cx, argc, argv, "uddddddd", &id, &x, &y, &scaleX, &scaleY, &rotation, &opacity, &red, &green, &blue, &fontSize))
+		return JS_FALSE;
+		
+	text = [the_scene getChildByTag:id];
+	
+	text.x = x;
+	text.y = y;
+	text.scaleX = scaleX;
+	text.scaleY = scaleY;
+	text.rotation = rotation;
+	text.opacity = opacity;
+	text.color = ccColor3B(red, green, blue);
+	
+	return JS_TRUE;
+	
+}
+ */
 
 JSBool xc_get_sprite_width(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
@@ -153,6 +169,12 @@ JSBool xc_print(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rv
 	if (!JS_ConvertArguments(cx, argc, argv, "s", &message))
 		return JS_FALSE;
 	printf("%s\n", message);
+	return JS_TRUE;
+}
+
+JSBool xc_gc(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+	JS_MaybeGC(cx);
 	return JS_TRUE;
 }
 

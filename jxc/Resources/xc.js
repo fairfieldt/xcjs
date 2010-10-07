@@ -1,30 +1,17 @@
 var xc;
 xc = function() {
+  this.scenes = [];
+  this.scenes.push(new XCScene());
   return this;
 };
-xc.prototype.loadSprite = function(spriteName) {
-  var x =  xc_add_sprite(spriteName, 0);
-	return x;
-};
 xc.prototype.draw = function(node) {
-  if (node.visible)
-  {
-	  xc_draw(node.sprite, node.x, node.y, node.scaleX, node.rotation);
-	  
-	  if (node.children.length > 0)
-	  {
-		  for (x = 0; x < node.children.length; x++)
-		  {
-			  xc.draw(node.children[x]);
-		  }
-	  }
-  }
+  return _draw(node);
 };
 xc.prototype.getSpriteWidth = function(sprite) {
-  return xc_get_sprite_width(sprite);
+  return sprite.width;
 };
 xc.prototype.getSpriteHeight = function(sprite) {
-  return xc_get_sprite_height(sprite);
+  return sprite.height;
 };
 xc.prototype.addEventListener = function(eventName, listener) {
   if (!this[eventName]) {
@@ -33,15 +20,28 @@ xc.prototype.addEventListener = function(eventName, listener) {
   return this[eventName].push(listener);
 };
 xc.prototype.dispatchEvent = function(event) {
-  var _a, _b, _c, _d, _e, listener;
-  if (typeof (_e = this[event.name]) !== "undefined" && _e !== null) {
-    _a = []; _c = this[event.name];
-    for (_b = 0, _d = _c.length; _b < _d; _b++) {
-      listener = _c[_b];
+  var _i, _len, _ref, _result, listener;
+  if (typeof (_ref = this[event.name]) !== "undefined" && _ref !== null) {
+    _result = []; _ref = this[event.name];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      listener = _ref[_i];
       if (listener[event.name](event)) {
         break;
       }
     }
-    return _a;
+    return _result;
   }
+};
+xc.prototype.replaceScene = function(newScene) {
+  this.scenes.pop().close();
+  return this.scenes.push(newScene);
+};
+xc.prototype.pushScene = function(scene) {
+  return scenes.push(scene);
+};
+xc.prototype.popScene = function() {
+  return this.scenes.pop();
+};
+xc.prototype.getCurrentScene = function() {
+  return this.scenes[this.scenes.length - 1];
 };
