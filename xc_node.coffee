@@ -108,6 +108,9 @@ class XCTextNode extends XCNode
 	constructor: (@text, @font) ->
 		@drawable = true
 		super()
+
+	setText: (newText) ->
+		@text = newText
 		
 	draw: (context) ->
 		context.font = @font
