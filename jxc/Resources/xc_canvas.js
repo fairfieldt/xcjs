@@ -1,9 +1,9 @@
-var _draw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadText, _xcNodeAnchorX, _xcNodeAnchorY, _xcNodeColor, _xcNodeOpacity, _xcNodeRotation, _xcNodeScaleX, _xcNodeScaleY, _xcNodeX, _xcNodeY, _xcSpriteDraw, _xcTextDraw, _xcloadSprite, oldX, oldY, sprites, tapDown, xc, xc_init;
+var _xcDraw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadSprite, _xcLoadText, _xcNodeAnchorX, _xcNodeAnchorY, _xcNodeColor, _xcNodeOpacity, _xcNodeRotation, _xcNodeScaleX, _xcNodeScaleY, _xcNodeX, _xcNodeY, _xcSpriteDraw, _xcTextDraw, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
 tapDown = false;
-_xcloadSprite = function(imageName) {
+_xcLoadSprite = function(imageName) {
   var sprite;
   sprite = new Image();
   sprite.src = imageName;
@@ -12,17 +12,17 @@ _xcloadSprite = function(imageName) {
 _xcLoadText = function(node) {
   return null;
 };
-_draw = function(node) {
-  var _i, _len, _ref, child;
+_xcDraw = function(node) {
+  var _a, _b, _c, child;
   if (node.visible) {
     context.save();
     if (node.drawable) {
-      node.draw(context);
+      node.draw();
     }
-    _ref = node.children;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      child = _ref[_i];
-      _draw(child);
+    _b = node.children;
+    for (_a = 0, _c = _b.length; _a < _c; _a++) {
+      child = _b[_a];
+      _xcDraw(child);
     }
     return context.restore();
   }
@@ -125,14 +125,18 @@ xc_init = function() {
   date = new Date();
   previousTime = date.getTime();
   update = function() {
-    var currentScene, currentTime, delta;
+    var _a, _b, _c, action, currentScene, currentTime, delta;
     currentTime = new Date().getTime();
     delta = (currentTime - previousTime) / 1000;
     previousTime = currentTime;
     currentScene = xc.getCurrentScene();
-    currentScene.update(delta);
+    _b = xc.actions;
+    for (_a = 0, _c = _b.length; _a < _c; _a++) {
+      action = _b[_a];
+      action.tick(delta);
+    }
     clear();
-    return xc.draw(currentScene);
+    return _xcDraw(currentScene);
   };
   clear = function() {
     return context.clearRect(0, 0, 640, 480);

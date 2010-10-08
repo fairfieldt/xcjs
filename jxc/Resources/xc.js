@@ -2,10 +2,8 @@ var xc;
 xc = function() {
   this.scenes = [];
   this.scenes.push(new XCScene());
+  this.actions = [];
   return this;
-};
-xc.prototype.draw = function(node) {
-  return _draw(node);
 };
 xc.prototype.getSpriteWidth = function(sprite) {
   return sprite.width;
@@ -21,7 +19,6 @@ xc.prototype.addEventListener = function(eventName, listener) {
 };
 xc.prototype.dispatchEvent = function(event) {
   var _a, _b, _c, _d, _e, listener;
-  console.log('a ' + event.name + ' event');
   if (typeof (_e = this[event.name]) !== "undefined" && _e !== null) {
     _a = []; _c = this[event.name];
     for (_b = 0, _d = _c.length; _b < _d; _b++) {

@@ -40,15 +40,6 @@ void reportError(JSContext *cx, const char *message, JSErrorReport *report)
             message);
 }
 
-void tick(ccTime delta)
-{
-	jsdouble d = delta;
-	jsval rval;
-	jsval argv;
-	JS_NewNumberValue(cx, d, &argv);
-	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_update", 1, &argv, &rval);
-}
-
 static JSFunctionSpec global_functions[] = 
 {
 
@@ -94,7 +85,6 @@ int run_js()
 	jsval rval;
 	//JSBool ok;
 	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	NSArray *dirContents = [[NSFileManager defaultManager] directoryContentsAtPath:bundleRoot];
 	
 	JSScript *script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_node.js"] cString]);
 	JS_ExecuteScript(cx, global, script, &rval);
@@ -128,11 +118,7 @@ int run_js()
 	JS_ExecuteScript(cx, global, script, &rval);
 	
 	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_init", 0, NULL, &rval);
-	
 
-	
-
-	
 	return 0;
 }
 

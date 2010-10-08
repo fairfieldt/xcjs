@@ -47,15 +47,28 @@
 		CGSize screenSize = [CCDirector sharedDirector].winSize;
 		CCLOG(@"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
 		run_js();
-		[self schedule:@selector(run_xc:)];
+	//	[self schedule:@selector(run_xc:) interval:1.0/30];
 	}
 	return self;
 }
 
--(void) run_xc:(ccTime)delta
+-(void) visit
 {
-	tick(delta);
+	static double lastTime = CACurrentMediaTime();
+	
+	double currentTime = CACurrentMediaTime();
+	
+	jsdouble d = currentTime - lastTime;
+	jsval rval;
+	jsval argv;
+	JS_NewNumberValue(cx, d, &argv);
+	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_update", 1, &argv, &rval);	
+	
+	lastTime = currentTime;
+	[super visit];
+	
 }
+
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {

@@ -8,4 +8,3 @@
  */
 #import "cocos2d.h"
 int run_js();
-void tick(ccTime delta);

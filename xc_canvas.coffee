@@ -11,14 +11,14 @@ _xcLoadSprite = (imageName) ->
 _xcLoadText = (node) ->
 	return null
 	
-_draw = (node) ->
+_xcDraw = (node) ->
 
 	if node.visible
 		context.save()
 		if node.drawable
 			node.draw()
 		for child in node.children
-			_draw(child)
+			_xcDraw(child)
 		context.restore()	
 
 
@@ -134,9 +134,12 @@ xc_init = ->
 		delta = (currentTime - previousTime) / 1000
 		previousTime = currentTime
 		currentScene = xc.getCurrentScene()
-		currentScene.update(delta)
+		
+		for action in xc.actions
+			action.tick(delta)
+			
 		clear()
-		xc.draw(currentScene)
+		_xcDraw(currentScene)
 
 	clear = -> context.clearRect(0, 0, 640, 480)
 

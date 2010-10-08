@@ -14,16 +14,6 @@ class XCNode
 		@color = new XCColor(0, 0, 0)
 		@children = new Array() 
 		@dirty = true
-		@actions = []
-
-	update: (delta) ->
-		this.onUpdate(delta)
-		for action in @actions
-			action.tick(delta)
-		for child in @children
-			child.update(delta)
-
-	onUpdate: ->
 
 	moveBy: (xOffset, yOffset) ->
 		@dirty = true
@@ -122,12 +112,12 @@ class XCNode
 
 	runAction: (action) ->
 		action.owner = this
-		@actions.push(action)
+		xc.actions.push(action)
 
 	removeAction: (action) ->
-		pos = @actions.indexOf(action)
+		pos = xc.actions.indexOf(action)
 		if pos != -1
-			@actions = @actions[0...pos].concat(@actions[pos+1...@actions.length]) 
+			xc.actions = xc.actions[0...pos].concat(xc.actions[pos+1...xc.actions.length]) 
 
 
 class XCSpriteNode extends XCNode

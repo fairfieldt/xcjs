@@ -21,30 +21,16 @@ XCNode = function() {
   this.parent = null;
   this.color = new XCColor(0, 0, 0);
   this.children = new Array();
-  this.actions = [];
+  this.dirty = true;
   return this;
 };
-XCNode.prototype.update = function(delta) {
-  var _a, _b, _c, _d, _e, _f, _g, action, child;
-  this.onUpdate(delta);
-  _b = this.actions;
-  for (_a = 0, _c = _b.length; _a < _c; _a++) {
-    action = _b[_a];
-    action.tick(delta);
-  }
-  _d = []; _f = this.children;
-  for (_e = 0, _g = _f.length; _e < _g; _e++) {
-    child = _f[_e];
-    _d.push(child.update(delta));
-  }
-  return _d;
-};
-XCNode.prototype.onUpdate = function() {};
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
+  this.dirty = true;
   this.x += xOffset;
   return this.y += yOffset;
 };
 XCNode.prototype.moveTo = function(xPosition, yPosition) {
+  this.dirty = true;
   this.x = xPosition;
   return (this.y = yPosition);
 };
@@ -58,22 +44,28 @@ XCNode.prototype.color = function() {
   return _xcNodeColor(this);
 };
 XCNode.prototype.scaleXBy = function(factor) {
+  this.dirty = true;
   return (this.scaleX = this.scaleX * factor);
 };
 XCNode.prototype.scaleXTo = function(newScale) {
+  this.dirty = true;
   return (this.scaleX = newScale);
 };
 XCNode.prototype.scaleYBy = function(factor) {
+  this.dirty = true;
   return (this.scaleY = this.scaleY * factor);
 };
 XCNode.prototype.scaleYTo = function(newScale) {
+  this.dirty = true;
   return (this.scaleY = newScale);
 };
 XCNode.prototype.scaleBy = function(factor) {
+  this.dirty = true;
   this.scaleX = this.scaleX * factor;
   return (this.scaleY = this.scaleY * factor);
 };
 XCNode.prototype.scaleTo = function(newScale) {
+  this.dirty = true;
   this.scaleX = newScale;
   return (this.scaleY = newScale);
 };
@@ -84,27 +76,33 @@ XCNode.prototype.scaleY = function() {
   return _xcNodeScaleY(this);
 };
 XCNode.prototype.rotateBy = function(offset) {
+  this.dirty = true;
   return (this.rotation = this.rotation + offset);
 };
 XCNode.prototype.rotateTo = function(newRotation) {
+  this.dirty = true;
   return (this.rotation = newRotation);
 };
 XCNode.prototype.rotation = function() {
   return _xcNodeRotation(this);
 };
 XCNode.prototype.fadeTo = function(newOpacity) {
+  this.dirty = true;
   return (this.opacity = newOpacity);
 };
 XCNode.prototype.fadeBy = function(opacity) {
+  this.dirty = true;
   return (this.opacity = Math.max(this.opacity + newOpacity, 0));
 };
 XCNode.prototype.opacity = function() {
   return _xcNodeOpacity(this);
 };
 XCNode.prototype.setAnchorX = function(anchor) {
+  this.dirty = true;
   return (this.anchorX = anchor);
 };
 XCNode.prototype.setAnchorY = function(anchor) {
+  this.dirty = true;
   return (this.anchorY = anchor);
 };
 XCNode.prototype.anchorX = function() {
@@ -127,12 +125,12 @@ XCNode.prototype.removeChild = function(child) {
 };
 XCNode.prototype.runAction = function(action) {
   action.owner = this;
-  return this.actions.push(action);
+  return xc.actions.push(action);
 };
 XCNode.prototype.removeAction = function(action) {
   var pos;
-  pos = this.actions.indexOf(action);
-  return pos !== -1 ? (this.actions = this.actions.slice(0, pos).concat(this.actions.slice(pos + 1, this.actions.length))) : null;
+  pos = xc.actions.indexOf(action);
+  return pos !== -1 ? (xc.actions = xc.actions.slice(0, pos).concat(xc.actions.slice(pos + 1, xc.actions.length))) : null;
 };
 XCSpriteNode = function(imageName, _a, _b) {
   this.height = _b;
@@ -145,7 +143,8 @@ XCSpriteNode = function(imageName, _a, _b) {
 };
 __extends(XCSpriteNode, XCNode);
 XCSpriteNode.prototype.draw = function() {
-  return _xcSpriteDraw(this);
+  _xcSpriteDraw(this);
+  return (this.dirty = false);
 };
 XCScene = function() {
   XCScene.__super__.constructor.call(this);
@@ -164,10 +163,12 @@ XCTextNode = function(_a, _b, _c) {
 };
 __extends(XCTextNode, XCNode);
 XCTextNode.prototype.setText = function(newText) {
+  this.dirty = true;
   return (this.text = newText);
 };
 XCTextNode.prototype.draw = function() {
-  return _xcTextDraw(this);
+  _xcTextDraw(this);
+  return (this.dirty = false);
 };
 XCLayer = function() {
   XCLayer.__super__.constructor.call(this);

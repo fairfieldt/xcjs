@@ -2,20 +2,22 @@ sprites = []
 oldX = 0
 oldY = 0
 tapDown = false
+gcCounter = 0
 
 _xcLoadSprite = (imageName) ->
 	xc_load_sprite(imageName, 0)
 	
-_draw = (node) ->
+_xcDraw = (node) ->
 	if node.drawable and node.dirty
+		console.log("drawing")
 		node.draw()
 	for child in node.children
-		_draw(child)
+		_xcDraw(child)
 
 _xcHandleMouseDown = (event) ->
 	x = event.x
 	y = event.y
-	console.log('handling event ' + event.name)
+
 	tapDown = true
 	
 	e = new XCTapDownEvent(x, y, 0)
@@ -53,7 +55,7 @@ _xcHandleKeyUp = (event) ->
 ################# XCNode platform specific implementations #################
 
 _xcNodeX = (node) ->
-	node.X
+	node.x
 
 _xcNodeY = (node) ->
 	node.y
@@ -93,13 +95,12 @@ xc_init = ->
 
 	date = new Date()
 	previousTime = date.getTime()
-	
+
 xc_update = (delta) ->
 	currentScene = xc.getCurrentScene()
 	
 	tapEvent = xc_get_tap()
 	while tapEvent != null
-		console.log(tapEvent.name + ' ' + tapEvent.x + ' ' + tapEvent.y)
 		if tapEvent.name == 'tapDown'
 			_xcHandleMouseDown(tapEvent)
 		else if tapEvent.name == 'tapMoved'
@@ -108,9 +109,13 @@ xc_update = (delta) ->
 			_xcHandleMouseUp(tapEvent)
 		tapEvent = xc_get_tap()
 	
-	currentScene.update(delta)
-	xc.draw(currentScene)
-	xc_gc()
+	for action in xc.actions	
+		action.tick(delta)
+	console.log("draw batch start")
+	_xcDraw(currentScene)
+	console.log("draw batch end")
+	if gcCounter++ > 30
+		xc_gc()
 
 
 xc = new xc()

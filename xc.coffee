@@ -2,9 +2,7 @@ class xc
 	constructor: ->
 		@scenes = []
 		@scenes.push new XCScene()
-
-	draw: (node) ->
-		_draw(node)
+		@actions = []
 
 	getSpriteWidth: (sprite) ->
 		return sprite.width
@@ -17,7 +15,6 @@ class xc
 		this[eventName].push(listener)
 		
 	dispatchEvent: (event) ->
-		console.log('a ' + event.name + ' event')
 		if this[event.name]?
 			for listener in this[event.name]
 				console.log('dispatching the event')
