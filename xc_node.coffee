@@ -13,7 +13,7 @@ class XCNode
 		@parent = null
 		@color = new XCColor(0, 0, 0)
 		@children = new Array() 
-
+		@dirty = true
 		@actions = []
 
 	update: (delta) ->
@@ -26,10 +26,12 @@ class XCNode
 	onUpdate: ->
 
 	moveBy: (xOffset, yOffset) ->
+		@dirty = true
 		@x += xOffset
 		@y += yOffset
 
 	moveTo: (xPosition, yPosition) ->
+		@dirty = true
 		@x = xPosition
 		@y = yPosition
 		
@@ -42,22 +44,28 @@ class XCNode
 		_xcNodeColor(this)
 
 	scaleXBy: (factor) ->
+		@dirty = true
 		@scaleX = @scaleX * factor
 
 	scaleXTo: (newScale) ->
+		@dirty = true
 		@scaleX = newScale
 
 	scaleYBy: (factor) ->
+		@dirty = true
 		@scaleY = @scaleY * factor
 
 	scaleYTo: (newScale) ->
+		@dirty = true
 		@scaleY = newScale
 
 	scaleBy: (factor) ->
+		@dirty = true
 		@scaleX = @scaleX * factor
 		@scaleY = @scaleY * factor
 
 	scaleTo: (newScale) ->
+		@dirty = true
 		@scaleX = newScale
 		@scaleY = newScale
 		
@@ -68,26 +76,32 @@ class XCNode
 		_xcNodeScaleY(this)
 		
 	rotateBy: (offset) ->
+		@dirty = true
 		@rotation = @rotation + offset
 
 	rotateTo: (newRotation) ->
+		@dirty = true
 		@rotation = newRotation
 	
 	rotation: ->
 		_xcNodeRotation(this)
 		
 	fadeTo: (newOpacity) ->
+		@dirty = true
 		@opacity = newOpacity
 	
 	fadeBy: (opacity) ->
+		@dirty = true
 		@opacity = Math.max(@opacity + newOpacity, 0)
 		
 	opacity: -> _xcNodeOpacity(this)
 
 	setAnchorX: (anchor) ->
+		@dirty = true
 		@anchorX = anchor
 
 	setAnchorY: (anchor) ->
+		@dirty = true
 		@anchorY = anchor
 		
 	anchorX: ->
@@ -125,6 +139,7 @@ class XCSpriteNode extends XCNode
 
 	draw: ->
 		_xcSpriteDraw(this)
+		@dirty = false
 		
 class XCScene extends XCNode
 	constructor: ->
@@ -142,11 +157,13 @@ class XCTextNode extends XCNode
 		super()
 
 	setText: (newText) ->
+		@dirty = true
 		@text = newText
 		
 		
 	draw: ->
 		_xcTextDraw(this)
+		@dirty = false 
 
 class XCLayer extends XCNode
 	constructor: ->

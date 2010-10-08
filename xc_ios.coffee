@@ -7,7 +7,7 @@ _xcLoadSprite = (imageName) ->
 	xc_load_sprite(imageName, 0)
 	
 _draw = (node) ->
-	if node.drawable
+	if node.drawable and node.dirty
 		node.draw()
 	for child in node.children
 		_draw(child)
