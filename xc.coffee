@@ -17,8 +17,10 @@ class xc
 		this[eventName].push(listener)
 		
 	dispatchEvent: (event) ->
+		console.log('a ' + event.name + ' event')
 		if this[event.name]?
 			for listener in this[event.name]
+				console.log('dispatching the event')
 				if listener[event.name](event)
 					break
 

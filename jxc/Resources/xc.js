@@ -20,16 +20,18 @@ xc.prototype.addEventListener = function(eventName, listener) {
   return this[eventName].push(listener);
 };
 xc.prototype.dispatchEvent = function(event) {
-  var _i, _len, _ref, _result, listener;
-  if (typeof (_ref = this[event.name]) !== "undefined" && _ref !== null) {
-    _result = []; _ref = this[event.name];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      listener = _ref[_i];
+  var _a, _b, _c, _d, _e, listener;
+  console.log('a ' + event.name + ' event');
+  if (typeof (_e = this[event.name]) !== "undefined" && _e !== null) {
+    _a = []; _c = this[event.name];
+    for (_b = 0, _d = _c.length; _b < _d; _b++) {
+      listener = _c[_b];
+      console.log('dispatching the event');
       if (listener[event.name](event)) {
         break;
       }
     }
-    return _result;
+    return _a;
   }
 };
 xc.prototype.replaceScene = function(newScene) {

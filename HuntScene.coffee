@@ -23,6 +23,11 @@ class HuntScene extends XCScene
 					man.gridMove(0, 1)
 
 		xc.addEventListener('keyDown', man)
+		
+		man.tapDown = (event) ->
+			console.log(event.x + ' ' + event.y)
+			this.gridMove(1, 0)
+		xc.addEventListener('tapDown', man)
 
 		alien = new Alien(map, 10, 15)
 		

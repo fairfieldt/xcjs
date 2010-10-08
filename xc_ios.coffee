@@ -13,11 +13,9 @@ _draw = (node) ->
 		_draw(child)
 
 _xcHandleMouseDown = (event) ->
-	x = event.pageX - canvas.offsetLeft
-	y = event.pageY - canvas.offsetTop
-	
-	oldX = x
-	oldY = y
+	x = event.x
+	y = event.y
+	console.log('handling event ' + event.name)
 	tapDown = true
 	
 	e = new XCTapDownEvent(x, y, 0)
@@ -25,20 +23,19 @@ _xcHandleMouseDown = (event) ->
 	
 _xcHandleMouseUp = (event) ->
 	tapDown = false
-	x = event.pageX - canvas.offsetLeft
-	y = event.pageY - canvas.offsetTop
+	x = event.x
+	y = event.y
 	
 	e = new XCTapUpEvent(x, y, 0)
 	xc.dispatchEvent(e)
 	
 _xcHandleMouseMoved = (event) ->
 	if tapDown
-		x = event.pageX - canvas.offsetLeft
-		y = event.pageY - canvas.offsetTop
-		moveX = x - oldX
-		moveY = y - oldY
-		oldX = x
-		oldY = y
+		x = event.x
+		y = event.y
+		moveX = event.moveX
+		moveY = event.moveY
+
 		e = new XCTapMovedEvent(x, y, moveX, moveY, 0)
 		xc.dispatchEvent(e)
 
@@ -96,8 +93,21 @@ xc_init = ->
 
 	date = new Date()
 	previousTime = date.getTime()
+	
 xc_update = (delta) ->
 	currentScene = xc.getCurrentScene()
+	
+	tapEvent = xc_get_tap()
+	while tapEvent != null
+		console.log(tapEvent.name + ' ' + tapEvent.x + ' ' + tapEvent.y)
+		if tapEvent.name == 'tapDown'
+			_xcHandleMouseDown(tapEvent)
+		else if tapEvent.name == 'tapMoved'
+			_xcHandleMouseMoved(tapEvent)
+		else if tapEvent.tname == 'tapUp'
+			_xcHandleMouseUp(tapEvent)
+		tapEvent = xc_get_tap()
+	
 	currentScene.update(delta)
 	xc.draw(currentScene)
 	xc_gc()

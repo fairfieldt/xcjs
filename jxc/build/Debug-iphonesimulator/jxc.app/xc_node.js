@@ -25,19 +25,19 @@ XCNode = function() {
   return this;
 };
 XCNode.prototype.update = function(delta) {
-  var _i, _len, _ref, _result, action, child;
+  var _a, _b, _c, _d, _e, _f, _g, action, child;
   this.onUpdate(delta);
-  _ref = this.actions;
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    action = _ref[_i];
+  _b = this.actions;
+  for (_a = 0, _c = _b.length; _a < _c; _a++) {
+    action = _b[_a];
     action.tick(delta);
   }
-  _result = []; _ref = this.children;
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    child = _ref[_i];
-    _result.push(child.update(delta));
+  _d = []; _f = this.children;
+  for (_e = 0, _g = _f.length; _e < _g; _e++) {
+    child = _f[_e];
+    _d.push(child.update(delta));
   }
-  return _result;
+  return _d;
 };
 XCNode.prototype.onUpdate = function() {};
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
@@ -134,9 +134,9 @@ XCNode.prototype.removeAction = function(action) {
   pos = this.actions.indexOf(action);
   return pos !== -1 ? (this.actions = this.actions.slice(0, pos).concat(this.actions.slice(pos + 1, this.actions.length))) : null;
 };
-XCSpriteNode = function(imageName, _arg, _arg2) {
-  this.height = _arg2;
-  this.width = _arg;
+XCSpriteNode = function(imageName, _a, _b) {
+  this.height = _b;
+  this.width = _a;
   this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
   this.sprite = _xcLoadSprite(imageName);
@@ -153,16 +153,19 @@ XCScene = function() {
 };
 __extends(XCScene, XCNode);
 XCScene.prototype.close = function() {};
-XCTextNode = function(_arg, _arg2, _arg3) {
-  this.fontSize = _arg3;
-  this.fontName = _arg2;
-  this.text = _arg;
+XCTextNode = function(_a, _b, _c) {
+  this.fontSize = _c;
+  this.fontName = _b;
+  this.text = _a;
   this.drawable = true;
   this.ref = _xcLoadText(this);
   XCTextNode.__super__.constructor.call(this);
   return this;
 };
 __extends(XCTextNode, XCNode);
+XCTextNode.prototype.setText = function(newText) {
+  return (this.text = newText);
+};
 XCTextNode.prototype.draw = function() {
   return _xcTextDraw(this);
 };
