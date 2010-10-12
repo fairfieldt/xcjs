@@ -2,8 +2,8 @@ class GridEntity extends XCSpriteNode
 	constructor: (imageName, @map, @type, @gridX, @gridY) ->
 
 		super(imageName, @map.gridSize, @map.gridSize)
-		this.x = @gridX * @map.gridSize
-		this.y = @gridY * @map.gridSize
+		this.setX( @gridX * @map.gridSize)
+		this.setY(@gridY * @map.gridSize)
 		
 		@map.addChild(this)
 		

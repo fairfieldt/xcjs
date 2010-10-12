@@ -1,63 +1,78 @@
 class XCNode
 	constructor: ()  ->
 		@visible = true
-		@x = 0
-		@y = 0
-		@z = 0
-		@scaleX = 1.0
-		@scaleY = 1.0
-		@rotation = 0.0
-		@opacity = 1.0
-		@anchorX = 0.0
-		@anchorY = 0.0
+		@_x = 0
+		@_y = 0
+		@_z = 0
+		@_scaleX = 1.0
+		@_scaleY = 1.0
+		@_rotation = 0.0
+		@_opacity = 1.0
+		@_anchorX = 0.0
+		@_anchorY = 0.0
 		@parent = null
-		@color = new XCColor(0, 0, 0)
+		@_color = new XCColor(0, 0, 0)
 		@children = new Array() 
 		@dirty = true
 
 	moveBy: (xOffset, yOffset) ->
 		@dirty = true
-		@x += xOffset
-		@y += yOffset
+		this.setX(this.X() + xOffset)
+		this.setY(this.Y() + yOffset)
 
 	moveTo: (xPosition, yPosition) ->
 		@dirty = true
-		@x = xPosition
-		@y = yPosition
+		this.setX(xPosition)
+		this.setY(yPosition)
 		
-	x: ->
-		_xcNodeX(this)
-	y: ->
-		_xcNodeY(this)
+	X: ->
+		return _xcNodeX(this)
+	Y: ->
+		return _xcNodeY(this)
+
+	setX: (newX) ->
+		_xcNodeSetX(this, newX)
+	
+	setY: (newY) ->
+		_xcNodeSetY(this, newY)
 		
 	color: ->
 		_xcNodeColor(this)
+	
+	setColor: (newColor) ->
+		_xcNodeSetColor(this, newColor)
 
 	scaleXBy: (factor) ->
 		@dirty = true
-		@scaleX = @scaleX * factor
+		this.setScaleX(this.scaleX() * factor)
 
 	scaleXTo: (newScale) ->
 		@dirty = true
-		@scaleX = newScale
+		this.setScaleX(newScale)	
+
+	setScaleX: (newScaleX) ->
+		_xcNodeSetScaleX(this, newScaleX)
 
 	scaleYBy: (factor) ->
 		@dirty = true
-		@scaleY = @scaleY * factor
+		this.setScaleY(this.scaleY() * factor)
 
 	scaleYTo: (newScale) ->
 		@dirty = true
-		@scaleY = newScale
+		this.setScaleY(newScale)
+
+	setScaleY: (newScaleY) ->
+		_xcNodeSetScaleY(this, newScaleY)
 
 	scaleBy: (factor) ->
 		@dirty = true
-		@scaleX = @scaleX * factor
-		@scaleY = @scaleY * factor
+		this.setScaleX(this.scaleX() * factor)
+		this.setScaleY(this.scaleY() * factor)
 
 	scaleTo: (newScale) ->
 		@dirty = true
-		@scaleX = newScale
-		@scaleY = newScale
+		this.setScaleX(newScale)
+		this.setScaleY(newScale)
 		
 	scaleX: ->
 		_xcNodeScaleX(this)		
@@ -67,38 +82,50 @@ class XCNode
 		
 	rotateBy: (offset) ->
 		@dirty = true
-		@rotation = @rotation + offset
+		this.setRotation(this.rotation() + offset)
 
 	rotateTo: (newRotation) ->
 		@dirty = true
-		@rotation = newRotation
+		this.setRotation(newRotation)
 	
 	rotation: ->
 		_xcNodeRotation(this)
+
+	setRotation: (newRotation) ->
+		_xcNodeSetRotation(this, newRotation)
 		
 	fadeTo: (newOpacity) ->
 		@dirty = true
-		@opacity = newOpacity
-	
+		this.setOpacity(newOpacity)
+
 	fadeBy: (opacity) ->
 		@dirty = true
-		@opacity = Math.max(@opacity + newOpacity, 0)
-		
+		this.setOpacity(Math.max(this.opacity-opacity, 0))
+
 	opacity: -> _xcNodeOpacity(this)
+
+	setOpacity: (newOpacity) ->
+		_xcNodeSetOpacity(this, newOpacity)
 
 	setAnchorX: (anchor) ->
 		@dirty = true
-		@anchorX = anchor
+		this.setAnchorX(anchor)
 
 	setAnchorY: (anchor) ->
 		@dirty = true
-		@anchorY = anchor
-		
+		this.setAnchorY(anchor)
+
 	anchorX: ->
 		_xcNodeAnchorX(this)
 	
 	anchorY: ->
 		_xcNodeAnchorY(this)
+
+	setAnchorX: (newAnchorX) ->
+		_xcNodeSetAnchorX(this, newAnchorX)
+
+	setAnchorY: (newAnchorY) ->
+		_xcNodeSetAnchorY(this, newAnchorY)
 
 	addChild: (child) ->
 		@children.push(child)
@@ -148,8 +175,7 @@ class XCTextNode extends XCNode
 
 	setText: (newText) ->
 		@dirty = true
-		@text = newText
-		
+		_xcTextSetText(this, newText)		
 		
 	draw: ->
 		_xcTextDraw(this)

@@ -46,8 +46,8 @@ class XCMoveTo extends XCMoveAction
 
 	tick: (dt) ->
 		if @firstTick
-			@x -= @owner.x
-			@y -= @owner.y
+			@x -= @owner.X()
+			@y -= @owner.Y()
 			@stepX = @x / @duration
 			@stepY = @y / @duration
 			@positiveX = @stepX > 0
@@ -126,7 +126,7 @@ class XCScaleTo extends XCScaleAction
 		
 	tick: (dt) ->
 		if @firstTick
-			@scale -= @owner.scaleX
+			@scale -= @owner.scaleX()
 			@stepScale = @scale / @duration
 			@firstTick = false
 		super(dt)
@@ -137,7 +137,7 @@ class XCScaleBy extends XCScaleAction
 
 	tick: (dt) ->
 		if @firstTick
-			@scale =  (@scale * @owner.scaleX) - @owner.scaleX
+			@scale =  (@scale * @owner.scaleX) - @owner.scaleX()
 			@stepScale = @scale / @duration
 			console.log('new scale ' + @scale + ' stepScale ' + @stepScale)
 			@firstTick = false
