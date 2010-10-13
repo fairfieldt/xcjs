@@ -7,13 +7,6 @@ gcCounter = 0
 _xcLoadSprite = (imageName) ->
 	xc_load_sprite(imageName, 0)
 	
-_xcDraw = (node) ->
-	if node.drawable and node.dirty
-		console.log("drawing")
-		node.draw()
-	for child in node.children
-		_xcDraw(child)
-
 _xcHandleMouseDown = (event) ->
 	x = event.x
 	y = event.y
@@ -54,35 +47,7 @@ _xcHandleKeyUp = (event) ->
 
 ################# XCNode platform specific implementations #################
 
-_xcNodeX = (node) ->
-	node.x
 
-_xcNodeY = (node) ->
-	node.y
-	
-_xcNodeColor = (node) ->
-	node.color
-
-_xcNodeScaleX = (node) ->
-	node.scaleX
-	
-_xcNodeScaleY = (node) ->
-	node.scaleY
-
-_xcNodeRotation = (node) ->
-	node.rotation
-	
-_xcNodeOpacity = (node) ->
-	node.opacity
-	
-_xcNodeAnchorX = (node) -> 
-	node.anchorX
-
-_xcNodeAnchorY = (node) -> 
-	node.anchorY
-	
-_xcSpriteDraw = (node) ->
-	xc_update_sprite(node.sprite, node.x, node.y, node.scaleX, node.scaleY, node.rotation, node.opacity, node.anchorX, node.anchorY)
 	
 _xcTextDraw = (node) ->
 	#stub

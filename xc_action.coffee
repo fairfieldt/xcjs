@@ -137,7 +137,7 @@ class XCScaleBy extends XCScaleAction
 
 	tick: (dt) ->
 		if @firstTick
-			@scale =  (@scale * @owner.scaleX) - @owner.scaleX
+			@scale =  (@scale * @owner.scaleX) - @owner.scaleX()
 			@stepScale = @scale / @duration
 			console.log('new scale ' + @scale + ' stepScale ' + @stepScale)
 			@firstTick = false
