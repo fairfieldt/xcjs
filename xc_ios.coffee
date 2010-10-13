@@ -76,9 +76,7 @@ xc_update = (delta) ->
 	
 	for action in xc.actions	
 		action.tick(delta)
-	console.log("draw batch start")
-	_xcDraw(currentScene)
-	console.log("draw batch end")
+
 	if gcCounter++ > 30
 		xc_gc()
 

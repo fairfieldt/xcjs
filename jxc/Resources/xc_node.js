@@ -9,65 +9,75 @@ var __extends = function(child, parent) {
   };
 XCNode = function() {
   this.visible = true;
-  this.x = 0;
-  this.y = 0;
-  this.z = 0;
-  this.scaleX = 1.0;
-  this.scaleY = 1.0;
-  this.rotation = 0.0;
-  this.opacity = 1.0;
-  this.anchorX = 0.0;
-  this.anchorY = 0.0;
+  this._x = 0;
+  this._y = 0;
+  this._z = 0;
+  this._scaleX = 1.0;
+  this._scaleY = 1.0;
+  this._rotation = 0.0;
+  this._opacity = 1.0;
+  this._anchorX = 0.0;
+  this._anchorY = 0.0;
+  this.setAnchorX(0.0);
+  this.setAnchorY(0.0);
   this.parent = null;
-  this.color = new XCColor(0, 0, 0);
+  this._color = new XCColor(0, 0, 0);
   this.children = new Array();
-  this.dirty = true;
   return this;
 };
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
-  this.dirty = true;
-  this.x += xOffset;
-  return this.y += yOffset;
+  this.setX(this.X() + xOffset);
+  return this.setY(this.Y() + yOffset);
 };
 XCNode.prototype.moveTo = function(xPosition, yPosition) {
-  this.dirty = true;
-  this.x = xPosition;
-  return (this.y = yPosition);
+  console.log('and now x is ' + this.X());
+  this.setX(xPosition);
+  this.setY(yPosition);
+  return console.log('and now x is ' + this.X());
 };
-XCNode.prototype.x = function() {
+XCNode.prototype.X = function() {
   return _xcNodeX(this);
 };
-XCNode.prototype.y = function() {
+XCNode.prototype.Y = function() {
   return _xcNodeY(this);
+};
+XCNode.prototype.setX = function(newX) {
+  return _xcNodeSetX(this, newX);
+};
+XCNode.prototype.setY = function(newY) {
+  return _xcNodeSetY(this, newY);
 };
 XCNode.prototype.color = function() {
   return _xcNodeColor(this);
 };
+XCNode.prototype.setColor = function(newColor) {
+  return _xcNodeSetColor(this, newColor);
+};
 XCNode.prototype.scaleXBy = function(factor) {
-  this.dirty = true;
-  return (this.scaleX = this.scaleX * factor);
+  return this.setScaleX(this.scaleX() * factor);
 };
 XCNode.prototype.scaleXTo = function(newScale) {
-  this.dirty = true;
-  return (this.scaleX = newScale);
+  return this.setScaleX(newScale);
+};
+XCNode.prototype.setScaleX = function(newScaleX) {
+  return _xcNodeSetScaleX(this, newScaleX);
 };
 XCNode.prototype.scaleYBy = function(factor) {
-  this.dirty = true;
-  return (this.scaleY = this.scaleY * factor);
+  return this.setScaleY(this.scaleY() * factor);
 };
 XCNode.prototype.scaleYTo = function(newScale) {
-  this.dirty = true;
-  return (this.scaleY = newScale);
+  return this.setScaleY(newScale);
+};
+XCNode.prototype.setScaleY = function(newScaleY) {
+  return _xcNodeSetScaleY(this, newScaleY);
 };
 XCNode.prototype.scaleBy = function(factor) {
-  this.dirty = true;
-  this.scaleX = this.scaleX * factor;
-  return (this.scaleY = this.scaleY * factor);
+  this.setScaleX(this.scaleX() * factor);
+  return this.setScaleY(this.scaleY() * factor);
 };
 XCNode.prototype.scaleTo = function(newScale) {
-  this.dirty = true;
-  this.scaleX = newScale;
-  return (this.scaleY = newScale);
+  this.setScaleX(newScale);
+  return this.setScaleY(newScale);
 };
 XCNode.prototype.scaleX = function() {
   return _xcNodeScaleX(this);
@@ -76,40 +86,46 @@ XCNode.prototype.scaleY = function() {
   return _xcNodeScaleY(this);
 };
 XCNode.prototype.rotateBy = function(offset) {
-  this.dirty = true;
-  return (this.rotation = this.rotation + offset);
+  return this.setRotation(this.rotation() + offset);
 };
 XCNode.prototype.rotateTo = function(newRotation) {
-  this.dirty = true;
-  return (this.rotation = newRotation);
+  return this.setRotation(newRotation);
 };
 XCNode.prototype.rotation = function() {
   return _xcNodeRotation(this);
 };
+XCNode.prototype.setRotation = function(newRotation) {
+  return _xcNodeSetRotation(this, newRotation);
+};
 XCNode.prototype.fadeTo = function(newOpacity) {
-  this.dirty = true;
-  return (this.opacity = newOpacity);
+  return this.setOpacity(newOpacity);
 };
 XCNode.prototype.fadeBy = function(opacity) {
-  this.dirty = true;
-  return (this.opacity = Math.max(this.opacity + newOpacity, 0));
+  return this.setOpacity(Math.max(this.opacity - opacity, 0));
 };
 XCNode.prototype.opacity = function() {
   return _xcNodeOpacity(this);
 };
+XCNode.prototype.setOpacity = function(newOpacity) {
+  return _xcNodeSetOpacity(this, newOpacity);
+};
 XCNode.prototype.setAnchorX = function(anchor) {
-  this.dirty = true;
-  return (this.anchorX = anchor);
+  return this.setAnchorX(anchor);
 };
 XCNode.prototype.setAnchorY = function(anchor) {
-  this.dirty = true;
-  return (this.anchorY = anchor);
+  return this.setAnchorY(anchor);
 };
 XCNode.prototype.anchorX = function() {
   return _xcNodeAnchorX(this);
 };
 XCNode.prototype.anchorY = function() {
   return _xcNodeAnchorY(this);
+};
+XCNode.prototype.setAnchorX = function(newAnchorX) {
+  return _xcNodeSetAnchorX(this, newAnchorX);
+};
+XCNode.prototype.setAnchorY = function(newAnchorY) {
+  return _xcNodeSetAnchorY(this, newAnchorY);
 };
 XCNode.prototype.addChild = function(child) {
   this.children.push(child);
@@ -143,8 +159,7 @@ XCSpriteNode = function(imageName, _a, _b) {
 };
 __extends(XCSpriteNode, XCNode);
 XCSpriteNode.prototype.draw = function() {
-  _xcSpriteDraw(this);
-  return (this.dirty = false);
+  return _xcSpriteDraw(this);
 };
 XCScene = function() {
   XCScene.__super__.constructor.call(this);
@@ -163,12 +178,10 @@ XCTextNode = function(_a, _b, _c) {
 };
 __extends(XCTextNode, XCNode);
 XCTextNode.prototype.setText = function(newText) {
-  this.dirty = true;
-  return (this.text = newText);
+  return _xcTextSetText(this, newText);
 };
 XCTextNode.prototype.draw = function() {
-  _xcTextDraw(this);
-  return (this.dirty = false);
+  return _xcTextDraw(this);
 };
 XCLayer = function() {
   XCLayer.__super__.constructor.call(this);

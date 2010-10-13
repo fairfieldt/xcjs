@@ -26,6 +26,8 @@ JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 	NSString *name = [NSString stringWithCString:file_name];
 
 	sprite = [CCSprite spriteWithFile:name];
+	sprite.anchorPoint = ccp(0, 1);
+
 	[the_scene addChild:sprite z:z tag:currentId];
 	
 	jsdouble jid = currentId++;

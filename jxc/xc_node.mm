@@ -1,4 +1,7 @@
-CCNode *getInternalNodeFromNode(jsval node)
+#include "xc_node.h"
+extern id the_scene;
+
+CCNode *getInternalNodeFromNode(JSContext *cx, jsval node)
 {
 	JSObject *pNode;
 
@@ -20,7 +23,8 @@ CCNode *getInternalNodeFromNode(jsval node)
 	if (!JS_ValueToInt32(cx, tag, &id))
 		return JS_FALSE;
 
-	return = [the_scene getChildByTag:tag];
+	id internalNode = [the_scene getChildByTag:id];
+		return internalNode;
 }
 
 JSBool _xcNodeX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -30,9 +34,9 @@ JSBool _xcNodeX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rv
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.x, rval);
+	return JS_NewNumberValue(cx, internalNode.position.x, rval);
 }
 
 JSBool _xcNodeY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -42,24 +46,23 @@ JSBool _xcNodeY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rv
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
-;
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.y, rval);
+	return JS_NewNumberValue(cx, 480 - internalNode.position.y, rval);
 }
 		
 JSBool _xcNodeSetX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
 	jsval node;
 	double newX;
-
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newX))
 		return JS_FALSE;
+	printf("Setting x to %f\n", newX);
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.x = newX;
-
+	internalNode.position = ccp(newX, internalNode.position.y);
+	printf("x is now %f\n", internalNode.position.x);
 	return JS_TRUE;
 }
 
@@ -71,9 +74,9 @@ JSBool _xcNodeSetY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval 
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newY))
 		return JS_FALSE;
 
-	CCNode *n = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	n.y = newY;
+	internalNode.position = ccp(internalNode.position.x, 480 - newY);
 
 	return JS_TRUE;
 }
@@ -85,15 +88,15 @@ JSBool _xcNodeColor(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 	
-	ccColor3B color = internalNode.color;
+	ccColor3B color = [((CCSprite*)internalNode) color];
 	JSObject *xcColor = JS_NewObject(cx, NULL, NULL, NULL);
 	jsval r, g, b;
 
-	JS_NewNumberVal(cx, color.r, &r);
-	JS_NewNumberVal(cx, color.g, &g);
-	JS_NewNumberVal(cx, color.b, &b);
+	JS_NewNumberValue(cx, color.r, &r);
+	JS_NewNumberValue(cx, color.g, &g);
+	JS_NewNumberValue(cx, color.b, &b);
 
 	JS_DefineProperty(cx, xcColor, "r", r, NULL, NULL, 0);
 	JS_DefineProperty(cx, xcColor, "g", g, NULL, NULL, 0);
@@ -142,8 +145,8 @@ JSBool _xcNodeSetColor(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, js
 	if (!JS_ValueToInt32(cx, b, &internal_b))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
-	internalNode.color = ccColor3B(internal_r, internal_g, internal_b);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
+	[((CCSprite*)internalNode) setColor: ccc3(internal_r, internal_g, internal_b)];
 
 	return JS_TRUE;
 }
@@ -156,9 +159,9 @@ JSBool _xcNodeScaleX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.scale.x, rval);
+	return JS_NewNumberValue(cx, internalNode.scaleX, rval);
 }
 
 JSBool _xcNodeScaleY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -168,9 +171,9 @@ JSBool _xcNodeScaleY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.scale.y, rval);
+	return JS_NewNumberValue(cx, internalNode.scaleY, rval);
 }
 
 JSBool _xcNodeSetScaleX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -181,9 +184,9 @@ JSBool _xcNodeSetScaleX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, j
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newScaleX))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.scale.x = newScaleX;
+	internalNode.scaleX = newScaleX;
 
 	return JS_TRUE;
 }
@@ -196,9 +199,9 @@ JSBool _xcNodeSetScaleY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, j
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newScaleY))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.scale.y = newScaleY;
+	internalNode.scaleY = newScaleY;
 
 	return JS_TRUE;
 }
@@ -210,7 +213,7 @@ JSBool _xcNodeRotation(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, js
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
 	return JS_NewNumberValue(cx, internalNode.rotation, rval);
 }
@@ -223,7 +226,7 @@ JSBool _xcNodeSetRotation(JSContext *cx, JSObject *obj, uintN argc, jsval *argv,
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newRotation))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
 	internalNode.rotation = newRotation;
 
@@ -237,9 +240,9 @@ JSBool _xcNodeOpacity(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsv
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.opacity, rval);
+	return JS_NewNumberValue(cx, ((CCSprite*)internalNode).opacity, rval);
 }
 
 JSBool _xcNodeSetOpacity(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -250,9 +253,9 @@ JSBool _xcNodeSetOpacity(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, 
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newOpacity))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.opacity = newOpacity;
+	((CCSprite*)internalNode).opacity = newOpacity;
 
 	return JS_TRUE;
 }	
@@ -263,9 +266,9 @@ JSBool _xcNodeAnchorX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsv
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.anchor.x, rval);
+	return JS_NewNumberValue(cx, ((CCSprite*)internalNode).anchorPoint.x, rval);
 }
 
 JSBool _xcNodeAnchorY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -275,9 +278,9 @@ JSBool _xcNodeAnchorY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsv
 	if (!JS_ConvertArguments(cx, argc, argv, "o", &node))
 			return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	return JS_NewNumberValue(cx, internalNode.anchor.y, rval);
+	return JS_NewNumberValue(cx, ((CCSprite*)internalNode).anchorPoint.y, rval);
 }
 
 JSBool _xcNodeSetAnchorX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -288,9 +291,9 @@ JSBool _xcNodeSetAnchorX(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, 
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newAnchorX))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.anchor.x = newAnchorX;
+	((CCSprite*)internalNode).anchorPoint.x = newAnchorX;
 
 	return JS_TRUE;
 }
@@ -303,9 +306,9 @@ JSBool _xcNodeSetAnchorY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, 
 	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newAnchorY))
 		return JS_FALSE;
 
-	CCNode *internalNode = getInternalNodeFromNode(node);
+	CCNode *internalNode = getInternalNodeFromNode(cx, node);
 
-	internalNode.anchor.y = newAnchorY;
+	((CCSprite*)internalNode).anchorPoint.y = newAnchorY;
 
 	return JS_TRUE;
 }

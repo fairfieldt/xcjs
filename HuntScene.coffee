@@ -3,6 +3,7 @@ class HuntScene extends XCScene
 		super()
 		bg = new XCSpriteNode('background.png', 320, 480)
 		this.addChild(bg)
+		bg.moveTo(0,0)
 		map = new Map()
 		this.addChild(map)
 
