@@ -130,7 +130,7 @@ JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *
 		taps.pop();
 		
 		jsdouble x = t.x;
-		jsdouble y = t.y;
+		jsdouble y = 480 - t.y;
 		jsdouble ox = t.offset_x;
 		jsdouble oy = t.offset_y;
 		jsdouble count = t.tapCount;

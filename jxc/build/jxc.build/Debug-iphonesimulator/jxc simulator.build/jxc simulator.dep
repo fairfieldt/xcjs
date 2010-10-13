@@ -1,7 +1,7 @@
-98f27bd779ad78f75900b9a16a195074 99644156af0fe2f6a084ed72d20d0165 ffffffffffffffffffffffffffffffff 1258 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app
-00000000000000000000000000000000 787e6eafab24ae0ba9cd753646eaebc9 ffffffffffffffffffffffffffffffff 1528 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/HuntScene.js
+98f27bd779ad76f15900b9a16a19506e 99644156af0fe2f6a084ed72d20d0165 ffffffffffffffffffffffffffffffff 1258 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app
+00000000000000000000000000000000 a0d28f288b982aeabecf99824fb2a873 ffffffffffffffffffffffffffffffff 1219 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/DPad.js
 51deed0a9333e93480d2203c32ce6b60 bc3387397daafad7cfe681136f6e0951 ffffffffffffffffffffffffffffffff 32992 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/xc_node-72E41A75.o
-51deed0a932950d380d2203c32ce6078 1bf978d410ea1c6ccd0fd37c402b746b ffffffffffffffffffffffffffffffff 110344 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/xc_helpers.o
+51deed0a93295ed580d2203c32ce6062 1bf978d410ea1c6ccd0fd37c402b746b ffffffffffffffffffffffffffffffff 110392 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/xc_helpers.o
 51deed0ad47bc9d480d2203c32ce7ecf 14d10bbd4e07a27267d0b1feadb00383 ffffffffffffffffffffffffffffffff 34688 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/xc-5BDBAB57.o
 09346b5b6253171f55bd1a79f1796f9c 422c303fd3b828b2795a3803534b9a2d ffffffffffffffffffffffffffffffff 32788 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/RootViewController.o
 51deed0ad63d002980d2203c32cfb97b 8ea87628f9c9cf2a2e28c639b457148a ffffffffffffffffffffffffffffffff 41960 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/GLES-Render.o
@@ -9,7 +9,7 @@
 51deed0ad62a5b4980d2203c32cfe959 c4e24e8c6779229171c187d77476e598 ffffffffffffffffffffffffffffffff 70912 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/jxcAppDelegate.o
 09346b5b28504b4555bd1a79f179574a 135a66e9ceee4c7e1e4052a652313ddb ffffffffffffffffffffffffffffffff 6176 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphonesimulator/jxc simulator.build/Objects-normal/i386/main.o
 00000000000000000000000000000000 a1b30f839e28e30d83627c142423a01a ffffffffffffffffffffffffffffffff 102 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app.dSYM
-90d4d29b18b2e0b0b5b33252addc1d79 d33c5bc1fcf4a0bd96827c53d6b4a973 ffffffffffffffffffffffffffffffff 2751048 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/jxc
+90d4d29b18b2eeb6b5b33252addc1d63 d33c5bc1fcf4a0bd96827c53d6b4a973 ffffffffffffffffffffffffffffffff 2751048 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/jxc
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 9298020 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-ankghbheqgnexqdckyagqpzxdcog/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 8581248 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-btldifjbmeaoxegcikohqvtqhyww/jxc_Prefix.pch.gch
 00000000000000000000000000000000 64981acc0daa604e64cf77ee45beeadc ffffffffffffffffffffffffffffffff 93 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/walltile.png
@@ -38,8 +38,8 @@ ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffff
 00000000000000000000000000000000 d57dcddfb0c969d1ed47b2b05ba39dc4 ffffffffffffffffffffffffffffffff 3972 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/map.js
 00000000000000000000000000000000 cfd8d10ae5b730e4ee42263aaf6ac46a ffffffffffffffffffffffffffffffff 2261 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/Man.js
 00000000000000000000000000000000 f9cc0a1d6d17d6d235fd4d8d058a9a87 ffffffffffffffffffffffffffffffff 72174 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/jquery-1.4.2.min.js
+00000000000000000000000000000000 787e6eafab24ae0ba9cd753646eaebc9 ffffffffffffffffffffffffffffffff 1994 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/HuntScene.js
 00000000000000000000000000000000 0ba3041345f2c896410ee4d45df9b5aa ffffffffffffffffffffffffffffffff 975 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/GridEntity.js
-00000000000000000000000000000000 a0d28f288b982aeabecf99824fb2a873 ffffffffffffffffffffffffffffffff 695 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/DPad.js
 00000000000000000000000000000000 3e66949097054171bcd04f6494836a14 ffffffffffffffffffffffffffffffff 2817 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/Alien.js
 00000000000000000000000000000000 622b50f3b2124107c85e0bc257cadd01 ffffffffffffffffffffffffffffffff 8 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/PkgInfo
 00000000000000000000000000000000 622b50f3b2124107c85e0bc257cadd01 ffffffffffffffffffffffffffffffff 598 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphonesimulator/jxc.app/Info.plist
