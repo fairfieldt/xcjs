@@ -310,4 +310,18 @@ JSBool _xcNodeSetAnchorY(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, 
 	return JS_TRUE;
 }
 
-//TODO: Implement set text
+JSBool _xcTextSetText(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+	jsval node;
+	double newAnchorY;
+
+	if (!JS_ConvertArguments(cx, argc, argv, "od", &node, &newAnchorY))
+		return JS_FALSE;
+
+	CCNode *internalNode = getInternalNodeFromNode(node);
+
+	internalNode.anchor.y = newAnchorY;
+
+	return JS_TRUE;
+}
+

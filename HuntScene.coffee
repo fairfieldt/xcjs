@@ -24,14 +24,30 @@ class HuntScene extends XCScene
 
 		xc.addEventListener('keyDown', man)
 		
-		man.tapDown = (event) ->
-			console.log(event.x + ' ' + event.y)
-			this.gridMove(1, 0)
-		xc.addEventListener('tapDown', man)
 
 		alien = new Alien(map, 10, 15)
 		
 		dpad = new DPad()
+
+		dpad.tapDown = (event) ->
+			x = event.x
+			y = event.y
+			direction = this.tapLocation(x, y)
+			if direction == "left"
+				if man.movedBlocks("left")
+					man.gridMove(-1, 0)
+			else if direction == "right"
+				if man.movedBlocks("right")
+					man.gridMove(1, 0)
+			else if direction == "up"
+				if man.movedBlocks("up")
+					man.gridMove(0, -1)
+			else if direction == "down"
+				if man.movedBlocks("down")
+					man.gridMove(0, 1)
+			
+		xc.addEventListener('tapDown', dpad)
+
 		this.addChild(dpad)
 		dpad.moveTo(320-96, 384)
 		
