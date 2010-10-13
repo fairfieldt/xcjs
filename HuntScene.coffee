@@ -33,22 +33,19 @@ class HuntScene extends XCScene
 		this.addChild(dpad)
 		dpad.moveTo(320-96, 384)
 		
+		dpad.tapUp = (event) ->
+			man.moveDirection = 'none'
 		dpad.tapDown = (event) ->
+			this.handleTap(event)
+		dpad.tapMoved = (event) ->
+			this.handleTap(event)
+		dpad.handleTap = (event) ->
 			direction = this.directionPushed(event.x, event.y)
-			console.log('direction: ' + direction)
-			if direction == "left"
-				if man.movedBlocks("left")
-					man.gridMove(-1, 0)
-			else if direction == "right"
-				if man.movedBlocks("right")
-					man.gridMove(1, 0)
-			else if direction == "up"
-				if man.movedBlocks("up")
-					man.gridMove(0, -1)
-			else if direction == "down"
-				if man.movedBlocks("down")
-					man.gridMove(0, 1)
+			man.moveDirection = direction
+		
+		xc.addEventListener('tapUp', dpad)
 		xc.addEventListener('tapDown', dpad)
+		xc.addEventListener('tapMoved', dpad)
 		
 		update: (delta) ->
 			console.log('updating')
