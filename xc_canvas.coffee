@@ -3,7 +3,7 @@ oldX = 0
 oldY = 0
 tapDown = false
 
-_xcloadSprite = (imageName) ->
+_xcLoadSprite = (imageName) ->
 	sprite = new Image()
 	sprite.src = imageName
 	return sprite
@@ -11,14 +11,14 @@ _xcloadSprite = (imageName) ->
 _xcLoadText = (node) ->
 	return null
 	
-_draw = (node) ->
+_xcDraw = (node) ->
 
 	if node.visible
 		context.save()
 		if node.drawable
 			node.draw()
 		for child in node.children
-			_draw(child)
+			_xcDraw(child)
 		context.restore()	
 
 
@@ -66,50 +66,85 @@ _xcHandleKeyUp = (event) ->
 ################# XCNode platform specific implementations #################
 
 _xcNodeX = (node) ->
-	node.X
+	node._x
 
 _xcNodeY = (node) ->
-	node.y
-	
+	node._y
+
+_xcNodeSetX = (node, newX) ->
+	node._x = newX
+
+
+_xcNodeSetY = (node, newY) ->
+	node._y = newY
+
+
 _xcNodeColor = (node) ->
-	node.color
+	node._color
+
+_xcNodeSetColor = (node, newColor) ->
+	node._color = newColor
 
 _xcNodeScaleX = (node) ->
-	node.scaleX
+	node._scaleX
 	
 _xcNodeScaleY = (node) ->
-	node.scaleY
+	node._scaleY
+
+_xcNodeSetScaleX = (node, newScaleX) ->
+	node._scaleX = newScaleX
+
+_xcNodeSetScaleY = (node, newScaleY) ->
+	node._scaleY = newScaleY
+
 
 _xcNodeRotation = (node) ->
-	node.rotation
+	node._rotation
+
+_xcNodeSetRotation = (node, newRotation) ->
+	node._rotation = newRotation
 	
 _xcNodeOpacity = (node) ->
-	node.opacity
+	node._opacity
+
+_xcNodeSetOpacity = (node, newOpacity) ->
+	node._opacity = newOpacity
 	
 _xcNodeAnchorX = (node) -> 
-	node.anchorX
+	node._anchorX
 
 _xcNodeAnchorY = (node) -> 
-	node.anchorY
+	node._anchorY
+
+_xcNodeSetAnchorX = (node, newAnchorX) ->
+	node._anchorX = newAnchorX
+
+_xcNodeSetAnchorY = (node, newAnchorY) ->
+	node._anchorY = newAnchorY
+
+_xcTextSetText = (node, newText) ->
+	node.text = newText
+
+
 	
 _xcSpriteDraw = (node) ->
-	context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY))
+	context.translate(node.X() - (node.X() * node.anchorX()), node.Y() - (node.Y() * node.anchorY()))
 	
-	context.rotate(node.rotation * Math.PI / 180)
-	context.globalAlpha = node.opacity
+	context.rotate(node.rotation() * Math.PI / 180)
+	context.globalAlpha = node.opacity()
 
-	context.drawImage(node.sprite, 0, 0, node.width, node.height, 0, 0, node.width * node.scaleX, node.height * node.scaleY)
+	context.drawImage(node.sprite, 0, 0, node.width, node.height, 0, 0, node.width * node.scaleX(), node.height * node.scaleY())
 	
 _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
 	context.font = node.font
 
-	context.translate(node.x - (node.x * node.anchorX), node.y - (node.x * node.anchorY))
-	context.rotate(node.rotation * Math.PI / 180)
-	context.scale(node.scaleX, node.scaleY)
-	context.globalAlpha = node.opacity
+	context.translate(node.X() - (node.X() * node.anchorX()), node.Y() - (node.Y() * node.anchorY()))
+	context.rotate(node.rotation() * Math.PI / 180)
+	context.scale(node.scaleX(), node.scaleY())
+	context.globalAlpha = node.opacity()
 	
-	context.fillText(node.text, 0, 0)
+	context.fillText(node.text(), 0, 0)
 
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')
@@ -134,9 +169,12 @@ xc_init = ->
 		delta = (currentTime - previousTime) / 1000
 		previousTime = currentTime
 		currentScene = xc.getCurrentScene()
-		currentScene.update(delta)
+		
+		for action in xc.actions
+			action.tick(delta)
+			
 		clear()
-		xc.draw(currentScene)
+		_xcDraw(currentScene)
 
 	clear = -> context.clearRect(0, 0, 640, 480)
 

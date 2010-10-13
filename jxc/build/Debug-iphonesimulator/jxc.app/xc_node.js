@@ -9,73 +9,75 @@ var __extends = function(child, parent) {
   };
 XCNode = function() {
   this.visible = true;
-  this.x = 0;
-  this.y = 0;
-  this.z = 0;
-  this.scaleX = 1.0;
-  this.scaleY = 1.0;
-  this.rotation = 0.0;
-  this.opacity = 1.0;
-  this.anchorX = 0.0;
-  this.anchorY = 0.0;
+  this._x = 0;
+  this._y = 0;
+  this._z = 0;
+  this._scaleX = 1.0;
+  this._scaleY = 1.0;
+  this._rotation = 0.0;
+  this._opacity = 1.0;
+  this._anchorX = 0.0;
+  this._anchorY = 0.0;
+  this.setAnchorX(0.0);
+  this.setAnchorY(0.0);
   this.parent = null;
-  this.color = new XCColor(0, 0, 0);
+  this._color = new XCColor(0, 0, 0);
   this.children = new Array();
-  this.actions = [];
   return this;
 };
-XCNode.prototype.update = function(delta) {
-  var _i, _len, _ref, _result, action, child;
-  this.onUpdate(delta);
-  _ref = this.actions;
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    action = _ref[_i];
-    action.tick(delta);
-  }
-  _result = []; _ref = this.children;
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    child = _ref[_i];
-    _result.push(child.update(delta));
-  }
-  return _result;
-};
-XCNode.prototype.onUpdate = function() {};
 XCNode.prototype.moveBy = function(xOffset, yOffset) {
-  this.x += xOffset;
-  return this.y += yOffset;
+  this.setX(this.X() + xOffset);
+  return this.setY(this.Y() + yOffset);
 };
 XCNode.prototype.moveTo = function(xPosition, yPosition) {
-  this.x = xPosition;
-  return (this.y = yPosition);
+  console.log('and now x is ' + this.X());
+  this.setX(xPosition);
+  this.setY(yPosition);
+  return console.log('and now x is ' + this.X());
 };
-XCNode.prototype.x = function() {
+XCNode.prototype.X = function() {
   return _xcNodeX(this);
 };
-XCNode.prototype.y = function() {
+XCNode.prototype.Y = function() {
   return _xcNodeY(this);
+};
+XCNode.prototype.setX = function(newX) {
+  return _xcNodeSetX(this, newX);
+};
+XCNode.prototype.setY = function(newY) {
+  return _xcNodeSetY(this, newY);
 };
 XCNode.prototype.color = function() {
   return _xcNodeColor(this);
 };
+XCNode.prototype.setColor = function(newColor) {
+  return _xcNodeSetColor(this, newColor);
+};
 XCNode.prototype.scaleXBy = function(factor) {
-  return (this.scaleX = this.scaleX * factor);
+  return this.setScaleX(this.scaleX() * factor);
 };
 XCNode.prototype.scaleXTo = function(newScale) {
-  return (this.scaleX = newScale);
+  return this.setScaleX(newScale);
+};
+XCNode.prototype.setScaleX = function(newScaleX) {
+  return _xcNodeSetScaleX(this, newScaleX);
 };
 XCNode.prototype.scaleYBy = function(factor) {
-  return (this.scaleY = this.scaleY * factor);
+  return this.setScaleY(this.scaleY() * factor);
 };
 XCNode.prototype.scaleYTo = function(newScale) {
-  return (this.scaleY = newScale);
+  return this.setScaleY(newScale);
+};
+XCNode.prototype.setScaleY = function(newScaleY) {
+  return _xcNodeSetScaleY(this, newScaleY);
 };
 XCNode.prototype.scaleBy = function(factor) {
-  this.scaleX = this.scaleX * factor;
-  return (this.scaleY = this.scaleY * factor);
+  this.setScaleX(this.scaleX() * factor);
+  return this.setScaleY(this.scaleY() * factor);
 };
 XCNode.prototype.scaleTo = function(newScale) {
-  this.scaleX = newScale;
-  return (this.scaleY = newScale);
+  this.setScaleX(newScale);
+  return this.setScaleY(newScale);
 };
 XCNode.prototype.scaleX = function() {
   return _xcNodeScaleX(this);
@@ -84,34 +86,46 @@ XCNode.prototype.scaleY = function() {
   return _xcNodeScaleY(this);
 };
 XCNode.prototype.rotateBy = function(offset) {
-  return (this.rotation = this.rotation + offset);
+  return this.setRotation(this.rotation() + offset);
 };
 XCNode.prototype.rotateTo = function(newRotation) {
-  return (this.rotation = newRotation);
+  return this.setRotation(newRotation);
 };
 XCNode.prototype.rotation = function() {
   return _xcNodeRotation(this);
 };
+XCNode.prototype.setRotation = function(newRotation) {
+  return _xcNodeSetRotation(this, newRotation);
+};
 XCNode.prototype.fadeTo = function(newOpacity) {
-  return (this.opacity = newOpacity);
+  return this.setOpacity(newOpacity);
 };
 XCNode.prototype.fadeBy = function(opacity) {
-  return (this.opacity = Math.max(this.opacity + newOpacity, 0));
+  return this.setOpacity(Math.max(this.opacity - opacity, 0));
 };
 XCNode.prototype.opacity = function() {
   return _xcNodeOpacity(this);
 };
+XCNode.prototype.setOpacity = function(newOpacity) {
+  return _xcNodeSetOpacity(this, newOpacity);
+};
 XCNode.prototype.setAnchorX = function(anchor) {
-  return (this.anchorX = anchor);
+  return this.setAnchorX(anchor);
 };
 XCNode.prototype.setAnchorY = function(anchor) {
-  return (this.anchorY = anchor);
+  return this.setAnchorY(anchor);
 };
 XCNode.prototype.anchorX = function() {
   return _xcNodeAnchorX(this);
 };
 XCNode.prototype.anchorY = function() {
   return _xcNodeAnchorY(this);
+};
+XCNode.prototype.setAnchorX = function(newAnchorX) {
+  return _xcNodeSetAnchorX(this, newAnchorX);
+};
+XCNode.prototype.setAnchorY = function(newAnchorY) {
+  return _xcNodeSetAnchorY(this, newAnchorY);
 };
 XCNode.prototype.addChild = function(child) {
   this.children.push(child);
@@ -127,16 +141,16 @@ XCNode.prototype.removeChild = function(child) {
 };
 XCNode.prototype.runAction = function(action) {
   action.owner = this;
-  return this.actions.push(action);
+  return xc.actions.push(action);
 };
 XCNode.prototype.removeAction = function(action) {
   var pos;
-  pos = this.actions.indexOf(action);
-  return pos !== -1 ? (this.actions = this.actions.slice(0, pos).concat(this.actions.slice(pos + 1, this.actions.length))) : null;
+  pos = xc.actions.indexOf(action);
+  return pos !== -1 ? (xc.actions = xc.actions.slice(0, pos).concat(xc.actions.slice(pos + 1, xc.actions.length))) : null;
 };
-XCSpriteNode = function(imageName, _arg, _arg2) {
-  this.height = _arg2;
-  this.width = _arg;
+XCSpriteNode = function(imageName, _a, _b) {
+  this.height = _b;
+  this.width = _a;
   this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
   this.sprite = _xcLoadSprite(imageName);
@@ -153,16 +167,19 @@ XCScene = function() {
 };
 __extends(XCScene, XCNode);
 XCScene.prototype.close = function() {};
-XCTextNode = function(_arg, _arg2, _arg3) {
-  this.fontSize = _arg3;
-  this.fontName = _arg2;
-  this.text = _arg;
+XCTextNode = function(_a, _b, _c) {
+  this.fontSize = _c;
+  this.fontName = _b;
+  this.text = _a;
   this.drawable = true;
   this.ref = _xcLoadText(this);
   XCTextNode.__super__.constructor.call(this);
   return this;
 };
 __extends(XCTextNode, XCNode);
+XCTextNode.prototype.setText = function(newText) {
+  return _xcTextSetText(this, newText);
+};
 XCTextNode.prototype.draw = function() {
   return _xcTextDraw(this);
 };

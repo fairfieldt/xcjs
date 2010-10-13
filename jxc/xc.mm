@@ -17,6 +17,7 @@
 #import "jsapi.h"
 
 #import "xc_helpers.h"
+#import "xc_node.h"
 
 id the_scene;
 JSRuntime *rt;
@@ -40,15 +41,6 @@ void reportError(JSContext *cx, const char *message, JSErrorReport *report)
             message);
 }
 
-void tick(ccTime delta)
-{
-	jsdouble d = delta;
-	jsval rval;
-	jsval argv;
-	JS_NewNumberValue(cx, d, &argv);
-	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_update", 1, &argv, &rval);
-}
-
 static JSFunctionSpec global_functions[] = 
 {
 
@@ -58,7 +50,25 @@ static JSFunctionSpec global_functions[] =
 	JS_FS("xc_get_sprite_height", xc_get_sprite_height, 1, 0, 0),
 	JS_FS("xc_get_tap", xc_get_tap, 0, 0, 0),
 	JS_FS("xc_print", xc_print, 1, 0, 0),
-		JS_FS("xc_gc", xc_gc, 0, 0, 0),
+	JS_FS("xc_gc", xc_gc, 0, 0, 0),
+	JS_FS("_xcNodeX", _xcNodeX, 1, 0, 0),
+	JS_FS("_xcNodeY", _xcNodeY, 1, 0, 0),
+	JS_FS("_xcNodeSetX", _xcNodeSetX, 2, 0, 0),
+	JS_FS("_xcNodeSetY", _xcNodeSetY, 2, 0, 0),
+	JS_FS("_xcNodeColor", _xcNodeColor, 1, 0, 0),
+	JS_FS("_xcNodeSetColor", _xcNodeSetColor, 2, 0, 0),
+	JS_FS("_xcNodeScaleX", _xcNodeScaleX, 1, 0, 0),
+	JS_FS("_xcNodeScaleY", _xcNodeScaleY, 1, 0, 0),
+	JS_FS("_xcNodeSetScaleX", _xcNodeSetScaleX, 2, 0, 0),
+	JS_FS("_xcNodeSetScaleY", _xcNodeSetScaleY, 2, 0, 0),
+	JS_FS("_xcNodeRotation", _xcNodeRotation, 1, 0, 0),
+	JS_FS("_xcNodeSetRotation", _xcNodeSetRotation, 2, 0, 0),
+	JS_FS("_xcNodeOpacity", _xcNodeOpacity, 1, 0, 0),
+	JS_FS("_xcNodeSetOpacity", _xcNodeSetOpacity, 2, 0, 0),
+	JS_FS("_xcNodeAnchorX", _xcNodeAnchorX, 1, 0, 0),
+	JS_FS("_xcNodeAnchorY", _xcNodeAnchorY, 1, 0, 0),
+	JS_FS("_xcNodeSetAnchorX", _xcNodeSetAnchorX, 2, 0, 0),
+	JS_FS("_xcNodeSetAnchorY", _xcNodeSetAnchorY, 2, 0, 0),
 	JS_FS_END
 
 };
@@ -94,7 +104,6 @@ int run_js()
 	jsval rval;
 	//JSBool ok;
 	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	NSArray *dirContents = [[NSFileManager defaultManager] directoryContentsAtPath:bundleRoot];
 	
 	JSScript *script = JS_CompileFile(cx, global,[[bundleRoot stringByAppendingString:@"/xc_node.js"] cString]);
 	JS_ExecuteScript(cx, global, script, &rval);
@@ -128,11 +137,7 @@ int run_js()
 	JS_ExecuteScript(cx, global, script, &rval);
 	
 	JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "xc_init", 0, NULL, &rval);
-	
 
-	
-
-	
 	return 0;
 }
 

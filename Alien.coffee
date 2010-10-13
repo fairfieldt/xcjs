@@ -40,8 +40,6 @@ class Alien extends GridEntity
 		if not moved and not @alseep
 			console.log('asleep')
 			@asleep = true
-			s = XCScaleTo(1.0, .8)
-			this.runAction(s)
 		
 	getOrderedMoves: (x, y) ->
 		if (x == -1 and y == -1)

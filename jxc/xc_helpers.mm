@@ -23,8 +23,11 @@ JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 	
 	if (!JS_ConvertArguments(cx, argc, argv, "si", &file_name, &z))
 		return JS_FALSE;
-	
-	sprite = [CCSprite spriteWithFile:[NSString stringWithCString:file_name]];
+	NSString *name = [NSString stringWithCString:file_name];
+
+	sprite = [CCSprite spriteWithFile:name];
+	sprite.anchorPoint = ccp(0, 1);
+
 	[the_scene addChild:sprite z:z tag:currentId];
 	
 	jsdouble jid = currentId++;
@@ -47,7 +50,7 @@ JSBool xc_update_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, j
 	if (!JS_ConvertArguments(cx, argc, argv, "udddddddd", &id, &x, &y, &scaleX, &scaleY, &rotation, &opacity, &anchorX, &anchorY))
 		return JS_FALSE;
 	
-	sprite = [the_scene getChildByTag:id];
+	sprite = (CCSprite*)[the_scene getChildByTag:id];
 	
 	[sprite setPosition:ccp(x, 480-y)];
 	sprite.scaleX = scaleX;
@@ -127,20 +130,36 @@ JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *
 		taps.pop();
 		
 		jsdouble x = t.x;
-		jsdouble y = t.y;
+		jsdouble y = 480 - t.y;
 		jsdouble ox = t.offset_x;
 		jsdouble oy = t.offset_y;
 		jsdouble count = t.tapCount;
-		jsdouble type = t.type;
+		const char *type;
+		if (t.type == 0)
+		{
+			type = "tapDown";
+		}
+		else if (t.type == 1)
+		{
+			type = "tapUp";
+		}
+		else if (t.type == 2)
+		{
+			type = "tapMoved";
+		}
+		else
+		{
+			type = "undefined";
+		}
 		
-		jsval xval, yval, oxval, oyval, countval, typeval;
+		jsval xval, yval, oxval, oyval, countval;
 		
 		JS_NewNumberValue(cx, x, &xval);
 		JS_NewNumberValue(cx, y, &yval);
 		JS_NewNumberValue(cx, ox, &oxval);
 		JS_NewNumberValue(cx, oy, &oyval);
 		JS_NewNumberValue(cx, count, &countval);
-		JS_NewNumberValue(cx, type, &typeval);
+		JSString *typeval = JS_NewString(cx, (char*)type, strlen(type));
 
 		
 		JSObject *tap = JS_NewObject(cx, NULL, NULL, NULL);
@@ -150,13 +169,13 @@ JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *
 		JS_DefineProperty(cx, tap, "moveX", oxval, NULL, NULL, 0);
 		JS_DefineProperty(cx, tap, "moveY", oyval, NULL, NULL, 0);
 		JS_DefineProperty(cx, tap, "number", countval, NULL, NULL, 0);
-		JS_DefineProperty(cx, tap, "type", typeval, NULL, NULL, 0);
+		JS_DefineProperty(cx, tap, "name", STRING_TO_JSVAL(typeval), NULL, NULL, 0);
 
 		ret = OBJECT_TO_JSVAL(tap);
 	}
 	else
 	{
-		ret = JSVAL_VOID;
+		ret = JSVAL_NULL;
 	}
 	*rval = ret;
 	return JS_TRUE;
