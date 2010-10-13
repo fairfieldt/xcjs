@@ -13,15 +13,12 @@ class XCNode
 		@parent = null
 		@_color = new XCColor(0, 0, 0)
 		@children = new Array() 
-		@dirty = true
 
 	moveBy: (xOffset, yOffset) ->
-		@dirty = true
 		this.setX(this.X() + xOffset)
 		this.setY(this.Y() + yOffset)
 
 	moveTo: (xPosition, yPosition) ->
-		@dirty = true
 		this.setX(xPosition)
 		this.setY(yPosition)
 		
@@ -43,34 +40,28 @@ class XCNode
 		_xcNodeSetColor(this, newColor)
 
 	scaleXBy: (factor) ->
-		@dirty = true
 		this.setScaleX(this.scaleX() * factor)
 
 	scaleXTo: (newScale) ->
-		@dirty = true
 		this.setScaleX(newScale)	
 
 	setScaleX: (newScaleX) ->
 		_xcNodeSetScaleX(this, newScaleX)
 
 	scaleYBy: (factor) ->
-		@dirty = true
 		this.setScaleY(this.scaleY() * factor)
 
 	scaleYTo: (newScale) ->
-		@dirty = true
 		this.setScaleY(newScale)
 
 	setScaleY: (newScaleY) ->
 		_xcNodeSetScaleY(this, newScaleY)
 
 	scaleBy: (factor) ->
-		@dirty = true
 		this.setScaleX(this.scaleX() * factor)
 		this.setScaleY(this.scaleY() * factor)
 
 	scaleTo: (newScale) ->
-		@dirty = true
 		this.setScaleX(newScale)
 		this.setScaleY(newScale)
 		
@@ -81,11 +72,9 @@ class XCNode
 		_xcNodeScaleY(this)
 		
 	rotateBy: (offset) ->
-		@dirty = true
 		this.setRotation(this.rotation() + offset)
 
 	rotateTo: (newRotation) ->
-		@dirty = true
 		this.setRotation(newRotation)
 	
 	rotation: ->
@@ -95,11 +84,9 @@ class XCNode
 		_xcNodeSetRotation(this, newRotation)
 		
 	fadeTo: (newOpacity) ->
-		@dirty = true
 		this.setOpacity(newOpacity)
 
 	fadeBy: (opacity) ->
-		@dirty = true
 		this.setOpacity(Math.max(this.opacity-opacity, 0))
 
 	opacity: -> _xcNodeOpacity(this)
@@ -108,11 +95,9 @@ class XCNode
 		_xcNodeSetOpacity(this, newOpacity)
 
 	setAnchorX: (anchor) ->
-		@dirty = true
 		this.setAnchorX(anchor)
 
 	setAnchorY: (anchor) ->
-		@dirty = true
 		this.setAnchorY(anchor)
 
 	anchorX: ->
@@ -156,7 +141,6 @@ class XCSpriteNode extends XCNode
 
 	draw: ->
 		_xcSpriteDraw(this)
-		@dirty = false
 		
 class XCScene extends XCNode
 	constructor: ->
@@ -168,18 +152,15 @@ class XCScene extends XCNode
 class XCTextNode extends XCNode
 	constructor: (@text, @fontName, @fontSize) ->
 		@drawable = true
-		
 		@ref = _xcLoadText(this)
 		
 		super()
 
 	setText: (newText) ->
-		@dirty = true
 		_xcTextSetText(this, newText)		
 		
 	draw: ->
 		_xcTextDraw(this)
-		@dirty = false 
 
 class XCLayer extends XCNode
 	constructor: ->
