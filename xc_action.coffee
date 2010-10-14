@@ -90,7 +90,7 @@ class XCRotateTo extends XCRotateAction
 
 	tick: (dt) ->
 		if @firstTick
-			@angle -= @owner.rotation
+			@angle -= @owner.rotation()
 			@stepAngle = @angle / @duration
 			@positiveRotation = @angle > 0
 			@firstTick = false

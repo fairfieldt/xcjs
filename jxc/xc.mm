@@ -17,6 +17,7 @@
 #import "jsapi.h"
 
 #import "xc_helpers.h"
+#import "xc_node.h"
 
 id the_scene;
 JSRuntime *rt;
@@ -49,7 +50,7 @@ static JSFunctionSpec global_functions[] =
 	JS_FS("xc_get_sprite_height", xc_get_sprite_height, 1, 0, 0),
 	JS_FS("xc_get_tap", xc_get_tap, 0, 0, 0),
 	JS_FS("xc_print", xc_print, 1, 0, 0),
-		JS_FS("xc_gc", xc_gc, 0, 0, 0),
+	JS_FS("xc_gc", xc_gc, 0, 0, 0),
 	JS_FS("_xcNodeX", _xcNodeX, 1, 0, 0),
 	JS_FS("_xcNodeY", _xcNodeY, 1, 0, 0),
 	JS_FS("_xcNodeSetX", _xcNodeSetX, 2, 0, 0),

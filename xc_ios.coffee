@@ -46,7 +46,7 @@ _xcHandleKeyUp = (event) ->
 	xc.dispatchEvent(e)
 
 ################# XCNode platform specific implementations #################
-
+############################ are now in obj-c code##########################
 
 	
 _xcTextDraw = (node) ->
@@ -70,15 +70,13 @@ xc_update = (delta) ->
 			_xcHandleMouseDown(tapEvent)
 		else if tapEvent.name == 'tapMoved'
 			_xcHandleMouseMoved(tapEvent)
-		else if tapEvent.tname == 'tapUp'
+		else if tapEvent.name == 'tapUp'
 			_xcHandleMouseUp(tapEvent)
 		tapEvent = xc_get_tap()
 	
 	for action in xc.actions	
 		action.tick(delta)
-	console.log("draw batch start")
-	_xcDraw(currentScene)
-	console.log("draw batch end")
+
 	if gcCounter++ > 30
 		xc_gc()
 

@@ -3,6 +3,7 @@ class HuntScene extends XCScene
 		super()
 		bg = new XCSpriteNode('background.png', 320, 480)
 		this.addChild(bg)
+		bg.moveTo(0,0)
 		map = new Map()
 		this.addChild(map)
 
@@ -24,6 +25,10 @@ class HuntScene extends XCScene
 
 		xc.addEventListener('keyDown', man)
 		
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f24b765d1ab9aa35dbdd7e9498e1a69b369ec4b
 
 		alien = new Alien(map, 10, 15)
 		
@@ -50,6 +55,20 @@ class HuntScene extends XCScene
 
 		this.addChild(dpad)
 		dpad.moveTo(320-96, 384)
+		
+		dpad.tapUp = (event) ->
+			man.moveDirection = 'none'
+		dpad.tapDown = (event) ->
+			this.handleTap(event)
+		dpad.tapMoved = (event) ->
+			this.handleTap(event)
+		dpad.handleTap = (event) ->
+			direction = this.directionPushed(event.x, event.y)
+			man.moveDirection = direction
+		
+		xc.addEventListener('tapUp', dpad)
+		xc.addEventListener('tapDown', dpad)
+		xc.addEventListener('tapMoved', dpad)
 		
 		update: (delta) ->
 			console.log('updating')

@@ -10,6 +10,8 @@ class XCNode
 		@_opacity = 1.0
 		@_anchorX = 0.0
 		@_anchorY = 0.0
+		this.setAnchorX(0.0)
+		this.setAnchorY(0.0)
 		@parent = null
 		@_color = new XCColor(0, 0, 0)
 		@children = new Array() 
@@ -19,8 +21,11 @@ class XCNode
 		this.setY(this.Y() + yOffset)
 
 	moveTo: (xPosition, yPosition) ->
+		console.log('and now x is ' + this.X())
 		this.setX(xPosition)
 		this.setY(yPosition)
+		console.log('and now x is ' + this.X())
+		
 		
 	X: ->
 		return _xcNodeX(this)

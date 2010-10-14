@@ -1,6 +1,18 @@
 class Man extends GridEntity
 	constructor: (map, x, y) ->
 		super('dude.png', map, "$", x, y)
+		@direction = {'up': [-0,  -1], down: [0, 1], 'left': [-1, 0], 'right': [1,0]}
+		@moveDirection = 'none'
+		
+		moveAction = new XCAction('ManMoveAction')
+		moveAction.delay = 0
+		moveAction.tick = (dt) ->
+			@delay -= dt
+			if @owner.moveDir != 'none' and @delay <= 0
+				if @owner.movedBlocks(@owner.moveDirection)
+					@owner.gridMove(@owner.direction[@owner.moveDirection][0], @owner.direction[@owner.moveDirection][1])
+					@delay = .2
+		this.runAction(moveAction)
 		
 	movedBlocks: (direction) ->
 		if direction == "left"

@@ -1,15 +1,15 @@
-ffffffffffffffffffffffffffffffff 67ee610bc6885c1c6bccae3c412c946d ffffffffffffffffffffffffffffffff 95884 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/XCScene.o
-ffffffffffffffffffffffffffffffff 876918a532abaeb0e99d1fbb6b625bf8 ffffffffffffffffffffffffffffffff 102 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app.dSYM
-ffffffffffffffffffffffffffffffff f7c5b5ae2d7f269908553ae9489e8487 ffffffffffffffffffffffffffffffff 1428 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app
-ffffffffffffffffffffffffffffffff db21f4460f3bcd848775ff01aaad8c7e ffffffffffffffffffffffffffffffff 2994272 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/jxc
-5c95effca6439ff89b2f44adbb1b30db 69ed176ad06c694f523af220a4c8bfdf ffffffffffffffffffffffffffffffff 307 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/jxc.xcent
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc_node-72E41A75.o
 ffffffffffffffffffffffffffffffff aff3be78c9a545146ff95a36dcb03222 ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc_helpers.o
-ffffffffffffffffffffffffffffffff 7d58aba597c8753b4689118482220d45 ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc.o
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc-5BDBAB57.o
 ce0f367d048d705f6013c8d9f61541bc da7b9b46e55e25fae56e81fec1b1d78c ffffffffffffffffffffffffffffffff 41536 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/RootViewController.o
 d7c7191607ae21cc5624739d92820f99 c83ee95fb91546b2fac4681cdb86d5a5 ffffffffffffffffffffffffffffffff 41072 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/GLES-Render.o
+ffffffffffffffffffffffffffffffff 67ee610bc6885c1c6bccae3c412c946d ffffffffffffffffffffffffffffffff 95884 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/XCScene.o
 d7c7191607ae21b85624739d92825fae 9a424e29fdab029fd4e0c77b20d5bb52 ffffffffffffffffffffffffffffffff 100068 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/jxcAppDelegate.o
 ce0f367d048d7b3e6013c8d9f6156274 78897ec458f8c35ed517c100a33a0924 ffffffffffffffffffffffffffffffff 6668 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/main.o
+ffffffffffffffffffffffffffffffff 876918a532abaeb0e99d1fbb6b625bf8 ffffffffffffffffffffffffffffffff 102 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app.dSYM
+ffffffffffffffffffffffffffffffff f7c5b5ae2d7f269908553ae9489e8487 ffffffffffffffffffffffffffffffff 1360 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7160 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/embedded.mobileprovision
+ffffffffffffffffffffffffffffffff db21f4460f3bcd848775ff01aaad8c7e ffffffffffffffffffffffffffffffff 3010304 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/jxc
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 8319076 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-gscgldewihtnwlazwdvilyirtdkf/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7823488 /var/folders/R4/R4ZWu-tfGjqXMPd5XmWewU+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/jxc_Prefix-cpulfdzspgxqptbrqwtddtetxuwy/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 93 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/walltile.png
@@ -28,24 +28,28 @@ ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffff
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 7188 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/fps_images.png
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 31932 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Default.png
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1734 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/blocks.png
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 5415 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/XCAction.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1190 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 4839 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_node.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 3331 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_ios.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 5502 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_node.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 2110 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_ios.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1442 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_event.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 108 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_color.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 4167 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_canvas.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 5415 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_action.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 5425 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_action.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1190 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc.js
 ffffffffffffffffffffffffffffffff cb7ca9c14f766bda3c2c2ff2c9ff84e8 ffffffffffffffffffffffffffffffff 79 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/test.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 3972 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/map.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 2261 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Man.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1509 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/HuntScene.js
-ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 971 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/GridEntity.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 72174 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/jquery-1.4.2.min.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 1528 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/HuntScene.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 975 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/GridEntity.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 695 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/DPad.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 2817 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Alien.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 485 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/ResourceRules.plist
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 8 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/PkgInfo
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 660 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/Info.plist
+ffffffffffffffffffffffffffffffff 6979fcfe8630bd3744082301a61dee54 ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc_node.o
+ffffffffffffffffffffffffffffffff 7d58aba597c8753b4689118482220d45 ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/Objects-normal/armv6/xc.o
+5c95effca6439ff89b2f44adbb1b30db 69ed176ad06c694f523af220a4c8bfdf ffffffffffffffffffffffffffffffff 307 /Users/fairfieldt/Development/jxc/jxc/build/jxc.build/Debug-iphoneos/jxc simulator.build/jxc.xcent
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 5415 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/XCAction.js
+ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 4167 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/xc_canvas.js
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /var/folders/G2/G2MGP3OJFP4WSvcqKXUDXU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/jxc_Prefix-fshvavqqlarszhbxctgfdirxpyfs/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /var/folders/G2/G2MGP3OJFP4WSvcqKXUDXU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/jxc_Prefix-bwponppnhtampfbqqblklxkvprlo/jxc_Prefix.pch.gch
 ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0 /Users/fairfieldt/Development/jxc/jxc/build/Debug-iphoneos/jxc.app/server.js

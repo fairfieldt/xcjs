@@ -26,6 +26,8 @@ JSBool xc_add_sprite(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsva
 	NSString *name = [NSString stringWithCString:file_name];
 
 	sprite = [CCSprite spriteWithFile:name];
+	sprite.anchorPoint = ccp(0, 1);
+
 	[the_scene addChild:sprite z:z tag:currentId];
 	
 	jsdouble jid = currentId++;
@@ -128,7 +130,7 @@ JSBool xc_get_tap(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *
 		taps.pop();
 		
 		jsdouble x = t.x;
-		jsdouble y = t.y;
+		jsdouble y = 480 - t.y;
 		jsdouble ox = t.offset_x;
 		jsdouble oy = t.offset_y;
 		jsdouble count = t.tapCount;
