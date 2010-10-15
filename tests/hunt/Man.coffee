@@ -1,6 +1,6 @@
 class Man extends GridEntity
 	constructor: (map, x, y) ->
-		super('dude.png', map, "$", x, y)
+		super('resources/dude.png', map, "$", x, y)
 		@direction = {'up': [-0,  -1], down: [0, 1], 'left': [-1, 0], 'right': [1,0]}
 		@moveDirection = 'none'
 		

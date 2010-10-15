@@ -183,5 +183,5 @@ xc_init = ->
 
 
 
-xc = new xc()
-xc_init()
+$(xc = new xc()
+xc_init())

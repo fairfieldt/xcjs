@@ -1,7 +1,7 @@
 class HuntScene extends XCScene
 	constructor: ->
 		super()
-		bg = new XCSpriteNode('background.png', 320, 480)
+		bg = new XCSpriteNode('resources/background.png', 320, 480)
 		this.addChild(bg)
 		bg.moveTo(0,0)
 		map = new Map()
@@ -25,10 +25,6 @@ class HuntScene extends XCScene
 
 		xc.addEventListener('keyDown', man)
 		
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f24b765d1ab9aa35dbdd7e9498e1a69b369ec4b
 
 		alien = new Alien(map, 10, 15)
 		
@@ -71,5 +67,4 @@ class HuntScene extends XCScene
 		xc.addEventListener('tapMoved', dpad)
 		
 		update: (delta) ->
-			console.log('updating')
 			super(delta)

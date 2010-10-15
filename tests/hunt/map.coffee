@@ -47,9 +47,9 @@ class Map extends XCNode
 				fileName = ""
 				if type == "#"
 					console.log('a wall')
-					fileName = "grave.png"
+					fileName = "resources/grave.png"
 				else if type == "@"
-					fileName = "pumpkin.png"
+					fileName = "resources/pumpkin.png"
 				
 				if fileName != ""
 					console.log(x + ' ' + y)

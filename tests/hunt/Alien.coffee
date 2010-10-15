@@ -1,6 +1,6 @@
 class Alien extends GridEntity
 	constructor: (map, x, y) ->
-		super('ghost.png', map, 'x', x, y)
+		super('resources/ghost.png', map, 'x', x, y)
 		@asleep = false
 		moveAction = XCAction("AlienMoveAction")
 		moveAction.et = 0
