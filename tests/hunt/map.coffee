@@ -33,16 +33,16 @@ class Map extends XCNode
 			['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#',],
 			]
 	`
-		width = map.width
-		height = map.height
+		@width = map.width
+		@height = map.height
 		@gridSize = 16
-		console.log(map.tiles.length + " " + map.tiles[0].length)
-		@tiles = new Array(width)
-		for i in [0 .. width]
-			@tiles[i] = new Array(height)
+
+		@tiles = new Array(@width)
+		for i in [0 .. @width]
+			@tiles[i] = new Array(@height)
 			
-		for x in [0 ... width]
-			for y in [0 ... height]
+		for x in [0 ... @width]
+			for y in [0 ... @height]
 				type = map.tiles[y][x]
 				fileName = ""
 				if type == "#"
@@ -61,4 +61,13 @@ class Map extends XCNode
 					
 					
 	moveableBlock: (block) ->  block.type != '#'
-		
+	
+	getFreeSpace: ->
+			x = Math.floor(Math.random() * @width)
+			y = Math.floor(Math.random() * @height)
+			console.log(x + ' ' + y)
+			while @tiles[x][y] != 'empty'
+				x = Math.floor(Math.random() * @width)
+				y = Math.floor(Math.random() * @height)
+				
+			return {x: x, y: y}

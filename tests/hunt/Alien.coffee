@@ -2,7 +2,7 @@ class Alien extends GridEntity
 	constructor: (map, x, y) ->
 		super('resources/ghost.png', map, 'x', x, y)
 		@asleep = false
-		moveAction = XCAction("AlienMoveAction")
+		moveAction = new XCAction("AlienMoveAction")
 		moveAction.et = 0
 		moveAction.tick = (dt) ->
 			@et += dt

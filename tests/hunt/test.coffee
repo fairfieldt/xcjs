@@ -1,20 +1,32 @@
 onLoad = ->
 
 	xc.replaceScene(new HuntScene())
-	addTimer(xc.getCurrentScene())
-	addDPad(xc.getCurrentScene())
+	currentScene = xc.getCurrentScene()
+	addTimer(currentScene)
+	addDPad(currentScene)
+	addLifeCounter(currentScene)
 
+
+addLifeCounter = (scene) ->
+	lifeCounter = new LifeCounter(3)
+	lifeCounter.ManDied = (event) ->
+		console.log('man died')
+		this.removeLife()
+		
+	xc.addEventListener('ManDied', lifeCounter)
+	scene.addChild(lifeCounter)
 
 addTimer = (scene) ->
 	timer = new XCTextNode('00:10', 'Arial', 14)
 
 	timerAction = new XCAction("TimerAction")
-	timerAction.time = 45.0
+	timerAction.length = 15
+	timerAction.time = timerAction.length
 	timerAction.tick = (dt) ->
 		@time -= dt
 		if Math.ceil(@time) < 0
-			@time = 10
-		
+			@time = @length
+			xc.dispatchEvent(new XCEvent('TimerEvent'))
 		displayTime = if Math.ceil(@time) >= 10 then Math.ceil(@time) else '0' + Math.ceil(@time)
 		@owner.setText('00:' + displayTime)
 
@@ -25,29 +37,24 @@ addTimer = (scene) ->
 addDPad = (scene) ->
 	dpad = new DPad()
 
-	dpad.tapDown = (event) ->
-		x = event.x
-		y = event.y
-		moveEvent = new XCEvent('moveEvent')
-		moveEvent.x = x
-		moveEvent.y = y
-
-		xc.dispatchEvent(moveEvent)
-		
-	xc.addEventListener('tapDown', dpad)
-
 	scene.addChild(dpad)
 	dpad.moveTo(320-96, 384)
 	
 	dpad.tapUp = (event) ->
-	man.moveDirection = 'none'
+		moveInput = new XCAction('MoveEvent')
+		moveInput.direction = 'none'
+		xc.dispatchEvent(moveInput)
 	dpad.tapDown = (event) ->
 		this.handleTap(event)
 	dpad.tapMoved = (event) ->
 		this.handleTap(event)
 	dpad.handleTap = (event) ->
 		direction = this.directionPushed(event.x, event.y)
-		man.moveDirection = direction
+		
+		moveInput = new XCAction('MoveEvent')
+		moveInput.direction = direction
+		
+		xc.dispatchEvent(moveInput)
 		
 	xc.addEventListener('tapUp', dpad)
 	xc.addEventListener('tapDown', dpad)

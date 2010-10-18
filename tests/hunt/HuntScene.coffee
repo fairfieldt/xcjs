@@ -4,11 +4,11 @@ class HuntScene extends XCSceneNode
 		bg = new XCSpriteNode('resources/background.png', 320, 480)
 		this.addChild(bg)
 		bg.moveTo(0,0)
-		map = new Map()
-		this.addChild(map)
-
-		man = new Man(map, 6, 2)
-		map.man = man
+		@map = new Map()
+		this.addChild(@map)
+		@monsters = []
+		man = new Man(@map, 6, 2)
+		@map.man = man
 		man.keyDown = (event) ->
 			if event.key == 37
 				if man.movedBlocks("left")
@@ -24,8 +24,15 @@ class HuntScene extends XCSceneNode
 					man.gridMove(0, 1)
 
 		xc.addEventListener('keyDown', man)
-		
+		this.spawnMonster()
 
-		alien = new Alien(map, 10, 15)
+		xc.addEventListener("TimerEvent", this)
 		
+	
+	TimerEvent: (event) ->
+		this.spawnMonster()
 
+	spawnMonster: ->
+		coordinates = @map.getFreeSpace()
+		@monsters.push(new Alien(@map, coordinates.x, coordinates.y))
+		

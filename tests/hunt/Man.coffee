@@ -8,13 +8,13 @@ class Man extends GridEntity
 		moveAction.delay = 0
 		moveAction.tick = (dt) ->
 			@delay -= dt
-			if @owner.moveDir != 'none' and @delay <= 0
+			if @owner.moveDirection != 'none' and @delay <= 0
 				if @owner.movedBlocks(@owner.moveDirection)
 					@owner.gridMove(@owner.direction[@owner.moveDirection][0], @owner.direction[@owner.moveDirection][1])
 					@delay = .2
 		this.runAction(moveAction)
 
-		xc.addEventListener('moveEvent', this)
+		xc.addEventListener('MoveEvent', this)
 		
 	movedBlocks: (direction) ->
 		if direction == "left"
@@ -69,21 +69,10 @@ class Man extends GridEntity
 		return true
 		
 	die: ->
-		console.log('I died')
-		this.gridMove(1-@gridX, 1-@gridY)
+		xc.dispatchEvent(new XCEvent('ManDied'))
+		newPos = @map.getFreeSpace()
+		this.gridMove(newPos.x - @gridX, newPos.y - @gridY)
 
-	moveEvent: (event) ->
-		direction = this.tapLocation(event.x, event.y)
-		console.log('a move event!')
-		if direction == "left"
-			if this.movedBlocks("left")
-				this.gridMove(-1, 0)
-		else if direction == "right"
-			if this.movedBlocks("right")
-				this.gridMove(1, 0)
-		else if direction == "up"
-			if this.movedBlocks("up")
-				this.gridMove(0, -1)
-		else if direction == "down"
-			if this.movedBlocks("down")
-				this.gridMove(0, 1)
+	MoveEvent: (event) ->
+		this.moveDirection = event.direction
+		
