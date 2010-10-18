@@ -13,6 +13,8 @@ class Man extends GridEntity
 					@owner.gridMove(@owner.direction[@owner.moveDirection][0], @owner.direction[@owner.moveDirection][1])
 					@delay = .2
 		this.runAction(moveAction)
+
+		xc.addEventListener('moveEvent', this)
 		
 	movedBlocks: (direction) ->
 		if direction == "left"
@@ -69,3 +71,19 @@ class Man extends GridEntity
 	die: ->
 		console.log('I died')
 		this.gridMove(1-@gridX, 1-@gridY)
+
+	moveEvent: (event) ->
+		direction = this.tapLocation(event.x, event.y)
+		console.log('a move event!')
+		if direction == "left"
+			if this.movedBlocks("left")
+				this.gridMove(-1, 0)
+		else if direction == "right"
+			if this.movedBlocks("right")
+				this.gridMove(1, 0)
+		else if direction == "up"
+			if this.movedBlocks("up")
+				this.gridMove(0, -1)
+		else if direction == "down"
+			if this.movedBlocks("down")
+				this.gridMove(0, 1)

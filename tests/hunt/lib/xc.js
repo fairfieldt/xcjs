@@ -1,4 +1,4 @@
-var XCAction, XCColor, XCEvent, XCKeyDownEvent, XCKeyUpEvent, XCLayer, XCMoveAction, XCMoveBy, XCMoveTo, XCNode, XCRotateAction, XCRotateBy, XCRotateTo, XCScaleAction, XCScaleBy, XCScaleTo, XCScene, XCSpriteNode, XCTapDownEvent, XCTapMovedEvent, XCTapUpEvent, XCTextNode, xc;
+var XCAction, XCColor, XCEvent, XCKeyDownEvent, XCKeyUpEvent, XCMoveAction, XCMoveBy, XCMoveTo, XCNode, XCRotateAction, XCRotateBy, XCRotateTo, XCScaleAction, XCScaleBy, XCScaleTo, XCSceneNode, XCSpriteNode, XCTapDownEvent, XCTapMovedEvent, XCTapUpEvent, XCTextNode, xc;
 var __extends = function(child, parent) {
     var ctor = function(){};
     ctor.prototype = parent.prototype;
@@ -7,6 +7,44 @@ var __extends = function(child, parent) {
     if (typeof parent.extended === "function") parent.extended(child);
     child.__super__ = parent.prototype;
   };
+xc = function() {
+  this.scenes = [];
+  this.scenes.push(new XCSceneNode());
+  this.actions = [];
+  return this;
+};
+xc.prototype.addEventListener = function(eventName, listener) {
+  if (!this[eventName]) {
+    this[eventName] = [];
+  }
+  return this[eventName].push(listener);
+};
+xc.prototype.dispatchEvent = function(event) {
+  var _i, _len, _ref, _result, listener;
+  if (typeof (_ref = this[event.name]) !== "undefined" && _ref !== null) {
+    _result = []; _ref = this[event.name];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      listener = _ref[_i];
+      if (listener[event.name](event)) {
+        break;
+      }
+    }
+    return _result;
+  }
+};
+xc.prototype.replaceScene = function(newScene) {
+  this.scenes.pop().close();
+  return this.scenes.push(newScene);
+};
+xc.prototype.pushScene = function(scene) {
+  return scenes.push(scene);
+};
+xc.prototype.popScene = function() {
+  return this.scenes.pop();
+};
+xc.prototype.getCurrentScene = function() {
+  return this.scenes[this.scenes.length - 1];
+};
 XCNode = function() {
   this.visible = true;
   this._x = 0;
@@ -159,33 +197,31 @@ __extends(XCSpriteNode, XCNode);
 XCSpriteNode.prototype.draw = function() {
   return _xcSpriteDraw(this);
 };
-XCScene = function() {
-  XCScene.__super__.constructor.call(this);
-  return this;
-};
-__extends(XCScene, XCNode);
-XCScene.prototype.close = function() {};
 XCTextNode = function(_arg, _arg2, _arg3) {
   this.fontSize = _arg3;
   this.fontName = _arg2;
-  this.text = _arg;
+  this._text = _arg;
   this.drawable = true;
   this.ref = _xcLoadText(this);
   XCTextNode.__super__.constructor.call(this);
   return this;
 };
 __extends(XCTextNode, XCNode);
+XCTextNode.prototype.text = function() {
+  return _xcTextNodeText(this);
+};
 XCTextNode.prototype.setText = function(newText) {
   return _xcTextSetText(this, newText);
 };
 XCTextNode.prototype.draw = function() {
   return _xcTextDraw(this);
 };
-XCLayer = function() {
-  XCLayer.__super__.constructor.call(this);
+XCSceneNode = function() {
+  XCSceneNode.__super__.constructor.call(this);
   return this;
 };
-__extends(XCLayer, XCNode);
+__extends(XCSceneNode, XCNode);
+XCSceneNode.prototype.close = function() {};
 XCEvent = function(_arg) {
   this.name = _arg;
   return this;
@@ -410,48 +446,4 @@ XCScaleBy.prototype.tick = function(dt) {
     this.firstTick = false;
   }
   return XCScaleBy.__super__.tick.call(this, dt);
-};
-xc = function() {
-  this.scenes = [];
-  this.scenes.push(new XCScene());
-  this.actions = [];
-  return this;
-};
-xc.prototype.getSpriteWidth = function(sprite) {
-  return sprite.width;
-};
-xc.prototype.getSpriteHeight = function(sprite) {
-  return sprite.height;
-};
-xc.prototype.addEventListener = function(eventName, listener) {
-  if (!this[eventName]) {
-    this[eventName] = [];
-  }
-  return this[eventName].push(listener);
-};
-xc.prototype.dispatchEvent = function(event) {
-  var _i, _len, _ref, _result, listener;
-  if (typeof (_ref = this[event.name]) !== "undefined" && _ref !== null) {
-    _result = []; _ref = this[event.name];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      listener = _ref[_i];
-      if (listener[event.name](event)) {
-        break;
-      }
-    }
-    return _result;
-  }
-};
-xc.prototype.replaceScene = function(newScene) {
-  this.scenes.pop().close();
-  return this.scenes.push(newScene);
-};
-xc.prototype.pushScene = function(scene) {
-  return scenes.push(scene);
-};
-xc.prototype.popScene = function() {
-  return this.scenes.pop();
-};
-xc.prototype.getCurrentScene = function() {
-  return this.scenes[this.scenes.length - 1];
 };

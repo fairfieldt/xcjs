@@ -1,4 +1,4 @@
-var _xcDraw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadSprite, _xcLoadText, _xcNodeAnchorX, _xcNodeAnchorY, _xcNodeColor, _xcNodeOpacity, _xcNodeRotation, _xcNodeScaleX, _xcNodeScaleY, _xcNodeSetAnchorX, _xcNodeSetAnchorY, _xcNodeSetColor, _xcNodeSetOpacity, _xcNodeSetRotation, _xcNodeSetScaleX, _xcNodeSetScaleY, _xcNodeSetX, _xcNodeSetY, _xcNodeX, _xcNodeY, _xcSpriteDraw, _xcTextDraw, _xcTextSetText, oldX, oldY, sprites, tapDown, xc, xc_init;
+var _xcDraw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadSprite, _xcLoadText, _xcNodeAnchorX, _xcNodeAnchorY, _xcNodeColor, _xcNodeOpacity, _xcNodeRotation, _xcNodeScaleX, _xcNodeScaleY, _xcNodeSetAnchorX, _xcNodeSetAnchorY, _xcNodeSetColor, _xcNodeSetOpacity, _xcNodeSetRotation, _xcNodeSetScaleX, _xcNodeSetScaleY, _xcNodeSetX, _xcNodeSetY, _xcNodeX, _xcNodeY, _xcSpriteDraw, _xcTextDraw, _xcTextNodeText, _xcTextSetText, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
@@ -124,8 +124,11 @@ _xcNodeSetAnchorX = function(node, newAnchorX) {
 _xcNodeSetAnchorY = function(node, newAnchorY) {
   return (node._anchorY = newAnchorY);
 };
+_xcTextNodeText = function(node) {
+  return node._text;
+};
 _xcTextSetText = function(node, newText) {
-  return (node.text = newText);
+  return (node._text = newText);
 };
 _xcSpriteDraw = function(node) {
   context.translate(node.X() - (node.X() * node.anchorX()), node.Y() - (node.Y() * node.anchorY()));

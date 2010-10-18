@@ -122,8 +122,11 @@ _xcNodeSetAnchorX = (node, newAnchorX) ->
 _xcNodeSetAnchorY = (node, newAnchorY) ->
 	node._anchorY = newAnchorY
 
+_xcTextNodeText = (node) ->
+	node._text
+
 _xcTextSetText = (node, newText) ->
-	node.text = newText
+	node._text = newText
 
 
 	

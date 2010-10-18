@@ -202,11 +202,13 @@ class XCSpriteNode extends XCNode
 # and change the text at any time. 
 #########################################################
 class XCTextNode extends XCNode
-	constructor: (@text, @fontName, @fontSize) ->
+	constructor: (@_text, @fontName, @fontSize) ->
 		@drawable = true
 		@ref = _xcLoadText(this)
 		
 		super()
+
+	text: -> _xcTextNodeText(this)
 
 	setText: (newText) ->
 		_xcTextSetText(this, newText)		
@@ -328,6 +330,7 @@ class XCMoveTo extends XCMoveAction
 			@firstTick = false
 			
 		super(dt)
+
 ###################################################
 # An XCMoveBy action moves its owner a specified 
 # amount x,y
