@@ -146,7 +146,7 @@ _xcTextDraw = function(node) {
   return context.fillText(node.text(), 0, 0);
 };
 xc_init = function() {
-  var clear, date, fps, previousTime, update;
+  var clear, date, fps, previousTime, update, wasPaused;
   window.canvas = document.getElementById('gameCanvas');
   window.context = canvas.getContext('2d');
   $(canvas).mousedown(_xcHandleMouseDown);
@@ -157,16 +157,26 @@ xc_init = function() {
   onLoad();
   date = new Date();
   previousTime = date.getTime();
+  wasPaused = false;
   update = function() {
     var _i, _len, _ref, action, currentScene, currentTime, delta;
     currentTime = new Date().getTime();
     delta = (currentTime - previousTime) / 1000;
     previousTime = currentTime;
     currentScene = xc.getCurrentScene();
-    _ref = xc.actions;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      action = _ref[_i];
-      action.tick(delta);
+    if (currentScene.paused()) {
+      wasPaused = true;
+      return null;
+    } else {
+      if (wasPaused) {
+        delta = 0;
+        wasPaused = false;
+      }
+      _ref = xc.actions;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        action = _ref[_i];
+        action.tick(delta);
+      }
     }
     clear();
     return _xcDraw(currentScene);

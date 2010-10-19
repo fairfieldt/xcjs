@@ -222,9 +222,19 @@ class XCTextNode extends XCNode
 #######################################################
 class XCSceneNode extends XCNode
 	constructor: ->
+		@_paused = false
 		super()
 
+	pause: ->
+		@_paused = true
+	
+	paused: -> @_paused
+	
+	resume: ->
+		@_paused = false
+	
 	close: ->
+		
 
 #######################################################
 # XCEvent is the base object for the event system.  

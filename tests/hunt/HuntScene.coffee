@@ -28,10 +28,14 @@ class HuntScene extends XCSceneNode
 
 		xc.addEventListener("TimerEvent", this)
 		
+		xc.addEventListener("tapDown", this)
 	
 	TimerEvent: (event) ->
+		xc.getCurrentScene().pause()
 		this.spawnMonster()
 
+	tapDown: (event) ->
+		xc.getCurrentScene().resume()
 	spawnMonster: ->
 		coordinates = @map.getFreeSpace()
 		@monsters.push(new Alien(@map, coordinates.x, coordinates.y))

@@ -217,10 +217,20 @@ XCTextNode.prototype.draw = function() {
   return _xcTextDraw(this);
 };
 XCSceneNode = function() {
+  this._paused = false;
   XCSceneNode.__super__.constructor.call(this);
   return this;
 };
 __extends(XCSceneNode, XCNode);
+XCSceneNode.prototype.pause = function() {
+  return (this._paused = true);
+};
+XCSceneNode.prototype.paused = function() {
+  return this._paused;
+};
+XCSceneNode.prototype.resume = function() {
+  return (this._paused = false);
+};
 XCSceneNode.prototype.close = function() {};
 XCEvent = function(_arg) {
   this.name = _arg;

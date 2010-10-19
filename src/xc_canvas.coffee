@@ -167,14 +167,23 @@ xc_init = ->
 
 	date = new Date()
 	previousTime = date.getTime()
+	wasPaused = false
+	
 	update =  ->
 		currentTime = new Date().getTime()
 		delta = (currentTime - previousTime) / 1000
 		previousTime = currentTime
 		currentScene = xc.getCurrentScene()
 		
-		for action in xc.actions
-			action.tick(delta)
+		if currentScene.paused()
+			wasPaused = true
+			return
+		else
+			if wasPaused
+				delta = 0
+				wasPaused = false
+			for action in xc.actions
+				action.tick(delta)
 			
 		clear()
 		_xcDraw(currentScene)
