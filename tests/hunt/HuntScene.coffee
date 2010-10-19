@@ -1,5 +1,6 @@
 class HuntScene extends XCSceneNode
 	constructor: ->
+		@i = 1
 		super()
 		bg = new XCSpriteNode('resources/background.png', 320, 480)
 		this.addChild(bg)
@@ -24,19 +25,40 @@ class HuntScene extends XCSceneNode
 					man.gridMove(0, 1)
 
 		xc.addEventListener('keyDown', man)
-		this.spawnMonster()
-
 		xc.addEventListener("TimerEvent", this)
+		xc.addEventListener('GameOver', this)
 		
-		xc.addEventListener("tapDown", this)
+		monsterTick = new XCAction("MonsterTick")
+		
+		monsterTick.et = 0
+		monsterTick.tick = (dt) ->
+			@et += dt
+			if @et >= 1.0
+				xc.dispatchEvent(new XCEvent('MonsterTick'))
+				@et = 0
+		this.runAction(monsterTick)
 	
-	TimerEvent: (event) ->
-		xc.getCurrentScene().pause()
 		this.spawnMonster()
 
-	tapDown: (event) ->
-		xc.getCurrentScene().resume()
+
+	TimerEvent: (event) ->
+		this.spawnMonster()
+		
 	spawnMonster: ->
 		coordinates = @map.getFreeSpace()
-		@monsters.push(new Alien(@map, coordinates.x, coordinates.y))
+		monster = new Alien(@map, coordinates.x, coordinates.y)
+		monster.name = @i++
+		@monsters.push(monster)
 		
+	GameOver: (event) ->
+		xc.getCurrentScene().pause()
+		gameOverMessage = new XCTextNode('Game Over', 'Helvetica', 16)
+		gameOverMessage.setColor(new XCColor(0, 0, 0))
+		gameOverMessage.setAnchorX(.5)
+		gameOverMessage.setAnchorY(.5)
+
+		this.addChild(gameOverMessage)
+		gameOverMessage.moveTo(160, 240)
+
+		
+	

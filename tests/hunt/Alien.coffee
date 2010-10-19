@@ -2,14 +2,9 @@ class Alien extends GridEntity
 	constructor: (map, x, y) ->
 		super('resources/ghost.png', map, 'x', x, y)
 		@asleep = false
-		moveAction = new XCAction("AlienMoveAction")
-		moveAction.et = 0
-		moveAction.tick = (dt) ->
-			@et += dt
-			if @et > 1.0
-				@owner.move()
-				@et = 0
-		this.runAction(moveAction)
+		
+		xc.addEventListener('MonsterTick', this)
+
 	move: ->
 		x = @map.man.gridX - @gridX
 		y = @map.man.gridY - @gridY
@@ -38,7 +33,7 @@ class Alien extends GridEntity
 				break
 		
 		if not moved and not @alseep
-			console.log('asleep')
+			console.log('Monster ' + this.name + ' asleep')
 			@asleep = true
 		
 	getOrderedMoves: (x, y) ->
@@ -70,3 +65,8 @@ class Alien extends GridEntity
 			return true
 		else
 			return false
+			
+	MonsterTick: (event) ->
+		console.log('Monster ' + @name + ' moving!')
+		this.move()
+		return false

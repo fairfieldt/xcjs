@@ -5,6 +5,7 @@ onLoad = ->
 	addTimer(currentScene)
 	addDPad(currentScene)
 	addLifeCounter(currentScene)
+	addScoreCounter(currentScene)
 
 
 addLifeCounter = (scene) ->
@@ -15,6 +16,11 @@ addLifeCounter = (scene) ->
 		
 	xc.addEventListener('ManDied', lifeCounter)
 	scene.addChild(lifeCounter)
+	
+addScoreCounter = (scene) ->
+	scoreCounter = new ScoreCounter()
+	xc.addEventListener('ScoredPoints', scoreCounter)
+	scene.addChild(scoreCounter)
 
 addTimer = (scene) ->
 	timer = new XCTextNode('00:10', 'Arial', 14)
