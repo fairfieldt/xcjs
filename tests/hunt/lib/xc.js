@@ -20,16 +20,16 @@ xc.prototype.addEventListener = function(eventName, listener) {
   return this[eventName].push(listener);
 };
 xc.prototype.dispatchEvent = function(event) {
-  var _i, _len, _ref, _result, listener;
-  if (typeof (_ref = this[event.name]) !== "undefined" && _ref !== null) {
-    _result = []; _ref = this[event.name];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      listener = _ref[_i];
+  var _a, _b, _c, _d, _e, listener;
+  if (typeof (_e = this[event.name]) !== "undefined" && _e !== null) {
+    _a = []; _c = this[event.name];
+    for (_b = 0, _d = _c.length; _b < _d; _b++) {
+      listener = _c[_b];
       if (listener[event.name](event)) {
         break;
       }
     }
-    return _result;
+    return _a;
   }
 };
 xc.prototype.replaceScene = function(newScene) {
@@ -184,9 +184,9 @@ XCNode.prototype.removeAction = function(action) {
   pos = xc.actions.indexOf(action);
   return pos !== -1 ? (xc.actions = xc.actions.slice(0, pos).concat(xc.actions.slice(pos + 1, xc.actions.length))) : null;
 };
-XCSpriteNode = function(imageName, _arg, _arg2) {
-  this.height = _arg2;
-  this.width = _arg;
+XCSpriteNode = function(imageName, _a, _b) {
+  this.height = _b;
+  this.width = _a;
   this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
   this.sprite = _xcLoadSprite(imageName);
@@ -197,10 +197,10 @@ __extends(XCSpriteNode, XCNode);
 XCSpriteNode.prototype.draw = function() {
   return _xcSpriteDraw(this);
 };
-XCTextNode = function(_arg, _arg2, _arg3) {
-  this.fontSize = _arg3;
-  this.fontName = _arg2;
-  this._text = _arg;
+XCTextNode = function(_a, _b, _c) {
+  this.fontSize = _c;
+  this.fontName = _b;
+  this._text = _a;
   this.drawable = true;
   this.ref = _xcLoadText(this);
   XCTextNode.__super__.constructor.call(this);
@@ -232,56 +232,56 @@ XCSceneNode.prototype.resume = function() {
   return (this._paused = false);
 };
 XCSceneNode.prototype.close = function() {};
-XCEvent = function(_arg) {
-  this.name = _arg;
+XCEvent = function(_a) {
+  this.name = _a;
   return this;
 };
-XCTapDownEvent = function(_arg, _arg2, _arg3) {
-  this.tapNumber = _arg3;
-  this.y = _arg2;
-  this.x = _arg;
+XCTapDownEvent = function(_a, _b, _c) {
+  this.tapNumber = _c;
+  this.y = _b;
+  this.x = _a;
   XCTapDownEvent.__super__.constructor.call(this, "tapDown");
   return this;
 };
 __extends(XCTapDownEvent, XCEvent);
-XCTapMovedEvent = function(_arg, _arg2, _arg3, _arg4, _arg5) {
-  this.tapNumber = _arg5;
-  this.moveY = _arg4;
-  this.moveX = _arg3;
-  this.y = _arg2;
-  this.x = _arg;
+XCTapMovedEvent = function(_a, _b, _c, _d, _e) {
+  this.tapNumber = _e;
+  this.moveY = _d;
+  this.moveX = _c;
+  this.y = _b;
+  this.x = _a;
   XCTapMovedEvent.__super__.constructor.call(this, "tapMoved");
   return this;
 };
 __extends(XCTapMovedEvent, XCEvent);
-XCTapUpEvent = function(_arg, _arg2, _arg3) {
-  this.tapNumber = _arg3;
-  this.y = _arg2;
-  this.x = _arg;
+XCTapUpEvent = function(_a, _b, _c) {
+  this.tapNumber = _c;
+  this.y = _b;
+  this.x = _a;
   XCTapUpEvent.__super__.constructor.call(this, "tapUp");
   return this;
 };
 __extends(XCTapUpEvent, XCEvent);
-XCKeyDownEvent = function(_arg) {
-  this.key = _arg;
+XCKeyDownEvent = function(_a) {
+  this.key = _a;
   XCKeyDownEvent.__super__.constructor.call(this, "keyDown");
   return this;
 };
 __extends(XCKeyDownEvent, XCEvent);
-XCKeyUpEvent = function(_arg) {
-  this.key = _arg;
+XCKeyUpEvent = function(_a) {
+  this.key = _a;
   XCKeyUpEvent.__super__.constructor.call(this, "keyUp");
   return this;
 };
 __extends(XCKeyUpEvent, XCEvent);
-XCColor = function(_arg, _arg2, _arg3) {
-  this.b = _arg3;
-  this.g = _arg2;
-  this.r = _arg;
+XCColor = function(_a, _b, _c) {
+  this.b = _c;
+  this.g = _b;
+  this.r = _a;
   return this;
 };
-XCAction = function(_arg) {
-  this.name = _arg;
+XCAction = function(_a) {
+  this.name = _a;
   return this;
 };
 XCAction.prototype.tick = function(dt) {};
@@ -322,10 +322,10 @@ XCMoveAction.prototype.tick = function(dt) {
     return this.owner.moveBy(moveX, moveY);
   }
 };
-XCMoveTo = function(_arg, _arg2, _arg3) {
-  this.y = _arg3;
-  this.x = _arg2;
-  this.duration = _arg;
+XCMoveTo = function(_a, _b, _c) {
+  this.y = _c;
+  this.x = _b;
+  this.duration = _a;
   XCMoveTo.__super__.constructor.call(this, "XCMoveTo");
   this.firstTick = true;
   return this;
@@ -343,10 +343,10 @@ XCMoveTo.prototype.tick = function(dt) {
   }
   return XCMoveTo.__super__.tick.call(this, dt);
 };
-XCMoveBy = function(_arg, _arg2, _arg3) {
-  this.y = _arg3;
-  this.x = _arg2;
-  this.duration = _arg;
+XCMoveBy = function(_a, _b, _c) {
+  this.y = _c;
+  this.x = _b;
+  this.duration = _a;
   XCMoveBy.__super__.constructor.call(this, "XCMoveBy");
   this.stepX = this.x / this.duration;
   this.stepY = this.y / this.duration;
@@ -378,9 +378,9 @@ XCRotateAction.prototype.tick = function(dt) {
   this.angle -= rotation;
   return this.owner.rotateBy(rotation);
 };
-XCRotateTo = function(_arg, _arg2) {
-  this.angle = _arg2;
-  this.duration = _arg;
+XCRotateTo = function(_a, _b) {
+  this.angle = _b;
+  this.duration = _a;
   XCRotateTo.__super__.constructor.call(this, "XCRotateTo");
   this.firstTick = true;
   return this;
@@ -395,9 +395,9 @@ XCRotateTo.prototype.tick = function(dt) {
   }
   return XCRotateTo.__super__.tick.call(this, dt);
 };
-XCRotateBy = function(_arg, _arg2) {
-  this.angle = _arg2;
-  this.duration = _arg;
+XCRotateBy = function(_a, _b) {
+  this.angle = _b;
+  this.duration = _a;
   XCRotateBy.__super__.constructor.call(this, "XCRotateBy");
   this.stepAngle = this.angle / this.duration;
   this.positiveRotation = this.angle > 0;
@@ -427,9 +427,9 @@ XCScaleAction.prototype.tick = function(dt) {
   this.scale -= newScale;
   return this.owner.scaleTo(this.owner.scaleX + newScale);
 };
-XCScaleTo = function(_arg, _arg2) {
-  this.scale = _arg2;
-  this.duration = _arg;
+XCScaleTo = function(_a, _b) {
+  this.scale = _b;
+  this.duration = _a;
   XCScaleTo.__super__.constructor.call(this, "XCScaleTo");
   return this;
 };
@@ -442,9 +442,9 @@ XCScaleTo.prototype.tick = function(dt) {
   }
   return XCScaleTo.__super__.tick.call(this, dt);
 };
-XCScaleBy = function(_arg, _arg2) {
-  this.scale = _arg2;
-  this.duration = _arg;
+XCScaleBy = function(_a, _b) {
+  this.scale = _b;
+  this.duration = _a;
   XCScaleBy.__super__.constructor.call(this, "XCScaleTo");
   return this;
 };
