@@ -27,7 +27,8 @@ class HuntScene extends XCSceneNode
 		xc.addEventListener('keyDown', man)
 		xc.addEventListener("TimerEvent", this)
 		xc.addEventListener('GameOver', this)
-		
+		xc.addEventListener('MonsterSleep', this)
+
 		monsterTick = new XCAction("MonsterTick")
 		
 		monsterTick.et = 0
@@ -59,6 +60,20 @@ class HuntScene extends XCSceneNode
 
 		this.addChild(gameOverMessage)
 		gameOverMessage.moveTo(160, 240)
-
 		
+	MonsterSleep: (event) ->
+		allAsleep = true
+		for monster in @monsters
+			if not monster.asleep
+				allAsleep = false
+				break
+				
+		if allAsleep
+			xc.dispatchEvent(new XCEvent('SpawnMonstersEvent'))
+			for monster in @monsters
+				x = monster.gridX
+				y = monster.gridY
+				@map.removeChild(monster)
+				candy = new GridEntity('resources/candy.png', @map, 'candy', x, y)
+				candy.gridMove(0,0)
 	

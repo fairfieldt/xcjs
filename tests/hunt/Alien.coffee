@@ -33,7 +33,7 @@ class Alien extends GridEntity
 				break
 		
 		if not moved and not @alseep
-			console.log('Monster ' + this.name + ' asleep')
+			xc.dispatchEvent(new XCEvent("MonsterSleep"))
 			@asleep = true
 		
 	getOrderedMoves: (x, y) ->

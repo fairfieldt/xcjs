@@ -23,10 +23,10 @@ addScoreCounter = (scene) ->
 	scene.addChild(scoreCounter)
 
 addTimer = (scene) ->
-	timer = new XCTextNode('00:10', 'Arial', 14)
+	timer = new XCTextNode('00:00', 'Arial', 14)
 
 	timerAction = new XCAction("TimerAction")
-	timerAction.length = 15
+	timerAction.length = 60
 	timerAction.time = timerAction.length
 	timerAction.tick = (dt) ->
 		@time -= dt

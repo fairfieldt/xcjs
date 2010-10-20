@@ -215,6 +215,7 @@ class XCTextNode extends XCNode
 		
 	draw: ->
 		_xcTextDraw(this)
+
 ########################################################
 # XCSceneNode objects are the base on-screen element.  
 # Like a flip chart, they can be pushed, popped and
