@@ -23,22 +23,8 @@ addScoreCounter = (scene) ->
 	scene.addChild(scoreCounter)
 
 addTimer = (scene) ->
-	timer = new XCTextNode('00:00', 'Arial', 14)
-
-	timerAction = new XCAction("TimerAction")
-	timerAction.length = 60
-	timerAction.time = timerAction.length
-	timerAction.tick = (dt) ->
-		@time -= dt
-		if Math.ceil(@time) < 0
-			@time = @length
-			xc.dispatchEvent(new XCEvent('TimerEvent'))
-		displayTime = if Math.ceil(@time) >= 10 then Math.ceil(@time) else '0' + Math.ceil(@time)
-		@owner.setText('00:' + displayTime)
-
+	timer = new Timer(700)
 	scene.addChild(timer)
-	timer.moveTo(10,340)
-	timer.runAction(timerAction)
 
 addDPad = (scene) ->
 	dpad = new DPad()
