@@ -77,7 +77,12 @@ _xcNodeSetX = (node, newX) ->
 
 _xcNodeSetY = (node, newY) ->
 	node._y = newY
-
+	
+_xcNodeLayer = (node) ->
+	node._layer
+	
+_xcNodeSetLayer = (node, newLayer) ->
+	node._layer = newLayer
 
 _xcNodeColor = (node) ->
 	node._color
