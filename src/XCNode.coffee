@@ -7,7 +7,7 @@
 # ###############################################################
 
 class XCNode
-	constructor: ()  ->
+	constructor: ->
 		@visible = true
 		@_x = 0
 		@_y = 0
@@ -18,8 +18,8 @@ class XCNode
 		@_opacity = 1.0
 		@_anchorX = 0.0
 		@_anchorY = 0.0
-		this.setAnchorX(0.0)
-		this.setAnchorY(0.0)
+		#this.setAnchorX(0.0)
+		#this.setAnchorY(0.0)
 		@parent = null
 		@_color = new XCColor(0, 0, 0)
 		@children = new Array() 
@@ -108,12 +108,6 @@ class XCNode
 	setOpacity: (newOpacity) ->
 		_xcNodeSetOpacity(this, newOpacity)
 
-	setAnchorX: (anchor) ->
-		this.setAnchorX(anchor)
-
-	setAnchorY: (anchor) ->
-		this.setAnchorY(anchor)
-
 	anchorX: ->
 		_xcNodeAnchorX(this)
 	
@@ -126,7 +120,14 @@ class XCNode
 	setAnchorY: (newAnchorY) ->
 		_xcNodeSetAnchorY(this, newAnchorY)
 
-
+	visible: ->
+		_xcNodeVisbile(this)
+		
+	hide: ->
+		_xcNodeSetVisible(this, false)
+	
+	show: ->
+		_xcNodeSetVisible(this, true)
 
 	runAction: (action) ->
 		action.owner = this

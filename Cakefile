@@ -39,7 +39,9 @@ run = (args) ->
   proc.on        'exit', (status) -> process.exit(1) if status != 0
 
 
-
+task 'test', 'run the xc test suite', (options) ->
+	concatenate('./tests', './test.coffee', ['./src', './src/compat'])
+	run(['test.coffee'])
 
 task 'build', 'build the xc library - final lib will be in lib/xc.js', (options) ->
 	invoke 'concat'
@@ -85,22 +87,24 @@ findDependencies = (file) ->
 	return dependencies
 
 	
-# Given a path to a directory and, optionally, a list of classes to ignore
-# since they are defined elsewhere, create a list of all files with the
+# Given a path to a directory and, optionally, a list of search directories
+#, create a list of all files with the
 # classes they contain and the classes those classes depend on.
 #	
-mapDependencies = (path, ignoreList) ->
-	files = fs.readdirSync(path)
-	
+mapDependencies = (path, searchDirectories) ->
+	searchDirectories.push(path)
+
+	files = []
+	for dir in searchDirectories
+		files = files.concat(dir + '/' + f for f in fs.readdirSync(dir))
 	fileDefs = []
 	for file in files when /\.coffee$/.test(file)
-		contents = fs.readFileSync(path + '/' +  file).toString()
+		contents = fs.readFileSync(file).toString()
 		classes = findClasses(contents)
 		dependencies = findDependencies(contents)
 		
 		#filter out the dependencies in the same file.
-		falseDeps = classes.concat(ignoreList)
-		dependencies = _.select(dependencies, (d) -> _.indexOf(falseDeps, d) == -1)
+		dependencies = _.select(dependencies, (d) -> _.indexOf(classes, d) == -1)
 
 		fileDef = {name: file, classes: classes, dependencies: dependencies, contents: contents}
 		fileDefs.push(fileDef)
@@ -143,7 +147,7 @@ concatFiles = (fileDefs) ->
 			for dependency in fileDef.dependencies
 				depFileDef = findFileDefByClass(dependency)
 				if depFileDef == null
-				#	console.log("Error: couldn't find needed class: " + dependency)
+					console.log("Error: couldn't find needed class: " + dependency)
 				else
 					nextStack = resolveDependencies(depFileDef)
 					dependenciesStack = if nextStack then nextStack else []
@@ -173,10 +177,9 @@ concatFiles = (fileDefs) ->
 # to, and optionally a list of class names to ignore, 
 # resolve the dependencies and put all classes in one file
 #
-concatenate = (directory, outputName, ignoreList) ->
-	if ignoreList == null then ignoreList = ['']
+concatenate = (directory, outputName, searchDirectories) ->
 
-	deps = mapDependencies(directory, ignoreList)
+	deps = mapDependencies(directory, searchDirectories ? [])
 	output = concatFiles(deps)
 	fs.writeFileSync(outputName, output)
 	
