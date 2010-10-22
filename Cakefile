@@ -36,12 +36,16 @@ require('underscore')
 run = (args) ->
   proc =         spawn 'coffee', args
   proc.stderr.on 'data', (buffer) -> puts buffer.toString()
+  proc.stdout.on 'data', (buffer) -> puts buffer.toString()
   proc.on        'exit', (status) -> process.exit(1) if status != 0
+
+task 'buildtest', 'build the test suite', (options) ->
+	concatenate('./tests', './test.coffee', ['./src', './src/compat'])
 
 
 task 'test', 'run the xc test suite', (options) ->
-	concatenate('./tests', './test.coffee', ['./src', './src/compat'])
-	run(['test.coffee'])
+	invoke 'buildtest'
+	run(['./test.coffee'])
 
 task 'build', 'build the xc library - final lib will be in lib/xc.js', (options) ->
 	invoke 'concat'
@@ -82,7 +86,6 @@ findDependencies = (file) ->
 		
 	directiveRegex = /#=\s*require\s+([^\s]*)/g
 	while (result = directiveRegex.exec(file)) != null
-		console.log(result[1])
 		dependencies.push(result[1])
 	return dependencies
 
@@ -117,10 +120,11 @@ mapDependencies = (path, searchDirectories) ->
 # If it doesn't have any it's fit to go on the list.  If it does, find the file(s)
 # that contain the classes dependencies.  These must go first in the hierarchy.
 #	
-concatFiles = (fileDefs) ->	
+concatFiles = (sourceFiles, fileDefs) ->	
 
 	usedFiles = []
 	allFileDefs = fileDefs.slice(0)
+	sourceFileDefs = fd for fd in fileDefs when fd.name in sourceFiles
 
 	# Given a class name, find the file that contains that
 	# class definition.  If it doesn't exist or we don't know
@@ -159,8 +163,8 @@ concatFiles = (fileDefs) ->
 		return dependenciesStack
 			
 	fileDefStack = []
-	while fileDefs.length > 0
-		nextFileDef = fileDefs.pop()
+	while sourceFileDefs.length > 0
+		nextFileDef = sourceFileDefs.pop()
 		resolvedDef = resolveDependencies(nextFileDef)
 		if resolvedDef
 			fileDefStack = fileDefStack.concat(resolvedDef)
@@ -180,6 +184,7 @@ concatFiles = (fileDefs) ->
 concatenate = (directory, outputName, searchDirectories) ->
 
 	deps = mapDependencies(directory, searchDirectories ? [])
-	output = concatFiles(deps)
+	sourceFiles = directory + '/' + f for f in fs.readdirSync(directory)
+	output = concatFiles(sourceFiles, deps)
 	fs.writeFileSync(outputName, output)
 	

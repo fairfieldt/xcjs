@@ -2,7 +2,7 @@
 
 node = new XCNode()
 
-coordTests ->
+coordTests = ->
 	passed = true
 	
 	if node.X() == 0 and node.Y() == 0
@@ -39,5 +39,5 @@ coordTests ->
 		passed = false
 		console.log('Fail: moveBy negative.  Expected -1,2 - got ' + x + ',' + y)
 
-nodeTests ->
+nodeTests = ->
 	coordTests()

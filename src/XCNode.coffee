@@ -6,6 +6,8 @@
 # as rotation.
 # ###############################################################
 
+#=require XCColor
+
 class XCNode
 	constructor: ->
 		@visible = true
