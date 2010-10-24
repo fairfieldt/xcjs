@@ -52,7 +52,7 @@ task 'build', 'build the xc library - final lib will be in lib/xc.js', (options)
 	run(['-c', '--no-wrap', './lib/xc.coffee'])
 
 task 'concat', 'concatenate .coffee files to a single source file while resolving dependencies', (options) ->
-	concatenate('./src', './lib/xc.coffee', [''])
+	concatenate('./src', './lib/xc.coffee', [])
 
 
 

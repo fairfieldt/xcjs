@@ -8,7 +8,6 @@ class xc
 	constructor: ->
 		@scenes = []
 		@scenes.push new XCSceneNode()
-		@actions = []
 
 	addEventListener: (eventName, listener) ->
 		if not this[eventName]

@@ -24,7 +24,9 @@ class XCNode
 		#this.setAnchorY(0.0)
 		@parent = null
 		@_color = new XCColor(0, 0, 0)
-		@children = new Array() 
+		@children = []
+		@actions = []
+		
 
 	moveBy: (xOffset, yOffset) ->
 		this.setX(this.X() + xOffset)
@@ -38,17 +40,17 @@ class XCNode
 		return _xcNodeX(this)
 	Y: ->
 		return _xcNodeY(this)
-		
-	layer: -> return _xcNodeLayer(this)
-	
-	setLayer: -> return _xcNodeSetLayer(this)
 
 	setX: (newX) ->
 		_xcNodeSetX(this, newX)
 	
 	setY: (newY) ->
 		_xcNodeSetY(this, newY)
-		
+			
+	layer: -> return _xcNodeLayer(this)
+	
+	setLayer: (newLayer) ->  _xcNodeSetLayer(this, newLayer)
+
 	color: ->
 		_xcNodeColor(this)
 	
@@ -131,11 +133,13 @@ class XCNode
 	show: ->
 		_xcNodeSetVisible(this, true)
 
+	getActions: -> return @actions
+	
 	runAction: (action) ->
 		action.owner = this
-		xc.actions.push(action)
+		@actions.push(action)
 
 	removeAction: (action) ->
-		pos = xc.actions.indexOf(action)
+		pos = @actions.indexOf(action)
 		if pos != -1
 			xc.actions = xc.actions[0...pos].concat(xc.actions[pos+1...xc.actions.length]) 

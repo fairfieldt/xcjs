@@ -118,8 +118,9 @@ xc_init = ->
 			if wasPaused
 				delta = 0
 				wasPaused = false
-			for action in xc.actions
-				action.tick(delta)
+			for child in currentScene.getChildren()
+				for action in child.getActions()
+					action.tick(delta)
 			
 		clear()
 		_xcDraw(currentScene)
