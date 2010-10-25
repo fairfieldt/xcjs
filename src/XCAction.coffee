@@ -6,5 +6,6 @@
 ####################################################
 class XCAction
 	constructor: (@name) ->
+		@owner = null
 
 	tick: (dt) ->

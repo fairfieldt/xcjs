@@ -185,6 +185,27 @@ testActions = ->
 	a1 = new XCAction('a1')
 	a2 = new XCAction('a2')
 	
+	node.runAction(a1)
+	test1 = assert(node.actions().length == 1, 'addAction')
+	
+	node.runAction(a2)
+	test2 = assert(node.actions().length == 2, 'addAction 2')
+	
+	node.removeAction(a1)
+	test3 = assert(node.actions().length == 1, 'removeAction')
+	
+	test4 = assert(node.actions()[0].name == 'a2', 'removeAction did not remove the correct action')
+	
+	node.runAction(a2)
+	test5 = assert(node.actions().length == 1, 'added an action twice')
+	
+	passed = test1 and test2 and test3 and test4 and test5
+	
+	if passed
+		console.log('Node actions tests OK.')
+	else
+		console.log('Node action tests Failed.')
+	
 nodeTests = ->
 	testCoord()
 	testLayer()
