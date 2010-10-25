@@ -207,7 +207,9 @@ testActions = ->
 		console.log('Node action tests Failed.')
 	
 nodeTests = ->
+	console.log('in testnode')
 	testCoord()
+	console.log('here..')
 	testLayer()
 	testColor()
 	testScale()

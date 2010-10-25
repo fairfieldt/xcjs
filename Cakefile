@@ -91,7 +91,7 @@ findClassDependencies = (file) ->
 		
 	return dependencies
 
-# Search through a file and find the dependencies marked by
+# Search through a file, given as a string and find the dependencies marked by
 # #= require <FileName>
 #
 #
@@ -148,7 +148,10 @@ concatFiles = (sourceFiles, fileDefs) ->
 				if c == className
 					return fileDef
 		return null
-		
+	
+	# Given a filename, find the file definition that
+	# corresponds to it.  If the file isn't found,
+	# return null
 	findFileDefByName = (fileName) ->
 		for fileDef in allFileDefs
 			temp = fileDef.name.split('/')
