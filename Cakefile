@@ -63,7 +63,7 @@ task 'concat', 'concatenate .coffee files to a single source file while resolvin
 findClasses = (file) ->
 	#ugly ugly ugly hack but I must be doing something stupid with the regex
 	file = '\n' + file
-	classRegex = /\n[^#\n]*class\s([^\s]*)/g
+	classRegex = /\n[^#\n]*class\s([A-Za-z_$-][A-Za-z0-9_$-]*)/g
 	
 	classNames = []
 	while (result = classRegex.exec(file)) != null
@@ -73,22 +73,37 @@ findClasses = (file) ->
 # Search through a file and find all dependencies,
 # which is be done by finding all 'exends'
 # statements.  Ignore those in comments
+# also find the dependencies marked by #= require ClassName
 #
-findDependencies = (file) ->
+findClassDependencies = (file) ->
 	#ugly ugly ugly hack but I must be doing something stupid with the regex
 	file = '\n' + file
 	
-	dependencyRegex = /\n[^#\n]*extends\s([^\s]*)/g
+	dependencyRegex = /\n[^#\n]*extends\s([A-Za-z_$-][A-Za-z0-9_$-]*)/g
 	
 	dependencies = []
 	while (result = dependencyRegex.exec(file)) != null
 		dependencies.push(result[1])
 		
-	directiveRegex = /#=\s*require\s+([^\s]*)/g
-	while (result = directiveRegex.exec(file)) != null
+	classDirectiveRegex = /#=\s*require\s+([A-Za-z_$-][A-Za-z0-9_$-]*)/g
+	while (result = classDirectiveRegex.exec(file)) != null
 		dependencies.push(result[1])
+		
 	return dependencies
 
+# Search through a file and find the dependencies marked by
+# #= require <FileName>
+#
+#
+findFileDependencies = (file) ->
+	file = '\n' + file
+	
+	dependencies = []
+	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-]*)>/g
+	while (result = fileDirectiveRegex.exec(file)) != null
+		console.log(result[1])
+		dependencies.push(result[1])
+	return dependencies
 	
 # Given a path to a directory and, optionally, a list of search directories
 #, create a list of all files with the
@@ -104,12 +119,12 @@ mapDependencies = (path, searchDirectories) ->
 	for file in files when /\.coffee$/.test(file)
 		contents = fs.readFileSync(file).toString()
 		classes = findClasses(contents)
-		dependencies = findDependencies(contents)
-		
+		dependencies = findClassDependencies(contents)
+		fileDependencies = findFileDependencies(contents)
 		#filter out the dependencies in the same file.
 		dependencies = _.select(dependencies, (d) -> _.indexOf(classes, d) == -1)
 
-		fileDef = {name: file, classes: classes, dependencies: dependencies, contents: contents}
+		fileDef = {name: file, classes: classes, dependencies: dependencies, fileDependencies: fileDependencies, contents: contents}
 		fileDefs.push(fileDef)
 		
 	return fileDefs
@@ -143,7 +158,7 @@ concatFiles = (sourceFiles, fileDefs) ->
 		dependenciesStack = []
 		if _.indexOf(usedFiles, fileDef.name) != -1
 			return null
-		else if fileDef.dependencies.length == 0
+		else if fileDef.dependencies.length == 0 and fileDef.fileDependencies.length == 0
 			dependenciesStack.push(fileDef)
 			usedFiles.push(fileDef.name)
 		else
@@ -159,6 +174,9 @@ concatFiles = (sourceFiles, fileDefs) ->
 				if _.indexOf(usedFiles, fileDef.name) == -1
 					dependenciesStack.push(fileDef)
 					usedFiles.push(fileDef.name)
+			for neededFile in fileDependencies
+				for fileDef in fileDefs
+					
 
 		return dependenciesStack
 			
