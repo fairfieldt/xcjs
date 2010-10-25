@@ -118,7 +118,7 @@ testRotation = ->
 	if passed
 		console.log('Node rotation tests Ok.')
 	else
-		console.log('Node rotation tests failed')
+		console.log('Node rotation tests Failed')
 	
 	return passed
 	

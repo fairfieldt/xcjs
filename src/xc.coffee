@@ -4,21 +4,27 @@
 # events and scene management.
 ######################################################
 
+#= require XCScene
+
 class xc
 	constructor: ->
 		@scenes = []
-		@scenes.push new XCSceneNode()
+		@scenes.push new XCScene()
 
 	addEventListener: (eventName, listener) ->
-		if not this[eventName]
-			this[eventName] = []
-		this[eventName].push(listener)
+		if not @[eventName]
+			@[eventName] = []
+		@[eventName].push(listener)
+		
+	removeEventListener: (eventName, listener) ->
+			if pos = @[eventName].indexOf(listener) != -1
+				@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1...@[eventName].length]) 
+		
 		
 	dispatchEvent: (event) ->
-		if this[event.name]?
-			for listener in this[event.name]
-				if listener[event.name](event)
-					break
+		if @[event.name]?
+			for listener in @[event.name]
+				listener[event.name](event)
 
 	replaceScene: (newScene) ->
 		@scenes.pop().close()
