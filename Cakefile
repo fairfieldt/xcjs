@@ -121,7 +121,6 @@ mapDependencies = (path, searchDirectories) ->
 # that contain the classes dependencies.  These must go first in the hierarchy.
 #	
 concatFiles = (sourceFiles, fileDefs) ->	
-
 	usedFiles = []
 	allFileDefs = fileDefs.slice(0)
 	sourceFileDefs = fd for fd in fileDefs when fd.name in sourceFiles
@@ -148,13 +147,14 @@ concatFiles = (sourceFiles, fileDefs) ->
 			dependenciesStack.push(fileDef)
 			usedFiles.push(fileDef.name)
 		else
+			dependenciesStack = []
 			for dependency in fileDef.dependencies
 				depFileDef = findFileDefByClass(dependency)
 				if depFileDef == null
 					console.log("Error: couldn't find needed class: " + dependency)
 				else
 					nextStack = resolveDependencies(depFileDef)
-					dependenciesStack = if nextStack then nextStack else []
+					dependenciesStack = dependenciesStack.concat(if nextStack != null then nextStack else [])
 				
 				if _.indexOf(usedFiles, fileDef.name) == -1
 					dependenciesStack.push(fileDef)
@@ -169,8 +169,8 @@ concatFiles = (sourceFiles, fileDefs) ->
 		if resolvedDef
 			fileDefStack = fileDefStack.concat(resolvedDef)
 
-	for f in fileDefStack
-		console.log(f.name)
+#	for f in fileDefStack
+#		console.log(f.name)
 	output = ''
 	for nextFileDef in fileDefStack
 		output += nextFileDef.contents + '\n'

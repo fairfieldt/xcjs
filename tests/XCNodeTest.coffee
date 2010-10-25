@@ -1,5 +1,6 @@
 #= require XCNode
 
+#=require XCAction
 
 testCoord = ->
 	node = new XCNode()
@@ -178,6 +179,12 @@ testVisibility = ->
 	
 	return passed
 	
+testActions = ->
+	node = new XCNode()
+	
+	a1 = new XCAction('a1')
+	a2 = new XCAction('a2')
+	
 nodeTests = ->
 	testCoord()
 	testLayer()
@@ -187,3 +194,4 @@ nodeTests = ->
 	testOpacity()
 	testAnchor()
 	testVisibility()
+	testActions()
