@@ -31,7 +31,7 @@ testEvents = ->
 	if passed
 		console.log('Event tests OK.')
 	else
-		console.log9('Event tests Failed.')
+		console.log('Event tests Failed.')
 	
 	return passed
 	
