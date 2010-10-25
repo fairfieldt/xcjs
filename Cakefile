@@ -99,9 +99,8 @@ findFileDependencies = (file) ->
 	file = '\n' + file
 	
 	dependencies = []
-	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-]*)>/g
+	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-.]*)>/g
 	while (result = fileDirectiveRegex.exec(file)) != null
-		console.log(result[1])
 		dependencies.push(result[1])
 	return dependencies
 	
@@ -149,6 +148,14 @@ concatFiles = (sourceFiles, fileDefs) ->
 				if c == className
 					return fileDef
 		return null
+		
+	findFileDefByName = (fileName) ->
+		for fileDef in allFileDefs
+			temp = fileDef.name.split('/')
+			name = temp[temp.length-1].split('.')[0]
+			if fileName == name
+				return fileDef
+		return null
 	
 	# recursively resolve the dependencies of a file.  If it 
 	# has no dependencies, return that file in an array.  Otherwise,
@@ -171,12 +178,22 @@ concatFiles = (sourceFiles, fileDefs) ->
 					nextStack = resolveDependencies(depFileDef)
 					dependenciesStack = dependenciesStack.concat(if nextStack != null then nextStack else [])
 				
-				if _.indexOf(usedFiles, fileDef.name) == -1
+			for neededFile in fileDef.fileDependencies
+				neededFileName = neededFile.split('.')[0]
+				
+				neededFileDef = findFileDefByName(neededFileName)
+				if neededFileDef == null
+					console.log("Error: couldn't find needed file: " + neededFileName)
+				else
+					nextStack = resolveDependencies(neededFileDef)
+					dependenciesStack = dependenciesStack.concat(if nextStack != null then nextStack else [])
+
+						
+			if _.indexOf(usedFiles, fileDef.name) == -1
 					dependenciesStack.push(fileDef)
 					usedFiles.push(fileDef.name)
-			for neededFile in fileDependencies
-				for fileDef in fileDefs
 					
+				
 
 		return dependenciesStack
 			

@@ -1,4 +1,4 @@
-#= require <xc_compat_js>
+#= require <xc_compat_js.coffee>
 
 
 console.log('XC tests starting.')
