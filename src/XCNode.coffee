@@ -10,7 +10,7 @@
 
 class XCNode
 	constructor: ->
-		@visible = true
+		@_visible = true
 		@_x = 0
 		@_y = 0
 		@_layer = 0
@@ -18,8 +18,8 @@ class XCNode
 		@_scaleY = 1.0
 		@_rotation = 0.0
 		@_opacity = 1.0
-		@_anchorX = 0.0
-		@_anchorY = 0.0
+		@_anchorX = .5
+		@_anchorY = .5
 		#this.setAnchorX(0.0)
 		#this.setAnchorY(0.0)
 		@parent = null
@@ -104,9 +104,6 @@ class XCNode
 	fadeTo: (newOpacity) ->
 		this.setOpacity(newOpacity)
 
-	fadeBy: (opacity) ->
-		this.setOpacity(Math.max(this.opacity-opacity, 0))
-
 	opacity: -> _xcNodeOpacity(this)
 
 	setOpacity: (newOpacity) ->
@@ -125,7 +122,7 @@ class XCNode
 		_xcNodeSetAnchorY(this, newAnchorY)
 
 	visible: ->
-		_xcNodeVisbile(this)
+		_xcNodeVisible(this)
 		
 	hide: ->
 		_xcNodeSetVisible(this, false)

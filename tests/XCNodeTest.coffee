@@ -121,9 +121,69 @@ testRotation = ->
 	
 	return passed
 	
+testOpacity = ->
+	node = new XCNode()
+	
+	test1 = assert(node.opacity() == 1.0, 'initial opacity not 1.0')
+	
+	node.fadeTo(.5)
+	test2 = assert(node.opacity() == .5, 'fadeTo')
+	
+	passed = test1 and test1
+	if passed
+		console.log('Node opacity tests OK.')
+	else
+		console.log('Node opacity tests Failed.')
+		
+	return passed
+	
+testAnchor = ->
+	node = new XCNode()
+	
+	test1 = assert(node.anchorX() == .5 and node.anchorY() == .5, ' initial anchors not .5')
+	
+	node.setAnchorX(0)
+	test2 = assert(node.anchorX() == 0, 'setAnchorX')
+	
+	node.setAnchorY(0)
+	test3 = assert(node.anchorY() == 0, 'setAnchorY')
+	
+	passed = test1 and test2 and test3
+	if passed
+		console.log('Node anchor tests OK.')
+	else
+		console.log('Node anchor tests Failed.')
+		
+	return passed
+	
+testVisibility = ->
+	node = new XCNode()
+	
+	test1 = assert(node.visible() == true, 'node not visible on creation')
+	
+	node.hide()
+	test2 = assert(node.visible() == false, 'hide')
+	
+	node.hide()
+	test3 = assert(node.visible() == false, 'double hide')
+	
+	node.show()
+	test4 = assert(node.visible() == true, 'show')
+	
+	passed = test1 and test2 and test3 and test4
+	if passed
+		console.log('Node visibility tests OK.')
+	else
+		console.log('Node visibility tests Failed.')
+	
+	return passed
+	
 nodeTests = ->
 	testCoord()
 	testLayer()
 	testColor()
 	testScale()
 	testRotation()
+	testOpacity()
+	testAnchor()
+	testVisibility()

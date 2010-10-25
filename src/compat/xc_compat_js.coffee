@@ -52,6 +52,11 @@ _xcNodeOpacity = (node) ->
 	node._opacity
 
 _xcNodeSetOpacity = (node, newOpacity) ->
+	if newOpacity < 0
+		newOpacity = 0
+	else if newOpacity > 1.0
+		newOpacity = 1.0
+	
 	node._opacity = newOpacity
 	
 _xcNodeAnchorX = (node) -> 
