@@ -3,76 +3,127 @@
 
 testCoord = ->
 	node = new XCNode()
-
-	passed = true
 	
-	unless node.X() == 0 and node.Y() == 0
-		passed = false
-		console.log('Fail: X and Y not 0 on initialization.')
+	test1 = assert(node.X() == 0 and node.Y() == 0, 'X and Y not 0 on initialization.')
 		
 	node.setX(5)
-	if x = node.X() != 5
-		passed = false
-		console.log('Fail: setX.  Expected 5 - got ' + x)
-		
+	test2 = assert(node.X() == 5, 'setX')
+	
 	node.setY(5)
-	if y = node.Y() != 5
-		passed = false
-		console.log('Fail: setY.  Expected 5 - got ' + y)
+	test3 = assert(node.Y() == 5, 'setY')
 		
 	node.moveBy(5, 0)
-	unless x = node.X() == 10 and y = node.Y() == 5
-		passed = false
-		console.log('Fail: moveBy.  Expected 10,5 - got ' + x + ',' + y)
-		
-	node.moveBy(-11, -3)
-	unless x = node.X() == -1 and y = node.Y() == 2
-		passed = false
-		console.log('Fail: moveBy negative.  Expected -1,2 - got ' + x + ',' + y)
+	test4 = assert(x = node.X() == 10 and y = node.Y() == 5, 'moveBy')
 	
+	node.moveBy(-11, -3)
+	test5 = assert(x = node.X() == -1 and y = node.Y() == 2, 'moveBy negative')
+	
+	passed = test1 and test2 and test3 and test4 and test5
 	if passed
 		console.log('Node coordinate tests OK.')
+	else
+		console.log('Node coordinate tests Failed.')
 	return passed
 
 testLayer = ->
 	node = new XCNode()
 
-	passed = true
-	
-	unless layer = node.layer() == 0
-		passed = false
-		console.log('Fail: intial layer.  Expected 0 - got ' + layer)
+	test1 = assert(layer = node.layer() == 0, 'intial layer is not 0')
 		
 	node.setLayer(3)
-	unless layer = node.layer() == 3
-		passed = false
-		console.log('Fail: setLayer.  Expected 3 - got ' + layer)
+	test2 = assert(layer = node.layer() == 3, 'setLayer')
 		
+	passed = test1 and test2
 	if passed
 		console.log('Node layer tests OK.')
+	else
+		console.log('Node layer tests Failed.')
 	return passed
 
 testColor = ->
 	node = new XCNode()
-	passed = true
 	
 	color = node.color() 
-	unless color.r == 0 and color.g == 0 and color.b == 0
-		passed = false
-		console.log('Fail: color.  Expected 0,0,0 - got ' + color.r + ',' + color.g + ',' + color.b)
+	test1 = assert(color.r == 0 and color.g == 0 and color.b == 0, 'initial color')
 	
 	node.setColor(new XCColor(128, 128, 128))
 	color = node.color()
 	
-	unless color.r == 128 and color.g == 128 and color.b == 128
-		console.log('Fail: setColor.  Expected 128,128,128 - got ' + color.r + ',' + color.g + ',' + color.b)
+	test2 = assert(color.r == 128 and color.g == 128 and color.b == 128, 'setColor')
 		
+	passed = test1 and test2
 	if passed
 		console.log('Node color tests OK.')
+	else
+		console.log('Node color tests Failed.')
 	return passed
 
+testScale = ->
+	node = new XCNode()
+	
+	test1 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'intial scale is not 1.0,1.0')
+		
+	node.setScaleX(.5)
+	test2 = assert(node.scaleX() == .5, 'setScaleX')
+	
+	node.setScaleY(.5)
+	test3 = assert(node.scaleY() == .5, 'setScaleY')
+	
+	node.scaleTo(1.0)
+	test4 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'scaleTo')
 
+	node.scaleXTo(2.0)
+	test5 = assert(node.scaleX() == 2.0, 'scaleXTo')
+	
+	node.scaleYTo(2.0)
+	test6 = assert(node.scaleY() == 2.0, 'scaleYTo')
+	
+	node.scaleBy(.5)
+	test7 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'scaleBy')
+	
+	node.scaleXBy(10)
+	test8 = assert(node.scaleX() == 10.0, 'scaleXBy')
+	
+	node.scaleYBy(.2)
+	test9 = assert(node.scaleY() == .2, 'scaleYBy')
+	
+	passed = test1 and test2 and test3 and test4 and test5 and test6 and test7 and test8 and test9
+	if passed
+		console.log('Node scale tests OK.')
+	else
+		console.log('Node scale tests Failed.')
+	
+	return passed
+	
+testRotation = ->
+	node = new XCNode()
+	
+	test1 = assert(node.rotation() == 0, 'initial rotation not 0')
+	
+	node.rotateTo(180)
+	test2 = assert(node.rotation() == 180, 'rotateTo')
+	
+	node.rotateBy(95)
+	test3 = assert(node.rotation() == 275, 'rotateBy')
+	
+	node.rotateBy(90)
+	test4 = assert(node.rotation() == 5, 'rotateBy wrapping')
+	
+	node.rotateTo(-90)
+	test5 = assert(node.rotation() == 270, 'rotateTo negative wrapping')
+	
+	passed = test1 and test2 and test3 and test4 and test5
+	
+	if passed
+		console.log('Node rotation tests Ok.')
+	else
+		console.log('Node rotation tests failed')
+	
+	return passed
+	
 nodeTests = ->
 	testCoord()
 	testLayer()
 	testColor()
+	testScale()
+	testRotation()

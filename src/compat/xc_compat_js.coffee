@@ -1,4 +1,6 @@
 ################# XCNode platform specific implementations #################
+class XCCompat
+	constructor: ->
 
 _xcNodeX = (node) ->
 	node._x
@@ -26,9 +28,6 @@ _xcNodeSetColor = (node, newColor) ->
 
 _xcNodeScaleX = (node) ->
 	node._scaleX
-class XCCompat
-	constructor: ->
-		
 
 _xcNodeScaleY = (node) ->
 	node._scaleY
@@ -43,6 +42,10 @@ _xcNodeRotation = (node) ->
 	node._rotation
 
 _xcNodeSetRotation = (node, newRotation) ->
+	while newRotation > 360
+		newRotation = newRotation - 360
+	while newRotation < 0
+		newRotation = 360 + newRotation
 	node._rotation = newRotation
 	
 _xcNodeOpacity = (node) ->
