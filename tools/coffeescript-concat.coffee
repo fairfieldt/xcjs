@@ -28,6 +28,8 @@ findClassDependencies = (file) ->
 	while (result = dependencyRegex.exec(file)) != null
 		dependencies.push(result[1])
 		
+	file = file.replace(dependencyRegex, '')
+		
 	classDirectiveRegex = /#=\s*require\s+([A-Za-z_$-][A-Za-z0-9_$-]*)/g
 	while (result = classDirectiveRegex.exec(file)) != null
 		dependencies.push(result[1])
@@ -43,8 +45,10 @@ findFileDependencies = (file) ->
 	
 	dependencies = []
 	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-.]*)>/g
+	
 	while (result = fileDirectiveRegex.exec(file)) != null
 		dependencies.push(result[1])
+		
 	return dependencies
 	
 # Given a path to a directory and, optionally, a list of search directories
@@ -64,7 +68,7 @@ mapDependencies = (sourceFiles, searchDirectories) ->
 		fileDependencies = findFileDependencies(contents)
 		#filter out the dependencies in the same file.
 		dependencies = _.select(dependencies, (d) -> _.indexOf(classes, d) == -1)
-
+		
 		fileDef = {name: file, classes: classes, dependencies: dependencies, fileDependencies: fileDependencies, contents: contents}
 		fileDefs.push(fileDef)
 		
@@ -157,6 +161,16 @@ concatFiles = (sourceFiles, fileDefs) ->
 
 	return output
 	
+# remove all #= require directives from the
+# source file.
+removeDirectives = (file) ->
+	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-.]*)>/g
+	classDirectiveRegex = /#=\s*require\s+([A-Za-z_$-][A-Za-z0-9_$-]*)/g
+	file = file.replace(fileDirectiveRegex, '')
+	file = file.replace(classDirectiveRegex, '')
+	
+	return file
+	
 # Given a source directory, a relative filename to output
 # to, and optionally a list of class names to ignore, 
 # resolve the dependencies and put all classes in one file
@@ -164,6 +178,7 @@ concatFiles = (sourceFiles, fileDefs) ->
 concatenate = (sourceFiles, includeDirectories) ->
 	deps = mapDependencies(sourceFiles, includeDirectories)
 	output = concatFiles(sourceFiles, deps)
+	output = removeDirectives(output)
 	console.log(output)
 
 args = process.argv
@@ -182,5 +197,5 @@ while readingIncludes and i < args.length
 		readingIncludes = false
 while i < args.length
 	sourceFiles.push(args[i++])
-	
+
 concatenate(sourceFiles, includeDirectories)

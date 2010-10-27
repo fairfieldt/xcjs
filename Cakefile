@@ -51,7 +51,7 @@ runTest = (args) ->
 
 
 task 'test', 'run the xc test suite', (options) ->
-	args = ['./coffeescript-concat.coffee','-I', './src', '-I', './src/compat']
+	args = ['./tools/coffeescript-concat.coffee','-I', './src', '-I', './src/compat']
 	args.push('./tests/' + fileName) for fileName in fs.readdirSync('./tests')
 	runTest(args)
 	console.log(output)
