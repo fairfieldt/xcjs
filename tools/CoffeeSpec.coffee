@@ -46,7 +46,7 @@ it = (name, test) ->
 			result = this.test()
 		catch e
 			result = false
-			errors.push(e.name +  ' in ' + name + ': ' + e.message)
+			errors.push(e.name +  ' in "' + name + '": ' + e.message)
 		this.teardown = teardown
 		this.teardown()
 		result}

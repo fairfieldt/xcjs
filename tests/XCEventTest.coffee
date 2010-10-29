@@ -1,6 +1,14 @@
 #= require xc
 #= require XCEvent
 
+describe "XCEvent",
+	beforeEach ->
+		@xc = new xc()
+		@listener = {Event1: (event) -> @gotEvent = true}
+		
+	it 'adds an event listener', ->
+		@xc.addEventListener('Event1', @listener)
+		expect(xc['Event1']).toHaveLength(1)
 testEvents = ->
 	xc = new xc()
 
