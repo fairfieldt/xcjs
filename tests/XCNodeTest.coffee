@@ -1,220 +1,203 @@
+#=require <CoffeeSpec>
+
 #= require XCNode
 
 #=require XCAction
 
-testCoord = ->
-	node = new XCNode()
-	
-	test1 = assert(node.X() == 0 and node.Y() == 0, 'X and Y not 0 on initialization.')
-		
-	node.setX(5)
-	test2 = assert(node.X() == 5, 'setX')
-	
-	node.setY(5)
-	test3 = assert(node.Y() == 5, 'setY')
-		
-	node.moveBy(5, 0)
-	test4 = assert(x = node.X() == 10 and y = node.Y() == 5, 'moveBy')
-	
-	node.moveBy(-11, -3)
-	test5 = assert(x = node.X() == -1 and y = node.Y() == 2, 'moveBy negative')
-	
-	passed = test1 and test2 and test3 and test4 and test5
-	if passed
-		console.log('Node coordinate tests OK.')
-	else
-		console.log('Node coordinate tests Failed.')
-	return passed
+describe "XCNode", 
 
-testLayer = ->
-	node = new XCNode()
+	beforeEach ->
+		@node = new XCNode()
+		
+	it 'starts with x == 0', ->
+		expect(@node.X()).toEqual(0)
+		
+	it 'starts with y == 0', ->
+		expect(@node.Y()).toEqual(0)
+		
+	it 'sets x to 5', ->
+		@node.setX(5)
+		expect(@node.X()).toEqual(5)
+		
+	it 'sets y to 5', ->
+		@node.setY(5)
+		expect(@node.Y()).toEqual(5)
+		
+	it 'moves node by 5,0', ->
+		@node.moveBy(5, 0)
+		expect(@node.X()).toEqual(5) and
+		expect(@node.Y()).toEqual(0)
+	
+	it 'moves node by -1,-2', ->
+		@node.moveBy(-1,-2)
+		expect(@node.X()).toEqual(-1) and
+		expect(@node.Y()).toEqual(-2)
 
-	test1 = assert(layer = node.layer() == 0, 'intial layer is not 0')
+	it 'starts with layer == 0', ->
+		expect(@node.layer()).toEqual(0)
 		
-	node.setLayer(3)
-	test2 = assert(layer = node.layer() == 3, 'setLayer')
+	it 'sets layer to 3', ->
+		@node.setLayer(3)
+		expect(@node.layer()).toEqual(3)
 		
-	passed = test1 and test2
-	if passed
-		console.log('Node layer tests OK.')
-	else
-		console.log('Node layer tests Failed.')
-	return passed
+	it 'sets layer to -1', ->
+		@node.setLayer(-1)
+		expect(@node.layer()).toEqual(-1)
 
-testColor = ->
-	node = new XCNode()
+	it 'starts with color white', ->
+		@color = @node.color()
+		expect(@color.r).toEqual(0) and
+		expect(@color.g).toEqual(0) and
+		expect(@color.b).toEqual(0)
 	
-	color = node.color() 
-	test1 = assert(color.r == 0 and color.g == 0 and color.b == 0, 'initial color')
-	
-	node.setColor(new XCColor(128, 128, 128))
-	color = node.color()
-	
-	test2 = assert(color.r == 128 and color.g == 128 and color.b == 128, 'setColor')
-		
-	passed = test1 and test2
-	if passed
-		console.log('Node color tests OK.')
-	else
-		console.log('Node color tests Failed.')
-	return passed
+	it 'sets color to grey', ->
+		@node.setColor(new XCColor(128,128,128))
+		@color = @node.color()
+		expect(@color.r).toEqual(128) and
+		expect(@color.g).toEqual(128) and
+		expect(@color.b).toEqual(128)
 
-testScale = ->
-	node = new XCNode()
+	it 'starts with scaleX 1.0', ->
+		expect(@node.scaleX()).toEqual(1.0)
 	
-	test1 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'intial scale is not 1.0,1.0')
+	it 'starts with scaleY 1.0', ->
+		expect(@node.scaleY()).toEqual(1.0)
 		
-	node.setScaleX(.5)
-	test2 = assert(node.scaleX() == .5, 'setScaleX')
-	
-	node.setScaleY(.5)
-	test3 = assert(node.scaleY() == .5, 'setScaleY')
-	
-	node.scaleTo(1.0)
-	test4 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'scaleTo')
+	it 'sets scaleX to .5', ->
+		@node.setScaleX(.5)
+		expect(@node.scaleX()).toEqual(.5)
+		
+	it 'sets scaleY to .5', ->
+		@node.setScaleY(.5)
+		expect(@node.scaleY()).toEqual(.5)
+		
+	it 'scales X to 1.5', ->
+		@node.scaleXTo(1.5)
+		expect(@node.scaleX()).toEqual(1.5)
+		
+	it 'scales Y to 1.1', ->
+		@node.scaleYTo(1.1)
+		expect(@node.scaleY()).toEqual(1.1)
+		
+	it 'scaleTo 2.0', ->
+		@node.scaleTo(2.0)
+		expect(@node.scaleX()).toEqual(2.0) and
+		expect(@node.scaleY()).toEqual(2.0)
 
-	node.scaleXTo(2.0)
-	test5 = assert(node.scaleX() == 2.0, 'scaleXTo')
+	it 'scales X by 10', ->
+		@node.scaleXBy(10)
+		expect(@node.scaleX()).toEqual(10.0)
 	
-	node.scaleYTo(2.0)
-	test6 = assert(node.scaleY() == 2.0, 'scaleYTo')
+	it 'scales Y by 4', ->
+		@node.scaleYBy(4)
+		expect(@node.scaleY()).toEqual(4.0)
 	
-	node.scaleBy(.5)
-	test7 = assert(node.scaleX() == 1.0 and node.scaleY() == 1.0, 'scaleBy')
-	
-	node.scaleXBy(10)
-	test8 = assert(node.scaleX() == 10.0, 'scaleXBy')
-	
-	node.scaleYBy(.2)
-	test9 = assert(node.scaleY() == .2, 'scaleYBy')
-	
-	passed = test1 and test2 and test3 and test4 and test5 and test6 and test7 and test8 and test9
-	if passed
-		console.log('Node scale tests OK.')
-	else
-		console.log('Node scale tests Failed.')
-	
-	return passed
-	
-testRotation = ->
-	node = new XCNode()
-	
-	test1 = assert(node.rotation() == 0, 'initial rotation not 0')
-	
-	node.rotateTo(180)
-	test2 = assert(node.rotation() == 180, 'rotateTo')
-	
-	node.rotateBy(95)
-	test3 = assert(node.rotation() == 275, 'rotateBy')
-	
-	node.rotateBy(90)
-	test4 = assert(node.rotation() == 5, 'rotateBy wrapping')
-	
-	node.rotateTo(-90)
-	test5 = assert(node.rotation() == 270, 'rotateTo negative wrapping')
-	
-	passed = test1 and test2 and test3 and test4 and test5
-	
-	if passed
-		console.log('Node rotation tests Ok.')
-	else
-		console.log('Node rotation tests Failed')
-	
-	return passed
-	
-testOpacity = ->
-	node = new XCNode()
-	
-	test1 = assert(node.opacity() == 1.0, 'initial opacity not 1.0')
-	
-	node.fadeTo(.5)
-	test2 = assert(node.opacity() == .5, 'fadeTo')
-	
-	passed = test1 and test1
-	if passed
-		console.log('Node opacity tests OK.')
-	else
-		console.log('Node opacity tests Failed.')
+	it 'scales by 2', ->
+		@node.scaleBy(2)
+		expect(@node.scaleX()).toEqual(2.0) and
+		expect(@node.scaleY()).toEqual(2.0)
 		
-	return passed
-	
-testAnchor = ->
-	node = new XCNode()
-	
-	test1 = assert(node.anchorX() == .5 and node.anchorY() == .5, ' initial anchors not .5')
-	
-	node.setAnchorX(0)
-	test2 = assert(node.anchorX() == 0, 'setAnchorX')
-	
-	node.setAnchorY(0)
-	test3 = assert(node.anchorY() == 0, 'setAnchorY')
-	
-	passed = test1 and test2 and test3
-	if passed
-		console.log('Node anchor tests OK.')
-	else
-		console.log('Node anchor tests Failed.')
+	it 'starts with rotation 0', ->
+		expect(@node.rotation()).toEqual(0)
 		
-	return passed
+	it 'rotates to 180', ->
+		@node.rotateTo(180)
+		expect(@node.rotation()).toEqual(180)
 	
-testVisibility = ->
-	node = new XCNode()
+	it 'rotates by 90 from 10', ->
+		@node.rotateTo(10)
+		@node.rotateBy(90)
+		expect(@node.rotation()).toEqual(100)
+		
+	it 'rotates by 370, wrapping to 10', ->
+		@node.rotateBy(370)
+		expect(@node.rotation()).toEqual(10)
+		
+	it 'rotates to -90, wrapping to 270', ->
+		@node.rotateTo(-90)
+		expect(@node.rotation()).toEqual(270)
 	
-	test1 = assert(node.visible() == true, 'node not visible on creation')
+	it 'starts with opacity of 1.0', ->
+		expect(@node.opacity()).toEqual(1.0)
 	
-	node.hide()
-	test2 = assert(node.visible() == false, 'hide')
+	it 'fades to .5', ->
+		@node.fadeTo(.5)
+		expect(@node.opacity()).toEqual(.5)
+		
+	it 'fades to -0.2, leaving opacity of 0', ->
+		@node.fadeTo(-.2)
+		expect(@node.opacity()).toEqual(0)
 	
-	node.hide()
-	test3 = assert(node.visible() == false, 'double hide')
+	it 'fades to 1.5, leaving opacity of 1.0', ->
+		@node.fadeTo(1.5)
+		expect(@node.opacity()).toEqual(1.0)
+		
+	it 'starts with anchorX at .5', ->
+		expect(@node.anchorX()).toEqual(.5)
 	
-	node.show()
-	test4 = assert(node.visible() == true, 'show')
+	it 'starts with anchorY at .5', ->
+		expect(@node.anchorY()).toEqual(.5)
+		
+	it 'sets anchorX to 0', ->
+		@node.setAnchorX(0)
+		expect(@node.anchorX()).toEqual(0)
+		
+	it 'sets anchorY to -1.0', ->
+		@node.setAnchorY(-1.0)
+		expect(@node.anchorY()).toEqual(-1.0)
 	
-	passed = test1 and test2 and test3 and test4
-	if passed
-		console.log('Node visibility tests OK.')
-	else
-		console.log('Node visibility tests Failed.')
+	it 'starts with visible true', ->
+		expect(@node.visible()).toEqual(true)
+		
+	it 'hides', ->
+		@node.hide()
+		expect(@node.visible()).toEqual(false)
+		
+	it 'hides twice, leaving invisible', ->
+		@node.hide()
+		@node.hide()
+		expect(@node.visible()).toEqual(false)
+		
+	it 'shows', ->
+		@node.hide()
+		@node.show()
+		expect(@node.visible()).toEqual(true)
 	
-	return passed
+	it 'shows while visible, leaving still visible', ->
+		@node.show()
+		expect(@node.visible()).toEqual(true)
+
+	it 'starts without any actions', ->
+		expect(@node.actions()).toHaveLength(0)
 	
-testActions = ->
-	node = new XCNode()
+	it 'runs an action', ->
+		@node.runAction(new XCAction('a1'))
+		expect(@node.actions()).toHaveLength(1)
 	
-	a1 = new XCAction('a1')
-	a2 = new XCAction('a2')
+	it 'runs two actions', ->
+		@node.runAction(new XCAction('a1'))
+		@node.runAction(new XCAction('a2'))
+		expect(@node.actions()).toHaveLength(2)
+		
+	it 'removes the only action', ->
+		a1 = new XCAction('a1')
+		@node.runAction(a1)
+		@node.removeAction(a1)
+		expect(@node.actions()).toHaveLength 0
 	
-	node.runAction(a1)
-	test1 = assert(node.actions().length == 1, 'addAction')
+	it 'removes an action, leaving one', ->
+		a1 = new XCAction('a1')
+		a2 = new XCAction('a2')
+		@node.runAction(a1)
+		@node.runAction(a2)
+		@node.removeAction(a2)
+		expect(@node.actions()[0]).toEqual(a1)
 	
-	node.runAction(a2)
-	test2 = assert(node.actions().length == 2, 'addAction 2')
-	
-	node.removeAction(a1)
-	test3 = assert(node.actions().length == 1, 'removeAction')
-	
-	test4 = assert(node.actions()[0].name == 'a2', 'removeAction did not remove the correct action')
-	
-	node.runAction(a2)
-	test5 = assert(node.actions().length == 1, 'added an action twice')
-	
-	passed = test1 and test2 and test3 and test4 and test5
-	
-	if passed
-		console.log('Node actions tests OK.')
-	else
-		console.log('Node action tests Failed.')
-	
-nodeTests = ->
-	console.log('in testnode')
-	testCoord()
-	console.log('here..')
-	testLayer()
-	testColor()
-	testScale()
-	testRotation()
-	testOpacity()
-	testAnchor()
-	testVisibility()
-	testActions()
+	it 'removes an action when its not owned by the object', ->
+		a1 = new XCAction('a1')
+		expect(=>@node.removeAction(a1)).toThrowException('RemoveActionError')
+		
+	it 'runs an action twice', ->
+		a1 = new XCAction('a1')
+		@node.runAction(a1)
+		expect(=>@node.runAction(a1)).toThrowException('RunDuplicateActionError')

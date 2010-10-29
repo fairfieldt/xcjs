@@ -135,8 +135,12 @@ class XCNode
 		if @_actions.indexOf(action) == -1 and action.owner == null
 			action.owner = this
 			@_actions.push(action)
+		else
+			throw {name:"RunDuplicateActionError", message:"Tried to add action " + action + " to " + this + " twice"}
 
 	removeAction: (action) ->
 		pos = @_actions.indexOf(action)
 		if pos != -1
 			@_actions = @_actions[0...pos].concat(@_actions[pos+1...@_actions.length]) 
+		else
+			throw {name:"RemoveActionError", message:"Tried to remove action " + action.name + " when it was not added"}

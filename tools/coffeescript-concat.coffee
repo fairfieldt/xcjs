@@ -153,8 +153,8 @@ concatFiles = (sourceFiles, fileDefs) ->
 		if resolvedDef
 			fileDefStack = fileDefStack.concat(resolvedDef)
 
-	for f in fileDefStack
-		console.error(f.name)
+	#for f in fileDefStack
+	#	console.error(f.name)
 	output = ''
 	for nextFileDef in fileDefStack
 		output += nextFileDef.contents + '\n'
@@ -177,6 +177,7 @@ removeDirectives = (file) ->
 #
 concatenate = (sourceFiles, includeDirectories) ->
 	deps = mapDependencies(sourceFiles, includeDirectories)
+
 	output = concatFiles(sourceFiles, deps)
 	output = removeDirectives(output)
 	console.log(output)
@@ -188,7 +189,8 @@ sourceFiles = []
 readingIncludes = true
 i = 0
 while readingIncludes and i < args.length
-	if args[i++] == '-I' or args[i] == '--include-dir'
+	if args[i] == '-I' or args[i] == '--include-dir'
+		i++
 		dir = args[i++]
 		unless dir[dir.length-1] == ('/')
 			dir += '/'
