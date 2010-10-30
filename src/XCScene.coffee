@@ -4,7 +4,7 @@
 # replaced.  
 #######################################################
 class XCScene 
-	constructor: ->
+	constructor: (@name) ->
 		@_paused = false
 		@_children = []
 	pause: ->

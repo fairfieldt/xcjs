@@ -1,5 +1,6 @@
 #= require <xc_compat_js>
 
-#= require <XCNodeTest>
-#= require <XCEventTest>
-#= require <XCActionTest>
+#= don't require <XCNodeTest>
+#= don't require <XCEventTest>
+#= don't require <XCActionTest>
+#= require <XCSceneTest>

@@ -195,9 +195,9 @@ describe "XCNode",
 	
 	it 'removes an action when its not owned by the object', ->
 		a1 = new XCAction('a1')
-		expect(=>@node.removeAction(a1)).toThrowException('RemoveActionError')
+		expect(=>@node.removeAction(a1)).toThrow('RemoveActionError')
 		
 	it 'runs an action twice', ->
 		a1 = new XCAction('a1')
 		@node.runAction(a1)
-		expect(=>@node.runAction(a1)).toThrowException('RunDuplicateActionError')
+		expect(=>@node.runAction(a1)).toThrow('RunDuplicateActionError')

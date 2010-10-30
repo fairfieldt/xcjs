@@ -1,7 +1,8 @@
 errors = []
+watchedFunctions = {}
 
 describe = (testName, tests...) ->
-	console.log('Testing ' + testName)
+	console.log('\nTesting ' + testName)
 	
 	setup = ->
 	teardown = ->
@@ -34,7 +35,8 @@ describe = (testName, tests...) ->
 		for error in errors
 			console.log(i++ + ': ' + error)
 			
-	console.log('\n' + testCount + ' tests, ' + failCount + ' failures')
+	console.log('\n' + testCount + ' tests, ' + failCount +
+			 if failCount == 1 then ' failure' else ' failures')
 
 
 it = (name, test) ->
@@ -54,6 +56,13 @@ it = (name, test) ->
 expect = (value) -> new Expect(value)
 
 beforeEach = (setup) -> {name:'setup', run:setup}
+
+watch = (object, fn) ->
+	oldFun = object[fn]
+	object[fn] = -> watchedFunctions[object[fn]]++; oldFun()
+	watchedFunctions[object[fn]] = 0
+
+	
 
 class Expect
 	constructor: (@value) -> 
@@ -80,7 +89,7 @@ class Expect
 		else
 			throw {name: 'toHaveLengthError', message:'Expected length of ' + expectedLength + ', got ' + @value.length}
 			
-	toThrowException: (exceptionName) ->
+	toThrow: (exceptionName) ->
 		unless typeof @value is 'function'
 			throw {name: 'NotAFunctionError', message:'object is not a function; cannot throw an exception'}
 		else
@@ -92,3 +101,7 @@ class Expect
 				else
 					throw e
 			throw {name: 'toThrowExceptionError', message:'function did not throw ' + exceptionName}
+			
+	toHaveBeenCalled: ->
+		watchedFunctions[@value] > 0
+				
