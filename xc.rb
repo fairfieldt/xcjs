@@ -3,19 +3,26 @@
 # running them, and other cool stuff.  Watch it go!
 require 'sprockets'
 require 'ftools'
+require 'webrick'
 
 
 def run()
-	project = ARGV[0]
-	command = ARGV[1]
-	if command == 'create'
-		if !File::directory?(project)
-			new_project(project)
-		else
-			puts 'project directory already exists'
-		end
+	if ARGV[0] == 'server'
+		server('.')
 	else
-		puts 'unrecognized command ' + command
+		project = ARGV[0]
+		command = ARGV[1]
+		if command == 'create'
+			if !File::directory?(project)
+				new_project(project)
+			else
+				puts 'project directory already exists'
+			end
+		elsif command == 'server'
+			server(project)
+		else
+			puts 'unrecognized command ' + command
+		end
 	end
 end
 
@@ -74,5 +81,20 @@ def make_HTML(directory)
 	end
 end
 
+def start_webrick(config = {})
+  # always listen on port 8080
+  config.update(:Port => 8000)     
+  server = WEBrick::HTTPServer.new(config)
+  yield server if block_given?
+  ['INT', 'TERM'].each {|signal| 
+    trap(signal) {server.shutdown}
+  }
+  server.start
+
+end
+
+def server(directory)
+	start_webrick(:DocumentRoot => directory)
+end 
 run()
 

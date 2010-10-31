@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>@TITLE</title>
+    
+    <script type="text/javascript">var itemsToLoad = @ITEMCOUNT</script>
+  </head>
+  <body bgcolor="white">
+    <canvas id="gameCanvas" width="@WIDTH" height="@HEIGHT" style="background: #ccc">
+      <p>Your browser does not support canvas. Please use an HTML5 compatible browser.</p>
+    </canvas>
+	<script type="text/javascript" language="javascript" src="lib/jquery-1.4.2.min.js"></script>
+
+
+	<script type="text/javascript" language="javascript" src="@SCRIPT"></script>
+
+	<script type="text/javascript" language="javascript" src="lib/xc.js"></script>
+
+	<script type="text/javascript" language="javascript" src="lib/xc_canvas.js"></script>
+	
+	<div style="visibility=hidden; width:1px; height:1px; overflow:hidden">
+		@IMAGES
+	</div>
+
+  </body>
+</html>

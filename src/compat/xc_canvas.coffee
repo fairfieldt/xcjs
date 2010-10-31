@@ -4,8 +4,13 @@ oldY = 0
 tapDown = false
 
 _xcLoadSprite = (imageName) ->
-	sprite = new Image()
-	sprite.src = imageName
+	sprite = null
+	endsWith = new RegExp(imageName + '$')
+	for image in document.images
+		console.log(image.src)
+		
+		if image.src.match(endsWith)
+			sprite = image
 	return sprite
 	
 _xcImageWidth = (sprite) ->
