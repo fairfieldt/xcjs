@@ -2,17 +2,17 @@
 # it will have functions for creating new projects,
 # running them, and other cool stuff.  Watch it go!
 require 'sprockets'
+require 'ftools'
 
-run()
 
 def run()
 	project = ARGV[0]
 	command = ARGV[1]
 	if command == 'create'
-		if project
+		if !File::directory?(project)
 			new_project(project)
 		else
-			puts 'You must provide a project name'
+			puts 'project directory already exists'
 		end
 	else
 		puts 'unrecognized command ' + command
@@ -21,9 +21,23 @@ end
 
 def new_project(name)
 	puts "Creating project " + name
+	Dir.mkdir(name)
+	Dir.mkdir(name + '/lib')
+	Dir.mkdir(name +'/resources')
+	
+	File.copy('./lib/xc.js' , name + '/lib')
+	File.copy('./lib/jquery-1.4.2.min.js' , name + '/lib')
+	File.copy('./lib/xc_canvas.js' , name + '/lib')
+	
+	File.copy('./lib/resources/man.png', name + '/resources')
+	
+	File.copy('./lib/test.js' , name)
+	
+	make_HTML(name)
+	
 end
 
-def make_HTML()
+def make_HTML(directory)
 	
 	puts "This is gonna make a good HTML file"
 	
@@ -35,15 +49,15 @@ def make_HTML()
 	script = 'test.js'
 	
 	# lets get the images from the resources directory
-	images = Dir['./resources/*'].find_all{|item| item =~ /.*\.png/}
+	images = Dir[directory + '/resources/*'].find_all{|item| item =~ /.*\.png/}
 	item_count = images.length.to_s()
 	file_names = ''
-	images.each {|image| fileNames += '<img src="' + image + '" onLoad="itemLoaded(this);"></img>'}
+	images.each {|image|image[directory]='';file_names += '<img src="' + image + '" onLoad="itemLoaded(this);"></img>'}
 
 	
 	#now read in the html tempate
 	
-	template = IO.read('../lib/htmltemplate')
+	template = IO.read('lib/htmltemplate')
 	
 	template['@TITLE'] = title
 	template['@ITEMCOUNT'] = item_count
@@ -52,10 +66,13 @@ def make_HTML()
 	template['@SCRIPT'] = script
 	template['@IMAGES'] = file_names
 	
-	index = File.new('./index.html', 'w')
+	index = File.new(directory + '/index.html', 'w')
 	if index
 		index.syswrite(template)
 	else
 		puts 'unable to open index.html'
 	end
 end
+
+run()
+

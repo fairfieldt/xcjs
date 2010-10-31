@@ -1,4 +1,4 @@
-var _xcDraw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcLoadSprite, _xcLoadText, _xcSpriteDraw, _xcTextDraw, oldX, oldY, sprites, tapDown, xc, xc_init;
+var _xcDraw, _xcHandleKeyDown, _xcHandleKeyUp, _xcHandleMouseDown, _xcHandleMouseMoved, _xcHandleMouseUp, _xcImageHeight, _xcImageWidth, _xcLoadSprite, _xcLoadText, _xcSpriteDraw, _xcTextDraw, itemLoaded, oldX, oldY, sprites, tapDown, xc, xc_init;
 sprites = [];
 oldX = 0;
 oldY = 0;
@@ -8,6 +8,12 @@ _xcLoadSprite = function(imageName) {
   sprite = new Image();
   sprite.src = imageName;
   return sprite;
+};
+_xcImageWidth = function(sprite) {
+  return sprite.width;
+};
+_xcImageHeight = function(sprite) {
+  return sprite.height;
 };
 _xcLoadText = function(node) {
   return null;
@@ -77,6 +83,13 @@ _xcTextDraw = function(node) {
   context.globalAlpha = node.opacity();
   return context.fillText(node.text(), 0, 0);
 };
+itemLoaded = function(item) {
+  console.log('item loaded!');
+  if (--itemsToLoad <= 0) {
+    console.log('all items loaded');
+    return xc_init();
+  }
+};
 xc_init = function() {
   var clear, date, fps, previousTime, update, wasPaused;
   window.canvas = document.getElementById('gameCanvas');
@@ -128,4 +141,4 @@ xc_init = function() {
   fps = 60;
   return setInterval(update, 1000 / fps);
 };
-$(xc = new xc(), xc_init());
+$(xc = new xc());

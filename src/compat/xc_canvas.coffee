@@ -8,6 +8,12 @@ _xcLoadSprite = (imageName) ->
 	sprite.src = imageName
 	return sprite
 	
+_xcImageWidth = (sprite) ->
+	sprite.width
+
+_xcImageHeight = (sprite) ->
+	sprite.height
+	
 _xcLoadText = (node) ->
 	return null
 	
@@ -81,6 +87,13 @@ _xcTextDraw = (node) ->
 	
 	context.fillText(node.text(), 0, 0)
 
+
+itemLoaded = (item)->
+	console.log('item loaded!')
+	if --itemsToLoad <= 0
+		console.log('all items loaded')
+		xc_init()
+	
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')
 
@@ -92,8 +105,6 @@ xc_init = ->
 	$(document).keydown(_xcHandleKeyDown)
 	$(document).keyup(_xcHandleKeyUp)
 
-
-	#load images here
 
 	onLoad()
 
@@ -127,5 +138,4 @@ xc_init = ->
 	setInterval(update, 1000/fps)
 
 
-$(xc = new xc()
-xc_init())
+$(xc = new xc())

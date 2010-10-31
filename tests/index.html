@@ -1,6 +1,8 @@
 <html>
   <head>
-    <title>XC</title>
+    <title>XC Test</title>
+    
+    <script type="text/javascript">var itemsToLoad = 2</script>
   </head>
   <body bgcolor="white">
     <canvas id="gameCanvas" width="320" height="480" style="background: #ccc">
@@ -14,6 +16,10 @@
 	<script type="text/javascript" language="javascript" src="lib/xc.js"></script>
 
 	<script type="text/javascript" language="javascript" src="lib/xc_canvas.js"></script>
+	
+	<div style:visibility="hidden">
+		<img src="./resources/man.png" onLoad="itemLoaded(this);"></img><img src="./resources/man2.png" onLoad="itemLoaded(this);"></img>
+	</div>
 
   </body>
 </html>

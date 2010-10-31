@@ -1,5 +1,8 @@
+scene = null
+setProperty = (fn) ->
+	scene.tapDown = fn
 onLoad =  ->
-	sprite1 = new XCSpriteNode('resources/man.png', 34, 48)
+	sprite1 = new XCSpriteNode('resources/man.png')
 	
 	scene = xc.getCurrentScene()
 	scene.addChild(sprite1)
@@ -9,5 +12,7 @@ onLoad =  ->
 	
 	sprite1.runAction(moveBy)
 	
-	scene.tapDown = (event) -> console.log(event.x + ' ' + event.y)
+	blah = eval("setProperty(function(event){console.log('testttt');});")
+
 	xc.addEventListener('tapDown', scene)
+	

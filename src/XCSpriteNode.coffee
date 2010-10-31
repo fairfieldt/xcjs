@@ -5,10 +5,12 @@
 # and height requirement
 #########################################################
 class XCSpriteNode extends XCNode
-	constructor: (imageName, @width, @height) ->
+	constructor: (imageName) ->
 		@drawable = true
 		super()
 		@sprite = _xcLoadSprite(imageName)
+		@width = _xcImageWidth(@sprite)
+		@height = _xcImageHeight(@sprite)
 		@frame = 0
 
 	draw: ->

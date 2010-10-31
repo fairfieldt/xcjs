@@ -266,12 +266,12 @@ XCTextNode.prototype.setText = function(newText) {
 XCTextNode.prototype.draw = function() {
   return _xcTextDraw(this);
 };
-XCSpriteNode = function(imageName, _arg, _arg2) {
-  this.height = _arg2;
-  this.width = _arg;
+XCSpriteNode = function(imageName) {
   this.drawable = true;
   XCSpriteNode.__super__.constructor.call(this);
   this.sprite = _xcLoadSprite(imageName);
+  this.width = _xcImageWidth(this.sprite);
+  this.height = _xcImageHeight(this.sprite);
   this.frame = 0;
   return this;
 };
