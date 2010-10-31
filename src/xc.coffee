@@ -8,8 +8,8 @@
 
 class xc
 	constructor: ->
-		@scenes = []
-		@scenes.push new XCScene('DefaultScene')
+		@_scenes = []
+		@_scenes.push new XCScene('DefaultScene')
 
 	addEventListener: (eventName, listener) ->
 		if not @[eventName]
@@ -34,24 +34,24 @@ class xc
 
 	replaceScene: (newScene) ->
 		unless newScene == this.getCurrentScene()
-			@scenes.pop().close()
-			@scenes.push(newScene)
+			@_scenes.pop().close()
+			@_scenes.push(newScene)
 		else
 			throw {name:'DuplicateSceneError', message:'Cannot replace a scene with itself'}
 	pushScene: (scene) ->
-		if @scenes.indexOf(scene) == -1
-			@scenes.push(scene)
+		if @_scenes.indexOf(scene) == -1
+			@_scenes.push(scene)
 		else
 			throw {name:'DuplicateSceneError', message:'Cannot put a scene on the stack twice'}
 		
 	popScene: ->
-		if @scenes.length > 1
-			@scenes.pop().close()
+		if @_scenes.length > 1
+			@_scenes.pop().close()
 		else
 			throw {name:'PoppedLastSceneError', message:'Can\'t pop with one scene left'}
 		
 	getCurrentScene: -> 
-		@scenes[@scenes.length-1]
+		@_scenes[@_scenes.length-1]
 		
 
 

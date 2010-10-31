@@ -18,11 +18,21 @@ class XCScene
 	close: ->
 		
 	addChild: (child) ->
-		@children.push(child)
-		child.parent = this
+		unless child.parent == null
+			throw {name: 'DuplicateChildError', message:'Node already a child of another scene'}
+		if @_children.indexOf(child) == -1
+			@_children.push(child)
+			child.parent = this
+		else
+			throw {name:'DuplicateChildError', message:'Can\'t add the same child twice'}
 
 	removeChild: (child) ->
-		pos = @children.indexOf(child)
+		pos = @_children.indexOf(child)
 		if pos != -1
-			@children = @children[0...pos].concat(@children[pos+1...@children.length])
+			@_children = @_children[0...pos].concat(@_children[pos+1...@_children.length])
 			child.parent = null
+		else
+			throw {name:'NodeNotChildError', message:'Can\'t remove a node that is not a child'}
+			
+	children: ->
+		@_children

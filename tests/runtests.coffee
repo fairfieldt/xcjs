@@ -3,4 +3,5 @@
 #= don't require <XCNodeTest>
 #= don't require <XCEventTest>
 #= don't require <XCActionTest>
+#= don't require <XCTest>
 #= require <XCSceneTest>

@@ -12,13 +12,9 @@ _xcLoadText = (node) ->
 	return null
 	
 _xcDraw = (node) ->
-
-	if node.visible
+	if node.visible()
 		context.save()
-		if node.drawable
-			node.draw()
-		for child in node.children
-			_xcDraw(child)
+		node.draw()
 		context.restore()	
 
 
@@ -118,12 +114,12 @@ xc_init = ->
 			if wasPaused
 				delta = 0
 				wasPaused = false
-			for child in currentScene.getChildren()
-				for action in child.getActions()
+			for child in currentScene.children()
+				for action in child.actions()
 					action.tick(delta)
-			
-		clear()
-		_xcDraw(currentScene)
+			clear()
+			for child in currentScene.children()
+					_xcDraw(child)
 
 	clear = -> context.clearRect(0, 0, 640, 480)
 

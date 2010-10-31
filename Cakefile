@@ -39,6 +39,12 @@ run = (args) ->
   proc.stderr.on 'data', (buffer) -> puts buffer.toString()
   proc.stdout.on 'data', (buffer) -> puts buffer.toString()
   proc.on        'exit', (status) -> process.exit(1) if status != 0
+  
+ runBuild = (args) ->
+  proc =         spawn 'coffee', args
+  proc.stderr.on 'data', (buffer) -> puts buffer.toString()
+  proc.stdout.on 'data', (buffer) -> fs.writeFile('./lib/xc.coffee', buffer.toString(), ->compile('./lib/xc.coffee'))
+  proc.on        'exit', (status) -> process.exit(1) if status != 0
 
 output = ''
 runTest = (args) ->
@@ -49,6 +55,7 @@ runTest = (args) ->
   
   return output
 
+compile = (fileName)  -> 	run(['-c', '--no-wrap', fileName])
 
 task 'test', 'run the xc test suite', (options) ->
 	args = ['./tools/coffeescript-concat.coffee','-I', './src', '-I', './src/compat', '-I', './tools', '-I', './tests', './tests/runtests.coffee']
@@ -58,11 +65,15 @@ task 'test', 'run the xc test suite', (options) ->
 
 
 task 'build', 'build the xc library - final lib will be in lib/xc.js', (options) ->
-	invoke 'concat'
-	run(['-c', '--no-wrap', './lib/xc.coffee'])
+	invoke('concat')
+	compile('./src/compat/xc_canvas.coffee')
 
-task 'concat', 'concatenate .coffee files to a single source file while resolving dependencies', (options) ->
-	concatenate('./src', './lib/xc.coffee', [])
+task 'concat', 'concat the xc library', (options) ->
+	args = ['./tools/coffeescript-concat.coffee', '-I', './src', '-I', './src/compat']
+	args.push('./src/' + fileName) for fileName in fs.readdirSync('./src')
+	args.push('./src/compat/xc_compat_js.coffee')
+	runBuild(args)
+
 
 
 
