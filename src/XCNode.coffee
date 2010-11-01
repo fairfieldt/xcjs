@@ -26,6 +26,8 @@ class XCNode
 		@_color = new XCColor(0, 0, 0)
 		@_actions = []
 		
+	width: _xcNodeWidth(this)
+	height: _xcNodeHeight(this)
 
 	moveBy: (xOffset, yOffset) ->
 		this.setX(this.X() + xOffset)
@@ -35,10 +37,8 @@ class XCNode
 		this.setX(xPosition)
 		this.setY(yPosition)
 		
-	X: ->
-		return _xcNodeX(this)
-	Y: ->
-		return _xcNodeY(this)
+	X: -> _xcNodeX(this)
+	Y: -> _xcNodeY(this)
 
 	setX: (newX) ->
 		_xcNodeSetX(this, newX)

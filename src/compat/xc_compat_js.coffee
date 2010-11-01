@@ -1,6 +1,12 @@
 ################# XCNode platform specific implementations #################
 class XCCompat
 	constructor: ->
+		
+_xcNodeWidth = (node) ->
+	node.width
+	
+_xcNodeHeight = (node) ->
+	node.height
 
 _xcNodeX = (node) ->
 	node._x

@@ -74,8 +74,8 @@ _xcHandleKeyUp = (event) ->
 
 	
 _xcSpriteDraw = (node) ->
-	context.translate(node.X() - (node.X() * node.anchorX()), node.Y() - (node.Y() * node.anchorY()))
-	
+	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * node.anchorY()))
+
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.globalAlpha = node.opacity()
 
@@ -85,7 +85,7 @@ _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
 	context.font = node.font
 
-	context.translate(node.X() - (node.X() * node.anchorX()), node.Y() - (node.Y() * node.anchorY()))
+	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * node.anchorY()))
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.scale(node.scaleX(), node.scaleY())
 	context.globalAlpha = node.opacity()
