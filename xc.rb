@@ -1,7 +1,6 @@
 #this is going to be the main commandline tool for xc
 # it will have functions for creating new projects,
 # running them, and other cool stuff.  Watch it go!
-require 'sprockets'
 require 'ftools'
 require 'webrick'
 

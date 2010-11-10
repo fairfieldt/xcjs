@@ -3,10 +3,11 @@ class XCCompat
 	constructor: ->
 		
 _xcNodeWidth = (node) ->
-	node.width
+	node._width
 	
 _xcNodeHeight = (node) ->
-	node.height
+	node._height
+
 
 _xcNodeX = (node) ->
 	node._x
@@ -122,8 +123,8 @@ class XCNode
 		@_color = new XCColor(0, 0, 0)
 		@_actions = []
 		
-	width: _xcNodeWidth(this)
-	height: _xcNodeHeight(this)
+	width: -> _xcNodeWidth(this)
+	height: -> _xcNodeHeight(this)
 
 	moveBy: (xOffset, yOffset) ->
 		this.setX(this.X() + xOffset)
@@ -271,8 +272,8 @@ class XCSpriteNode extends XCNode
 		@drawable = true
 		super()
 		@sprite = _xcLoadSprite(imageName)
-		@width = _xcImageWidth(@sprite)
-		@height = _xcImageHeight(@sprite)
+		@_width = _xcImageWidth(@sprite)
+		@_height = _xcImageHeight(@sprite)
 		@frame = 0
 
 	draw: ->

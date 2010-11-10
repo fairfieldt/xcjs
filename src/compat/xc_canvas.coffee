@@ -79,7 +79,7 @@ _xcSpriteDraw = (node) ->
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.globalAlpha = node.opacity()
 
-	context.drawImage(node.sprite, 0, 0, node.width, node.height, 0, 0, node.width * node.scaleX(), node.height * node.scaleY())
+	context.drawImage(node.sprite, 0, 0, node.width(), node.height(), 0, 0, node.width() * node.scaleX(), node.height() * node.scaleY())
 	
 _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
@@ -101,7 +101,7 @@ itemLoaded = (item)->
 	
 xc_init = ->
 	window.canvas = document.getElementById('gameCanvas')
-
+	
 	window.context = canvas.getContext('2d')
 
 	$(canvas).mousedown(_xcHandleMouseDown)

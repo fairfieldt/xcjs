@@ -3,10 +3,11 @@ class XCCompat
 	constructor: ->
 		
 _xcNodeWidth = (node) ->
-	node.width
+	node._width
 	
 _xcNodeHeight = (node) ->
-	node.height
+	node._height
+
 
 _xcNodeX = (node) ->
 	node._x
