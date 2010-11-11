@@ -125,6 +125,9 @@ class XCNode
 		
 	width: -> _xcNodeWidth(this)
 	height: -> _xcNodeHeight(this)
+	
+	rect: ->
+		{x:this.X() - (this.anchorX() * this.width()), y:this.Y() - (this.anchorY() * this.height()), w:this.width(), h:this.height()}
 
 	moveBy: (xOffset, yOffset) ->
 		this.setX(this.X() + xOffset)

@@ -5,10 +5,8 @@ tapDown = false
 
 _xcLoadSprite = (imageName) ->
 	sprite = null
-	endsWith = new RegExp(imageName + '$')
-	for image in document.images
-		console.log(image.src)
-		
+	endsWith = new RegExp('/' + imageName + '$')
+	for image in document.images		
 		if image.src.match(endsWith)
 			sprite = image
 	return sprite
@@ -83,7 +81,7 @@ _xcSpriteDraw = (node) ->
 	
 _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
-	context.font = node.font
+	context.font = "12 pt arial" #node.font
 
 	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * node.anchorY()))
 	context.rotate(node.rotation() * Math.PI / 180)
