@@ -16,6 +16,14 @@ describe "XCEvent",
 	it 'removes an event listener', ->
 		@xc.addEventListener('Event1', @listener)
 		@xc.removeEventListener('Event1', @listener)
+		expect(@xc['Event1']).toHaveLength(0)
+		
+	it 'removes an event listener', ->
+		@xc.addEventListener('Event1', @listener)
+		
+		@listener2 = {Event1: (event) ->}
+		@xc.addEventListener('Event1', @listener2)
+		@xc.removeEventListener('Event1', @listener)
 		expect(@xc['Event1']).toHaveLength(1)
 
 	it 'removes an event that wasn\'t added', ->

@@ -7,6 +7,7 @@ class XCScene
 	constructor: (@name) ->
 		@_paused = false
 		@_children = []
+		@_scheduledFunctions = []
 	pause: ->
 		@_paused = true
 	
@@ -16,6 +17,17 @@ class XCScene
 		@_paused = false
 	
 	close: ->
+	
+	tick: (dt) ->
+		for child in this.children()
+			for action in child.actions()
+				action.tick(delta)
+				
+		for scheduled in @_scheduledFunctions
+			scheduled.et += dt
+			if scheduled.et >= scheduled.interval
+				scheduled.function(scheduled.et)
+				scheduled.et = 0
 		
 	addChild: (child) ->
 		unless child.parent == null
@@ -36,3 +48,15 @@ class XCScene
 			
 	children: ->
 		@_children
+		
+	scheduledFunctions: -> @_scheduledFunctions
+		
+	schedule: (fn, interval) ->
+		interval ?= 0
+		@_scheduledFunctions.push({function:fn, interval:interval, et:0})
+		
+	unschedule: (fn) ->
+		i = @_scheduledFunctions.indexOf(fn)
+		
+		unless i == -1
+			@_scheduledFunctions = @_scheduledFunctions[0..i].concat(@_scheduledFunctions[i+1..@scheduledFunctions.length])

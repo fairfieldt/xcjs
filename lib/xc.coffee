@@ -290,6 +290,7 @@ class XCScene
 	constructor: (@name) ->
 		@_paused = false
 		@_children = []
+		@_scheduledFunctions = []
 	pause: ->
 		@_paused = true
 	
@@ -299,6 +300,17 @@ class XCScene
 		@_paused = false
 	
 	close: ->
+	
+	tick: (dt) ->
+		for child in this.children()
+			for action in child.actions()
+				action.tick(delta)
+				
+		for scheduled in @_scheduledFunctions
+			scheduled.et += dt
+			if scheduled.et >= scheduled.interval
+				scheduled.function(scheduled.et)
+				scheduled.et = 0
 		
 	addChild: (child) ->
 		unless child.parent == null
@@ -319,6 +331,81 @@ class XCScene
 			
 	children: ->
 		@_children
+		
+	scheduledFunctions: -> @_scheduledFunctions
+		
+	schedule: (fn, interval) ->
+		interval ?= 0
+		@_scheduledFunctions.push({function:fn, interval:interval, et:0})
+		
+	unschedule: (fn) ->
+		i = @_scheduledFunctions.indexOf(fn)
+		
+		unless i == -1
+			@_scheduledFunctions = @_scheduledFunctions[0..i].concat(@_scheduledFunctions[i+1..@scheduledFunctions.length])
+
+#######################################################
+# the xc object is the controller for an xc application
+# it provides an extensible event system with input
+# events and scene management.
+######################################################
+
+
+
+class xc
+	constructor: ->
+		@_scenes = []
+		@_scenes.push new XCScene('DefaultScene')
+
+	addEventListener: (eventName, listener) ->
+		if not @[eventName]
+			@[eventName] = []
+		if @[eventName].indexOf(listener) == -1
+			@[eventName].push(listener)
+		else
+			throw {name:'EventListenerAlreadyAddedError', message: 'The event listener for ' + eventName + ' ' + listener + ' was already added'}
+		
+	removeEventListener: (eventName, listener) ->
+		if @[eventName]? and (pos = @[eventName].indexOf(listener)) != -1
+			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1..@[eventName].length-1])
+		else
+			throw {name:'NoSuchEventListenerError', message:'There is no listener for ' + eventName + ' ' + listener}
+		
+		
+		
+	dispatchEvent: (event) ->
+		if @[event.name]?
+			for listener in @[event.name]
+				listener[event.name](event)
+
+	replaceScene: (newScene) ->
+		unless newScene == this.getCurrentScene()
+			@_scenes.pop().close()
+			@_scenes.push(newScene)
+		else
+			throw {name:'DuplicateSceneError', message:'Cannot replace a scene with itself'}
+	pushScene: (scene) ->
+		if @_scenes.indexOf(scene) == -1
+			@_scenes.push(scene)
+		else
+			throw {name:'DuplicateSceneError', message:'Cannot put a scene on the stack twice'}
+		
+	popScene: ->
+		if @_scenes.length > 1
+			@_scenes.pop().close()
+		else
+			throw {name:'PoppedLastSceneError', message:'Can\'t pop with one scene left'}
+		
+	getCurrentScene: -> 
+		@_scenes[@_scenes.length-1]
+		
+
+	rectContainsPoint: (rect, point) ->
+		console.log('checking ' + point.x + ',' + point.y + ' ' + rect.x + ',' + rect.y + ': ' + rect.w + ',' + rect.h)
+		point.x > rect.x and point.x < (rect.x + rect.w) and
+		point.y > rect.y and point.y < (point.y + rect.h)
+		
+
 #####################################################
 # XCAction is the base object for the action system.
 # its tick(dt) function is called once per frame and
@@ -330,6 +417,78 @@ class XCAction
 		@owner = null
 
 	tick: (dt) ->
+#####################################################
+# XCMoveAction is the base move action.  It shouldn't
+# be used by itself, instead use one of its children:
+# XCMoveTo and XCMoveBy
+####################################################
+class XCMoveAction extends XCAction
+	constructor: (name) ->
+		super(name)
+		@etX = 0
+		@etY = 0
+
+	tick: (dt) ->
+		@etX += dt
+		@etY += dt
+
+		if @x == 0 and @y == 0
+			@owner.removeAction(this)
+		else
+			moveX = @etX * @stepX
+			moveY = @etY * @stepY
+			
+			if Math.abs(moveX) > 0
+				@etX = 0
+			if Math.abs(moveY)> 0
+				@etY = 0
+
+			if @positiveX and  (@x - moveX < 0)
+				moveX = @x
+			else if (not @positiveX) and (@x - moveX > 0)
+				moveX = @x
+			if @positiveY and (@y - moveY < 0)
+				moveY = @y
+			else if (not @positiveY) and (@y - moveY > 0)
+				moveY = @y
+			@x -= moveX
+			@y -= moveY
+			
+			@owner.moveBy(moveX, moveY)
+		
+####################################################
+# An XCMoveTo action moves its owner to a specified
+# x and y coordinate
+###################################################
+class XCMoveTo extends XCMoveAction
+	constructor: (@duration, @x, @y) ->
+		super("XCMoveTo")
+		@firstTick = true
+
+	tick: (dt) ->
+		if @firstTick
+			@x -= @owner.X()
+			@y -= @owner.Y()
+			@stepX = @x / @duration
+			@stepY = @y / @duration
+			@positiveX = @stepX > 0
+			@positiveY = @stepY > 0
+			@firstTick = false
+			
+		super(dt)
+
+###################################################
+# An XCMoveBy action moves its owner a specified 
+# amount x,y
+###################################################
+class XCMoveBy extends XCMoveAction
+	constructor: (@duration, @x, @y) ->
+		super("XCMoveBy")
+		@stepX = @x / @duration
+		@stepY = @y / @duration
+		@positiveX = @stepX > 0
+		@positiveY = @stepY > 0
+
 class XCScaleAction extends XCAction
 	constructor: (name) ->
 		super(name)
@@ -407,78 +566,6 @@ class XCRotateBy extends XCRotateAction
 		super("XCRotateBy")
 		@stepAngle = @angle / @duration
 		@positiveRotation = @angle > 0
-#####################################################
-# XCMoveAction is the base move action.  It shouldn't
-# be used by itself, instead use one of its children:
-# XCMoveTo and XCMoveBy
-####################################################
-class XCMoveAction extends XCAction
-	constructor: (name) ->
-		super(name)
-		@etX = 0
-		@etY = 0
-
-	tick: (dt) ->
-		@etX += dt
-		@etY += dt
-
-		if @x == 0 and @y == 0
-			@owner.removeAction(this)
-		else
-			moveX = @etX * @stepX
-			moveY = @etY * @stepY
-			
-			if Math.abs(moveX) > 0
-				@etX = 0
-			if Math.abs(moveY)> 0
-				@etY = 0
-
-			if @positiveX and  (@x - moveX < 0)
-				moveX = @x
-			else if (not @positiveX) and (@x - moveX > 0)
-				moveX = @x
-			if @positiveY and (@y - moveY < 0)
-				moveY = @y
-			else if (not @positiveY) and (@y - moveY > 0)
-				moveY = @y
-			@x -= moveX
-			@y -= moveY
-			
-			@owner.moveBy(moveX, moveY)
-		
-####################################################
-# An XCMoveTo action moves its owner to a specified
-# x and y coordinate
-###################################################
-class XCMoveTo extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveTo")
-		@firstTick = true
-
-	tick: (dt) ->
-		if @firstTick
-			@x -= @owner.X()
-			@y -= @owner.Y()
-			@stepX = @x / @duration
-			@stepY = @y / @duration
-			@positiveX = @stepX > 0
-			@positiveY = @stepY > 0
-			@firstTick = false
-			
-		super(dt)
-
-###################################################
-# An XCMoveBy action moves its owner a specified 
-# amount x,y
-###################################################
-class XCMoveBy extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveBy")
-		@stepX = @x / @duration
-		@stepY = @y / @duration
-		@positiveX = @stepX > 0
-		@positiveY = @stepY > 0
-
 #######################################################
 # XCEvent is the base object for the event system.  
 # All events should extend this object
@@ -505,65 +592,4 @@ class XCKeyDownEvent extends XCEvent
 class XCKeyUpEvent extends XCEvent
 	constructor: (@key) ->
 		super("keyUp")
-#######################################################
-# the xc object is the controller for an xc application
-# it provides an extensible event system with input
-# events and scene management.
-######################################################
-
-
-
-class xc
-	constructor: ->
-		@_scenes = []
-		@_scenes.push new XCScene('DefaultScene')
-
-	addEventListener: (eventName, listener) ->
-		if not @[eventName]
-			@[eventName] = []
-		if @[eventName].indexOf(listener) == -1
-			@[eventName].push(listener)
-		else
-			throw {name:'EventListenerAlreadyAddedError', message: 'The event listener for ' + eventName + ' ' + listener + ' was already added'}
-		
-	removeEventListener: (eventName, listener) ->
-		if @[eventName]? and pos = @[eventName].indexOf(listener) != -1
-			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1...@[eventName].length]) 
-		else
-			throw {name:'NoSuchEventListenerError', message:'There is no listener for ' + eventName + ' ' + listener}
-			
-		
-		
-	dispatchEvent: (event) ->
-		if @[event.name]?
-			for listener in @[event.name]
-				listener[event.name](event)
-
-	replaceScene: (newScene) ->
-		unless newScene == this.getCurrentScene()
-			@_scenes.pop().close()
-			@_scenes.push(newScene)
-		else
-			throw {name:'DuplicateSceneError', message:'Cannot replace a scene with itself'}
-	pushScene: (scene) ->
-		if @_scenes.indexOf(scene) == -1
-			@_scenes.push(scene)
-		else
-			throw {name:'DuplicateSceneError', message:'Cannot put a scene on the stack twice'}
-		
-	popScene: ->
-		if @_scenes.length > 1
-			@_scenes.pop().close()
-		else
-			throw {name:'PoppedLastSceneError', message:'Can\'t pop with one scene left'}
-		
-	getCurrentScene: -> 
-		@_scenes[@_scenes.length-1]
-		
-
-
-
-
-		
-
 

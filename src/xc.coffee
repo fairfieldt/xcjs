@@ -20,11 +20,11 @@ class xc
 			throw {name:'EventListenerAlreadyAddedError', message: 'The event listener for ' + eventName + ' ' + listener + ' was already added'}
 		
 	removeEventListener: (eventName, listener) ->
-		if @[eventName]? and pos = @[eventName].indexOf(listener) != -1
-			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1...@[eventName].length]) 
+		if @[eventName]? and (pos = @[eventName].indexOf(listener)) != -1
+			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1..@[eventName].length-1])
 		else
 			throw {name:'NoSuchEventListenerError', message:'There is no listener for ' + eventName + ' ' + listener}
-			
+		
 		
 		
 	dispatchEvent: (event) ->
@@ -54,7 +54,8 @@ class xc
 		@_scenes[@_scenes.length-1]
 		
 
-
-
-
+	rectContainsPoint: (rect, point) ->
+		console.log('checking ' + point.x + ',' + point.y + ' ' + rect.x + ',' + rect.y + ': ' + rect.w + ',' + rect.h)
+		point.x > rect.x and point.x < (rect.x + rect.w) and
+		point.y > rect.y and point.y < (point.y + rect.h)
 		

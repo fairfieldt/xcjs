@@ -81,9 +81,9 @@ _xcSpriteDraw = (node) ->
 	
 _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
-	context.font = "12 pt arial" #node.font
+	context.font = node.font
 
-	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * node.anchorY()))
+	context.translate(node.X(), node.Y())
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.scale(node.scaleX(), node.scaleY())
 	context.globalAlpha = node.opacity()
@@ -128,9 +128,7 @@ xc_init = ->
 			if wasPaused
 				delta = 0
 				wasPaused = false
-			for child in currentScene.children()
-				for action in child.actions()
-					action.tick(delta)
+			currentScene.tick(delta)
 			clear()
 			for child in currentScene.children()
 					_xcDraw(child)

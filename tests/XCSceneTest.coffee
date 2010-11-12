@@ -43,3 +43,12 @@ describe 'XCScene',
 		@scene3 = new XCScene('Scene2')
 		@scene3.addChild(child)
 		expect(=>@scene2.addChild(child)).toThrow('DuplicateChildError')
+		
+	it 'should call the scheduled function', ->
+
+		@bar = {}
+		@bar.foo = (dt) -> console.log(dt + 'asdf')
+		@scene2.schedule(@bar.foo, 0)
+		watch @bar, 'foo' 
+		@scene2.tick(1)
+		expect(@bar.foo).toHaveBeenCalled()
