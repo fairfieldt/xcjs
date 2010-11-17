@@ -285,8 +285,7 @@ class XCTextNode extends XCNode
 ##########################################################
 # XCSpriteNode is an XCNode with an image
 # to create an XCSpriteNode, give the constructor an image
-# and its width and height.  TODO: I may remove the width
-# and height requirement
+# and its width and height.  
 #########################################################
 class XCSpriteNode extends XCNode
 	constructor: (imageName) ->
@@ -299,6 +298,7 @@ class XCSpriteNode extends XCNode
 
 	draw: ->
 		_xcSpriteDraw(this)
+
 ########################################################
 # XCScene objects are the base on-screen element.  
 # Like a flip chart, they can be pushed, popped and
@@ -419,7 +419,6 @@ class xc
 		
 
 	rectContainsPoint: (rect, point) ->
-		console.log('checking ' + point.x + ',' + point.y + ' ' + rect.x + ',' + rect.y + ': ' + rect.w + ',' + rect.h)
 		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
 		(point.y > rect.y) and (point.y < (rect.y + rect.h))
 		
@@ -547,6 +546,35 @@ class XCScaleBy extends XCScaleAction
 			@firstTick = false
 		super(dt)
 
+###############################
+# XCButtonNode
+#
+###############################
+
+class XCButtonNode extends XCSpriteNode
+	constructor: (imageName) ->
+		super(imageName)
+		xc.addEventListener('tapDown', this)
+		xc.addEventListener('tapUp', this)
+		xc.addEventListener('tapMoved', this)
+		
+	tapDown: (event) ->
+		if xc.rectContainsPoint(this.rect(), event.point)
+			@tapStarted = true
+			this.scaleTo(1.1)
+			
+	tapMoved: (event) ->
+		if not xc.rectContainsPoint(this.rect(), event.point)
+			@tapStarted = false
+			this.scaleTo(1.0)
+			
+	tapUp: (event) ->
+		if @tapStarted and xc.rectContainsPoint(this.rect(), event.point)
+			if this.onHit
+				this.onHit()
+				this.scaleTo(1.0)
+		@tapStarted = false
+
 class XCRotateAction extends XCAction
 	constructor: (name) ->
 		super(name)
@@ -592,15 +620,19 @@ class XCEvent
 	constructor: (@name) ->
 
 class XCTapDownEvent extends XCEvent
-	constructor: (@x, @y, @tapNumber) ->
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
 		super("tapDown")
 		
 class XCTapMovedEvent extends XCEvent
-	constructor:(@x, @y, @moveX, @moveY, @tapNumber) ->
+	constructor:(x, y, moveX, moveY, @tapNumber) ->
+		@point = {x:x, y:y}
+		@move = {x:moveX, y:moveY}
 		super("tapMoved")
 
 class XCTapUpEvent extends XCEvent
-	constructor: (@x, @y, @tapNumber) ->
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
 		super("tapUp")
 
 class XCKeyDownEvent extends XCEvent
@@ -610,4 +642,5 @@ class XCKeyDownEvent extends XCEvent
 class XCKeyUpEvent extends XCEvent
 	constructor: (@key) ->
 		super("keyUp")
+
 

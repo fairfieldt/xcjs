@@ -1,13 +1,17 @@
 class XCTapDownEvent extends XCEvent
-	constructor: (@x, @y, @tapNumber) ->
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
 		super("tapDown")
 		
 class XCTapMovedEvent extends XCEvent
-	constructor:(@x, @y, @moveX, @moveY, @tapNumber) ->
+	constructor:(x, y, moveX, moveY, @tapNumber) ->
+		@point = {x:x, y:y}
+		@move = {x:moveX, y:moveY}
 		super("tapMoved")
 
 class XCTapUpEvent extends XCEvent
-	constructor: (@x, @y, @tapNumber) ->
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
 		super("tapUp")
 
 class XCKeyDownEvent extends XCEvent

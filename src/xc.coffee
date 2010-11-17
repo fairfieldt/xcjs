@@ -55,7 +55,6 @@ class xc
 		
 
 	rectContainsPoint: (rect, point) ->
-		console.log('checking ' + point.x + ',' + point.y + ' ' + rect.x + ',' + rect.y + ': ' + rect.w + ',' + rect.h)
 		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
 		(point.y > rect.y) and (point.y < (rect.y + rect.h))
 		
