@@ -83,7 +83,7 @@ _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
 	context.font = node.font
 
-	context.translate(node.X(), node.Y())
+	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * (node.anchorY()-1)))
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.scale(node.scaleX(), node.scaleY())
 	context.globalAlpha = node.opacity()

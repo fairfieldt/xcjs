@@ -7,8 +7,12 @@ class XCTextNode extends XCNode
 	constructor: (@_text, @fontName, @fontSize) ->
 		@drawable = true
 		@ref = _xcLoadText(this)
-		
+		@font = @fontSize + "pt " + @fontName
 		super()
+		
+	width: -> _xcTextNodeWidth(this)
+	
+	height: -> _xcTextNodeHeight(this)
 
 	text: -> _xcTextNodeText(this)
 

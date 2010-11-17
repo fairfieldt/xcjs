@@ -8,6 +8,19 @@ _xcNodeWidth = (node) ->
 _xcNodeHeight = (node) ->
 	node._height
 
+_xcTextNodeWidth = (node) ->
+	context.save()
+	context.font = node.font
+	width = context.measureText(node._text).width
+	context.restore()
+	node.scaleX() * width
+	
+_xcTextNodeHeight = (node) ->
+	context.save()
+	context.font = node.font
+	height = context.measureText('m').width
+	context.restore()
+	node.scaleY() * height
 
 _xcNodeX = (node) ->
 	node._x
@@ -254,8 +267,12 @@ class XCTextNode extends XCNode
 	constructor: (@_text, @fontName, @fontSize) ->
 		@drawable = true
 		@ref = _xcLoadText(this)
-		
+		@font = @fontSize + "pt " + @fontName
 		super()
+		
+	width: -> _xcTextNodeWidth(this)
+	
+	height: -> _xcTextNodeHeight(this)
 
 	text: -> _xcTextNodeText(this)
 
@@ -264,6 +281,7 @@ class XCTextNode extends XCNode
 		
 	draw: ->
 		_xcTextDraw(this)
+
 ##########################################################
 # XCSpriteNode is an XCNode with an image
 # to create an XCSpriteNode, give the constructor an image
@@ -402,8 +420,8 @@ class xc
 
 	rectContainsPoint: (rect, point) ->
 		console.log('checking ' + point.x + ',' + point.y + ' ' + rect.x + ',' + rect.y + ': ' + rect.w + ',' + rect.h)
-		point.x > rect.x and point.x < (rect.x + rect.w) and
-		point.y > rect.y and point.y < (point.y + rect.h)
+		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
+		(point.y > rect.y) and (point.y < (rect.y + rect.h))
 		
 
 #####################################################
