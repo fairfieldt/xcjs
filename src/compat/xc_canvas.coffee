@@ -72,23 +72,33 @@ _xcHandleKeyUp = (event) ->
 
 	
 _xcSpriteDraw = (node) ->
-	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * node.anchorY()))
+	context.translate(node.X(), node.Y())
 
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.globalAlpha = node.opacity()
 
-	context.drawImage(node.sprite, 0, 0, node.width(), node.height(), 0, 0, node.width() * node.scaleX(), node.height() * node.scaleY())
+	context.drawImage(node.sprite, 
+					0,
+					0,
+					node.width(), 
+					node.height(), 
+					0 - (node.width() * node.anchorX()), 
+					0 - (node.height() * node.anchorY()), 
+					node.width() * node.scaleX(), 
+					node.height() * node.scaleY())
 	
 _xcTextDraw = (node) ->
 	node.font = node.fontSize + "pt " + node.fontName
 	context.font = node.font
 
-	context.translate(node.X() - (node.width() * node.anchorX()), node.Y() - (node.height() * (node.anchorY()-1)))
+	context.translate(node.X(), node.Y())
+						
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.scale(node.scaleX(), node.scaleY())
 	context.globalAlpha = node.opacity()
 	
-	context.fillText(node.text(), 0, 0)
+	context.fillText(node.text(), 0 - (node.width() * node.anchorX()),
+									0 - (node.height() * node.anchorY()))
 
 
 itemLoaded = (item)->
@@ -133,7 +143,7 @@ xc_init = ->
 			for child in currentScene.children()
 					_xcDraw(child)
 
-	clear = -> context.clearRect(0, 0, 640, 480)
+	clear = -> context.clearRect(0, 0, xc.canvasWidth, xc.canvasHeight)
 
 	fps = 60
 	setInterval(update, 1000/fps)
