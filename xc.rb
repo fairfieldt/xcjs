@@ -7,30 +7,34 @@ require 'webrick'
 
 def run()
 	if ARGV[0] == 'server'
+		make_HTML('.')
 		server('.')
 	else
 		project = ARGV[0]
 		command = ARGV[1]
 		if command == 'create'
 			if !File::directory?(project)
-				new_project(project)
+				dimensions = ARGV[2].split('x')
+				new_project(project, dimensions[0], dimensions[1])
 			else
 				puts 'project directory already exists'
 			end
 		elsif command == 'server'
+			make_HTML(project)
 			server(project)
 		else
-			puts 'unrecognized command ' + command
+			puts 'unrecognized command: ' + command
 		end
 	end
 end
 
-def new_project(name)
+def new_project(name, width, height)
 	puts "Creating project " + name
 	Dir.mkdir(name)
 	Dir.mkdir(name + '/lib')
 	Dir.mkdir(name +'/resources')
 	
+	File.copy('./lib/htmltemplate', name + '/lib')
 	File.copy('./lib/xc.js' , name + '/lib')
 	File.copy('./lib/jquery-1.4.2.min.js' , name + '/lib')
 	File.copy('./lib/xc_canvas.js' , name + '/lib')
@@ -39,18 +43,31 @@ def new_project(name)
 	
 	File.copy('./lib/test.js' , name)
 	
+	File.copy('./xc.rb', name)
+	
+	write_config(name, width, height)
 	make_HTML(name)
 	
 end
 
+def write_config(directory, width, height)
+	contents = 'width=' + width +"\n" + 'height=' + height
+	config = File.new(directory + '/config.xc', 'w')
+	if config
+		config.syswrite(contents)
+	else
+		puts 'unable to open config file.'
+	end
+end
+	
 def make_HTML(directory)
 	
-	puts "This is gonna make a good HTML file"
+	config = IO.readlines(directory + '/config.xc')
+	width = config[0].split('=')[1]
+	height = config[1].split('=')[1]
 	
 	title = "XC Test"
-		
-	width = '320'
-	height = '480'
+
 	
 	script = 'test.js'
 	
@@ -71,6 +88,8 @@ def make_HTML(directory)
 	template['@HEIGHT'] = height
 	template['@SCRIPT'] = script
 	template['@IMAGES'] = file_names
+	template['@CANVASWIDTH'] = width
+	template['@CANVASHEIGHT'] = height
 	
 	index = File.new(directory + '/index.html', 'w')
 	if index

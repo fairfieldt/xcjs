@@ -21,7 +21,7 @@ class XCScene
 	tick: (dt) ->
 		for child in this.children()
 			for action in child.actions()
-				action.tick(delta)
+				action.tick(dt)
 				
 		for scheduled in @_scheduledFunctions
 			scheduled.et += dt

@@ -2,7 +2,7 @@
   <head>
     <title>@TITLE</title>
     
-    <script type="text/javascript">var itemsToLoad = @ITEMCOUNT</script>
+    <script type="text/javascript">var itemsToLoad = @ITEMCOUNT;var canvasWidth = @CANVASWIDTH;var canvasHeight = @CANVASHEIGHT;</script>
   </head>
   <body bgcolor="white">
     <canvas id="gameCanvas" width="@WIDTH" height="@HEIGHT" style="background: #ccc">

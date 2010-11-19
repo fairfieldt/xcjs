@@ -25,7 +25,7 @@ class xc
 		else
 			throw {name:'NoSuchEventListenerError', message:'There is no listener for ' + eventName + ' ' + listener}
 		
-		
+
 		
 	dispatchEvent: (event) ->
 		if @[event.name]?

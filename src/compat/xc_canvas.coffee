@@ -143,7 +143,7 @@ xc_init = ->
 			for child in currentScene.children()
 					_xcDraw(child)
 
-	clear = -> context.clearRect(0, 0, xc.canvasWidth, xc.canvasHeight)
+	clear = -> context.clearRect(0, 0, canvasWidth, canvasHeight)
 
 	fps = 60
 	setInterval(update, 1000/fps)
