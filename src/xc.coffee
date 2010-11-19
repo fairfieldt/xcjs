@@ -29,8 +29,7 @@ class xc
 			#otherwise throw an EventListenerAlreadyAddedError
 			message = 'The event listener for ' + eventName + ' ' + listener +
 					' was already added'
-			throw {name:'EventListenerAlreadyAddedError', 
-					message:message}
+			throw {name:'EventListenerAlreadyAddedError', message:message}
 	
 	#remove an object from the listeners for the specified event
 	# eventName is the name of the event to listen to and

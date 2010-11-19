@@ -107,7 +107,9 @@ _xcTextSetText = (node, newText) ->
 # XCColor is a data class to store an rgb color
 ######################################################
 class XCColor
+	#an XCColor holds r, g, and b values from 0 - 255
 	constructor: (@r, @g, @b) ->
+
 #################################################################
 # XCNode is the base for most objects in an xc application.
 # XCNodes have xy positions, scale, rotation, opacity, and color.
@@ -244,6 +246,11 @@ class XCNode
 
 	actions: ->  @_actions
 	
+	tick: (dt) ->
+		for action in this.actions()
+			if not action.tick(dt)
+				this.removeAction(action)
+				
 	runAction: (action) ->
 		if @_actions.indexOf(action) == -1 and action.owner == null
 			action.owner = this
@@ -299,6 +306,32 @@ class XCSpriteNode extends XCNode
 	draw: ->
 		_xcSpriteDraw(this)
 
+#####################################################
+# XCAction is the base object for the action system.
+# its tick(dt) function is called once per frame and
+# is passed the time since the last frame.  
+# All actions should extend this class
+####################################################
+class XCAction
+	#an XCAction is created with a name
+	constructor: (@name) ->
+		#by default, there is no owner of the action.
+		@owner = null
+
+	#the default tick does nothing.  dt is the the time in milliseconds
+	# since the action was called last.  An action's tick method should
+	# return true if the action should continue running or false if it
+	# is done and should be removed.
+	tick: (dt) ->
+		return false
+class XCSequenceAction extends XCAction
+	constructor: (@actions) ->
+		super("XCSequenceAction")
+		
+	tick: (dt) ->
+		currentAction = @actions[0]
+					
+
 ########################################################
 # XCScene objects are the base on-screen element.  
 # Like a flip chart, they can be pushed, popped and
@@ -321,8 +354,7 @@ class XCScene
 	
 	tick: (dt) ->
 		for child in this.children()
-			for action in child.actions()
-				action.tick(dt)
+			child.tick(dt)
 				
 		for scheduled in @_scheduledFunctions
 			scheduled.et += dt
@@ -362,86 +394,119 @@ class XCScene
 		unless i == -1
 			@_scheduledFunctions = @_scheduledFunctions[0..i].concat(@_scheduledFunctions[i+1..@scheduledFunctions.length])
 
-#######################################################
-# the xc object is the controller for an xc application
-# it provides an extensible event system with input
-# events and scene management.
-######################################################
+###############################################
+# XCIntervalAction is the base class for actions
+# that run for a finite amount of time
+###############################################
+class XCIntervalAction extends XCAction
+	# to create an XCIntervalAction, give it the @duration of time to run
+	constructor: (@duration, name) ->
+		super(name)
+	
+	# the interval action's tick subtracts
+	# the time since it was last called from the total
+	# when @duration is less than 0 it's run its course
+	tick: (dt) ->
+		@duration -= dt
+		#if durantion is <= 0, the action is done.  return false
+		return @duration > 0
+class XCScaleAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
+		@etX = 0
+		@etY = 0
+		@firstTick = true
+	
+	tick: (dt) ->
+		@etX += dt
+		@etY += dt
+		newScaleX = @etX * @stepScaleX
+		newScaleY = @etY * @stepScaleY
+		if Math.abs(newScaleX) > 0
+			@etX = 0
+		if Math.abs(newScaleY) > 0
+			@etY = 0
+			
+		if Math.abs(@scale.x) - Math.abs(newScaleX) <= 0
+			newScaleX = @scale.x
+		if Math.abs(@scale.y) - Math.abs(newScaleY) <= 0
+			newScaleY = @scale.y
+			
+		@scale.x -= newScaleY
+		@scale.y -= newScaleY
+		@owner.scaleXTo(@owner.scaleX() + newScaleX)
+		@owner.scaleYTo(@owner.scaleY() + newScaleY)
+		super(dt)
 
-
-
-class xc
-	constructor: ->
-		@_scenes = []
-		@_scenes.push new XCScene('DefaultScene')
-
-	addEventListener: (eventName, listener) ->
-		if not @[eventName]
-			@[eventName] = []
-		if @[eventName].indexOf(listener) == -1
-			@[eventName].push(listener)
-		else
-			throw {name:'EventListenerAlreadyAddedError', message: 'The event listener for ' + eventName + ' ' + listener + ' was already added'}
+class XCScaleToAction extends XCScaleAction
+	constructor: (duration, @scale) ->
+		super(duration, "XCScaleTo")
 		
-	removeEventListener: (eventName, listener) ->
-		if @[eventName]? and (pos = @[eventName].indexOf(listener)) != -1
-			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1..@[eventName].length-1])
-		else
-			throw {name:'NoSuchEventListenerError', message:'There is no listener for ' + eventName + ' ' + listener}
-		
+	tick: (dt) ->
+		if @firstTick
+			@scale.x -= @owner.scaleX()
+			@scale.y -= @owner.scaleY()
+			@stepScaleX = @scale.x / @duration
+			@stepScaleY = @scale.y / @duration
+			@firstTick = false
+		super(dt)
 
-		
-	dispatchEvent: (event) ->
-		if @[event.name]?
-			for listener in @[event.name]
-				listener[event.name](event)
-
-	replaceScene: (newScene) ->
-		unless newScene == this.getCurrentScene()
-			@_scenes.pop().close()
-			@_scenes.push(newScene)
-		else
-			throw {name:'DuplicateSceneError', message:'Cannot replace a scene with itself'}
-	pushScene: (scene) ->
-		if @_scenes.indexOf(scene) == -1
-			@_scenes.push(scene)
-		else
-			throw {name:'DuplicateSceneError', message:'Cannot put a scene on the stack twice'}
-		
-	popScene: ->
-		if @_scenes.length > 1
-			@_scenes.pop().close()
-		else
-			throw {name:'PoppedLastSceneError', message:'Can\'t pop with one scene left'}
-		
-	getCurrentScene: -> 
-		@_scenes[@_scenes.length-1]
-		
-
-	rectContainsPoint: (rect, point) ->
-		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
-		(point.y > rect.y) and (point.y < (rect.y + rect.h))
-		
-
-#####################################################
-# XCAction is the base object for the action system.
-# its tick(dt) function is called once per frame and
-# is passed the time since the last frame.  
-# All actions should extend this class
-####################################################
-class XCAction
-	constructor: (@name) ->
-		@owner = null
+class XCScaleByAction extends XCScaleAction
+	constructor: (duration, @scale) ->
+		super(duration, "XCScaleTo")
 
 	tick: (dt) ->
+		if @firstTick
+			@scale =  (@scale * @owner.scaleX) - @owner.scaleX()
+			@stepScaleX = @scale.x / @duration
+			@stepScaleY = @scale.y / @duration
+			@firstTick = false
+		super(dt)
+
+class XCRotateAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
+		@et = 0
+
+	tick: (dt) ->
+		@et += dt
+		rotation = @et * @stepAngle
+		if Math.abs(rotation) > 0
+			@et = 0
+		if @positiveRotation and (@angle - rotation <= 0)
+			rotation = @angle
+		else if (not @positiveRotation) and @angle - rotation >= 0
+			rotation = @angle
+		@angle -= rotation
+		@owner.rotateBy(rotation)
+		super(dt)
+
+class XCRotateToAction extends XCRotateAction
+	constructor: (duration, @angle) ->
+		super(duration, "XCRotateTo")
+		@firstTick = true
+
+	tick: (dt) ->
+		if @firstTick
+			@angle -= @owner.rotation()
+			@stepAngle = @angle / @duration
+			@positiveRotation = @angle > 0
+			@firstTick = false
+		super(dt)
+
+class XCRotateByAction extends XCRotateAction
+	constructor: (duration, @angle) ->
+		super(duration, "XCRotateBy")
+		@stepAngle = @angle / @duration
+		@positiveRotation = @angle > 0
 #####################################################
 # XCMoveAction is the base move action.  It shouldn't
 # be used by itself, instead use one of its children:
 # XCMoveTo and XCMoveBy
 ####################################################
-class XCMoveAction extends XCAction
-	constructor: (name) ->
-		super(name)
+class XCMoveAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
 		@etX = 0
 		@etY = 0
 
@@ -449,37 +514,35 @@ class XCMoveAction extends XCAction
 		@etX += dt
 		@etY += dt
 
-		if @x == 0 and @y == 0
-			@owner.removeAction(this)
-		else
-			moveX = @etX * @stepX
-			moveY = @etY * @stepY
-			
-			if Math.abs(moveX) > 0
-				@etX = 0
-			if Math.abs(moveY)> 0
-				@etY = 0
+		moveX = @etX * @stepX
+		moveY = @etY * @stepY
+		
+		if Math.abs(moveX) > 0
+			@etX = 0
+		if Math.abs(moveY)> 0
+			@etY = 0
 
-			if @positiveX and  (@x - moveX < 0)
-				moveX = @x
-			else if (not @positiveX) and (@x - moveX > 0)
-				moveX = @x
-			if @positiveY and (@y - moveY < 0)
-				moveY = @y
-			else if (not @positiveY) and (@y - moveY > 0)
-				moveY = @y
-			@x -= moveX
-			@y -= moveY
-			
-			@owner.moveBy(moveX, moveY)
+		if @positiveX and  (@x - moveX < 0)
+			moveX = @x
+		else if (not @positiveX) and (@x - moveX > 0)
+			moveX = @x
+		if @positiveY and (@y - moveY < 0)
+			moveY = @y
+		else if (not @positiveY) and (@y - moveY > 0)
+			moveY = @y
+		@x -= moveX
+		@y -= moveY
+	
+		@owner.moveBy(moveX, moveY)
+		super(dt)
 		
 ####################################################
 # An XCMoveTo action moves its owner to a specified
 # x and y coordinate
 ###################################################
-class XCMoveTo extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveTo")
+class XCMoveToAction extends XCMoveAction
+	constructor: (duration, @x, @y) ->
+		super(duration, "XCMoveTo")
 		@firstTick = true
 
 	tick: (dt) ->
@@ -498,54 +561,53 @@ class XCMoveTo extends XCMoveAction
 # An XCMoveBy action moves its owner a specified 
 # amount x,y
 ###################################################
-class XCMoveBy extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveBy")
+class XCMoveByAction extends XCMoveAction
+	constructor: (duration, @x, @y) ->
+		super(duration, "XCMoveBy")
 		@stepX = @x / @duration
 		@stepY = @y / @duration
 		@positiveX = @stepX > 0
 		@positiveY = @stepY > 0
 
-class XCScaleAction extends XCAction
-	constructor: (name) ->
-		super(name)
-		@et = 0
-		@firstTick = true
-	
-	tick: (dt) ->
-		if @scale == 0
-			@owner.removeAction(this)
-		@et += dt
-		newScale = @et * @stepScale
-		if Math.abs(newScale) > 0
-			@et = 0
-		if Math.abs(@scale) - Math.abs(newScale) <= 0
-			newScale = @scale
-		@scale -= newScale
-		@owner.scaleTo(@owner.scaleX + newScale)
+#######################################################
+# XCEvent is the base object for the event system.  
+# All events should extend this object
+######################################################
+class XCEvent
+	#a generic XCEvent is created with a name string
+	constructor: (@name) ->
 
-class XCScaleTo extends XCScaleAction
-	constructor: (@duration, @scale) ->
-		super("XCScaleTo")
+########################################
+# These are the XCEvents raised by various
+# inputs.
+########################################
+class XCTapDownEvent extends XCEvent
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
+		super("tapDown")
 		
-	tick: (dt) ->
-		if @firstTick
-			@scale -= @owner.scaleX()
-			@stepScale = @scale / @duration
-			@firstTick = false
-		super(dt)
+class XCTapMovedEvent extends XCEvent
+	constructor:(x, y, moveX, moveY, @tapNumber) ->
+		@point = {x:x, y:y}
+		@move = {x:moveX, y:moveY}
+		super("tapMoved")
 
-class XCScaleBy extends XCScaleAction
-	constructor: (@duration, @scale) ->
-		super("XCScaleTo")
+class XCTapUpEvent extends XCEvent
+	constructor: (x, y, @tapNumber) ->
+		@point = {x:x, y:y}
+		super("tapUp")
 
-	tick: (dt) ->
-		if @firstTick
-			@scale =  (@scale * @owner.scaleX) - @owner.scaleX()
-			@stepScale = @scale / @duration
-			@firstTick = false
-		super(dt)
+class XCKeyDownEvent extends XCEvent
+	constructor: (@key) ->
+		super("keyDown")
 
+class XCKeyUpEvent extends XCEvent
+	constructor: (@key) ->
+		super("keyUp")
+
+class XCDelayAction extends XCAction
+	constructor: (@time) ->
+		super('XCDelayAction')
 ###############################
 # XCButtonNode
 #
@@ -575,72 +637,107 @@ class XCButtonNode extends XCSpriteNode
 				this.scaleTo(1.0)
 		@tapStarted = false
 
-class XCRotateAction extends XCAction
-	constructor: (name) ->
-		super(name)
-		@et = 0
-
-	tick: (dt) ->
-		@et += dt
-		rotation = @et * @stepAngle
-		if Math.abs(rotation) > 0
-			@et = 0
-		if @positiveRotation and (@angle - rotation <= 0)
-			rotation = @angle
-			@owner.removeAction(this)
-		else if (not @positiveRotation) and @angle - rotation >= 0
-			rotation = @angle
-			@owner.removeAction(this)
-		@angle -= rotation
-		@owner.rotateBy(rotation)
-
-class XCRotateTo extends XCRotateAction
-	constructor: (@duration, @angle) ->
-		super("XCRotateTo")
-		@firstTick = true
-
-	tick: (dt) ->
-		if @firstTick
-			@angle -= @owner.rotation()
-			@stepAngle = @angle / @duration
-			@positiveRotation = @angle > 0
-			@firstTick = false
-		super(dt)
-
-class XCRotateBy extends XCRotateAction
-	constructor: (@duration, @angle) ->
-		super("XCRotateBy")
-		@stepAngle = @angle / @duration
-		@positiveRotation = @angle > 0
 #######################################################
-# XCEvent is the base object for the event system.  
-# All events should extend this object
+# the xc object is the controller for an xc application
+# it provides an extensible event system with input
+# events and scene management.
 ######################################################
-class XCEvent
-	constructor: (@name) ->
 
-class XCTapDownEvent extends XCEvent
-	constructor: (x, y, @tapNumber) ->
-		@point = {x:x, y:y}
-		super("tapDown")
+
+
+class xc
+	constructor: ->
+		#_scenes is the array of scenes, the last one is the current scene
+		@_scenes = []
+		#add an empty scene for the default scene
+		@_scenes.push new XCScene('DefaultScene')
+
+	# add an object to listen for an event
+	# eventName is the name of the event to listen to
+	# and listener is an object that has a method with that name
+	addEventListener: (eventName, listener) ->
+		# are there currently any listeners for the specified event?
+		if not @[eventName]
+			# if not, make an empty array to hold them
+			@[eventName] = []
+		# is the object already listening for this event?
+		if @[eventName].indexOf(listener) == -1
+			#if not, put it on the array of listeners
+			@[eventName].push(listener)
+		else
+			#otherwise throw an EventListenerAlreadyAddedError
+			message = 'The event listener for ' + eventName + ' ' + listener +
+					' was already added'
+			throw {name:'EventListenerAlreadyAddedError', message:message}
+	
+	#remove an object from the listeners for the specified event
+	# eventName is the name of the event to listen to and
+	# listener is the object to remove from listeners
+	removeEventListener: (eventName, listener) ->
+		#are there any listeners for that event and is listener one of them?
+		if @[eventName]? and (pos = @[eventName].indexOf(listener)) != -1
+			#if so, remove it.
+			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1..@[eventName].length-1])
+		else
+			#otherwise throw a NoSuchEventListenerError
+			message = 'There is no listener for ' + eventName + ' ' + listener
+			throw {name:'NoSuchEventListenerError', message:message}
 		
-class XCTapMovedEvent extends XCEvent
-	constructor:(x, y, moveX, moveY, @tapNumber) ->
-		@point = {x:x, y:y}
-		@move = {x:moveX, y:moveY}
-		super("tapMoved")
 
-class XCTapUpEvent extends XCEvent
-	constructor: (x, y, @tapNumber) ->
-		@point = {x:x, y:y}
-		super("tapUp")
-
-class XCKeyDownEvent extends XCEvent
-	constructor: (@key) ->
-		super("keyDown")
-
-class XCKeyUpEvent extends XCEvent
-	constructor: (@key) ->
-		super("keyUp")
+	# given an event, pass it to all of the listeners
+	dispatchEvent: (event) ->
+		# are there any listeners?
+		if @[event.name]?
+			#if so, call the appropriate handler for each of them.
+			for listener in @[event.name]
+				listener[event.name](event)
+	
+	# given a scene, replace the current scene with the new scene
+	# newScene is an XCScene
+	replaceScene: (newScene) ->
+		#is newScene on the stack?
+		unless @_scenes.indexOf(newScene) != -1
+			#if not, close the current scene
+			oldScene = @_scenes.pop().close()
+			#and replace it with the new scene
+			@_scenes.push(newScene)
+			return oldScene
+		else
+			# otherwise throw a DuplicateSceneError.  
+			throw {name:'DuplicateSceneError', message:'Cannot replace a scene with itself'}
+	
+	#given a scene, make it the currentScene.  All scenes currently on the stack
+	# are moved back one.
+	pushScene: (newScene) ->
+		#is newScene on the stack?
+		if @_scenes.indexOf(newScene) == -1
+			#if not, push it on.  It's now the current scene.
+			@_scenes.push(newScene)
+		else
+			#otherwise throw a DuplicateSceneError
+			throw {name:'DuplicateSceneError', message:'Cannot put a scene on the stack twice'}
+	
+	#remove the current scene from the stack and return it.  
+	popScene: ->
+		#is there going to be a scene left after removing the current one?
+		if @_scenes.length > 1
+			#if so, pop it, close it, and return it
+			oldScene = @_scenes.pop()
+			oldScene.close()
+			return oldScene
+		else
+			#otherwise throw a PoppedLastSceneError.  you can't pop the last scene.
+			throw {name:'PoppedLastSceneError', message:'Can\'t pop with one scene left'}
+	
+	#returns the current XCScene	
+	getCurrentScene: -> 
+		@_scenes[@_scenes.length-1]
+		
+	#helper function to determine if a rectangle contains a point.
+	# rect is an object {x,y,w,h} and point is an object {x,y}
+	rectContainsPoint: (rect, point) ->
+		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
+		(point.y > rect.y) and (point.y < (rect.y + rect.h))
+		
 
 

@@ -134,6 +134,11 @@ class XCNode
 
 	actions: ->  @_actions
 	
+	tick: (dt) ->
+		for action in this.actions()
+			if not action.tick(dt)
+				this.removeAction(action)
+				
 	runAction: (action) ->
 		if @_actions.indexOf(action) == -1 and action.owner == null
 			action.owner = this

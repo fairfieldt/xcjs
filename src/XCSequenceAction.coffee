@@ -4,6 +4,4 @@ class XCSequenceAction extends XCAction
 		
 	tick: (dt) ->
 		currentAction = @actions[0]
-		
-		if currentAction
-			
+					

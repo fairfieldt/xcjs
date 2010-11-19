@@ -11,5 +11,8 @@ class XCAction
 		@owner = null
 
 	#the default tick does nothing.  dt is the the time in milliseconds
-	# since the action was called last.
+	# since the action was called last.  An action's tick method should
+	# return true if the action should continue running or false if it
+	# is done and should be removed.
 	tick: (dt) ->
+		return false

@@ -3,9 +3,9 @@
 # be used by itself, instead use one of its children:
 # XCMoveTo and XCMoveBy
 ####################################################
-class XCMoveAction extends XCAction
-	constructor: (name) ->
-		super(name)
+class XCMoveAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
 		@etX = 0
 		@etY = 0
 
@@ -13,37 +13,35 @@ class XCMoveAction extends XCAction
 		@etX += dt
 		@etY += dt
 
-		if @x == 0 and @y == 0
-			@owner.removeAction(this)
-		else
-			moveX = @etX * @stepX
-			moveY = @etY * @stepY
-			
-			if Math.abs(moveX) > 0
-				@etX = 0
-			if Math.abs(moveY)> 0
-				@etY = 0
+		moveX = @etX * @stepX
+		moveY = @etY * @stepY
+		
+		if Math.abs(moveX) > 0
+			@etX = 0
+		if Math.abs(moveY)> 0
+			@etY = 0
 
-			if @positiveX and  (@x - moveX < 0)
-				moveX = @x
-			else if (not @positiveX) and (@x - moveX > 0)
-				moveX = @x
-			if @positiveY and (@y - moveY < 0)
-				moveY = @y
-			else if (not @positiveY) and (@y - moveY > 0)
-				moveY = @y
-			@x -= moveX
-			@y -= moveY
-			
-			@owner.moveBy(moveX, moveY)
+		if @positiveX and  (@x - moveX < 0)
+			moveX = @x
+		else if (not @positiveX) and (@x - moveX > 0)
+			moveX = @x
+		if @positiveY and (@y - moveY < 0)
+			moveY = @y
+		else if (not @positiveY) and (@y - moveY > 0)
+			moveY = @y
+		@x -= moveX
+		@y -= moveY
+	
+		@owner.moveBy(moveX, moveY)
+		super(dt)
 		
 ####################################################
 # An XCMoveTo action moves its owner to a specified
 # x and y coordinate
 ###################################################
-class XCMoveTo extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveTo")
+class XCMoveToAction extends XCMoveAction
+	constructor: (duration, @x, @y) ->
+		super(duration, "XCMoveTo")
 		@firstTick = true
 
 	tick: (dt) ->
@@ -62,9 +60,9 @@ class XCMoveTo extends XCMoveAction
 # An XCMoveBy action moves its owner a specified 
 # amount x,y
 ###################################################
-class XCMoveBy extends XCMoveAction
-	constructor: (@duration, @x, @y) ->
-		super("XCMoveBy")
+class XCMoveByAction extends XCMoveAction
+	constructor: (duration, @x, @y) ->
+		super(duration, "XCMoveBy")
 		@stepX = @x / @duration
 		@stepY = @y / @duration
 		@positiveX = @stepX > 0

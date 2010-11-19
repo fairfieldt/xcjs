@@ -1,6 +1,6 @@
-class XCRotateAction extends XCAction
-	constructor: (name) ->
-		super(name)
+class XCRotateAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
 		@et = 0
 
 	tick: (dt) ->
@@ -10,16 +10,15 @@ class XCRotateAction extends XCAction
 			@et = 0
 		if @positiveRotation and (@angle - rotation <= 0)
 			rotation = @angle
-			@owner.removeAction(this)
 		else if (not @positiveRotation) and @angle - rotation >= 0
 			rotation = @angle
-			@owner.removeAction(this)
 		@angle -= rotation
 		@owner.rotateBy(rotation)
+		super(dt)
 
-class XCRotateTo extends XCRotateAction
-	constructor: (@duration, @angle) ->
-		super("XCRotateTo")
+class XCRotateToAction extends XCRotateAction
+	constructor: (duration, @angle) ->
+		super(duration, "XCRotateTo")
 		@firstTick = true
 
 	tick: (dt) ->
@@ -30,8 +29,8 @@ class XCRotateTo extends XCRotateAction
 			@firstTick = false
 		super(dt)
 
-class XCRotateBy extends XCRotateAction
-	constructor: (@duration, @angle) ->
-		super("XCRotateBy")
+class XCRotateByAction extends XCRotateAction
+	constructor: (duration, @angle) ->
+		super(duration, "XCRotateBy")
 		@stepAngle = @angle / @duration
 		@positiveRotation = @angle > 0

@@ -1,39 +1,52 @@
-class XCScaleAction extends XCAction
-	constructor: (name) ->
-		super(name)
-		@et = 0
+class XCScaleAction extends XCIntervalAction
+	constructor: (duration, name) ->
+		super(duration, name)
+		@etX = 0
+		@etY = 0
 		@firstTick = true
 	
 	tick: (dt) ->
-		if @scale == 0
-			@owner.removeAction(this)
-		@et += dt
-		newScale = @et * @stepScale
-		if Math.abs(newScale) > 0
-			@et = 0
-		if Math.abs(@scale) - Math.abs(newScale) <= 0
-			newScale = @scale
-		@scale -= newScale
-		@owner.scaleTo(@owner.scaleX + newScale)
+		@etX += dt
+		@etY += dt
+		newScaleX = @etX * @stepScaleX
+		newScaleY = @etY * @stepScaleY
+		if Math.abs(newScaleX) > 0
+			@etX = 0
+		if Math.abs(newScaleY) > 0
+			@etY = 0
+			
+		if Math.abs(@scale.x) - Math.abs(newScaleX) <= 0
+			newScaleX = @scale.x
+		if Math.abs(@scale.y) - Math.abs(newScaleY) <= 0
+			newScaleY = @scale.y
+			
+		@scale.x -= newScaleY
+		@scale.y -= newScaleY
+		@owner.scaleXTo(@owner.scaleX() + newScaleX)
+		@owner.scaleYTo(@owner.scaleY() + newScaleY)
+		super(dt)
 
-class XCScaleTo extends XCScaleAction
-	constructor: (@duration, @scale) ->
-		super("XCScaleTo")
+class XCScaleToAction extends XCScaleAction
+	constructor: (duration, @scale) ->
+		super(duration, "XCScaleTo")
 		
 	tick: (dt) ->
 		if @firstTick
-			@scale -= @owner.scaleX()
-			@stepScale = @scale / @duration
+			@scale.x -= @owner.scaleX()
+			@scale.y -= @owner.scaleY()
+			@stepScaleX = @scale.x / @duration
+			@stepScaleY = @scale.y / @duration
 			@firstTick = false
 		super(dt)
 
-class XCScaleBy extends XCScaleAction
-	constructor: (@duration, @scale) ->
-		super("XCScaleTo")
+class XCScaleByAction extends XCScaleAction
+	constructor: (duration, @scale) ->
+		super(duration, "XCScaleTo")
 
 	tick: (dt) ->
 		if @firstTick
 			@scale =  (@scale * @owner.scaleX) - @owner.scaleX()
-			@stepScale = @scale / @duration
+			@stepScaleX = @scale.x / @duration
+			@stepScaleY = @scale.y / @duration
 			@firstTick = false
 		super(dt)
