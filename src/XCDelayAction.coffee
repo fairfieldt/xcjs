@@ -1,3 +1,3 @@
 class XCDelayAction extends XCIntervalAction
-	constructor: (@time) ->
-		super('XCDelayAction')
+	constructor: (duration) ->
+		super(duration, 'XCDelayAction')

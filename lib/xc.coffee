@@ -628,8 +628,14 @@ class XCKeyUpEvent extends XCEvent
 		super("keyUp")
 
 class XCDelayAction extends XCIntervalAction
-	constructor: (@time) ->
-		super('XCDelayAction')
+	constructor: (duration) ->
+		super(duration, 'XCDelayAction')
+class XCCallFuncAction extends XCAction
+	constructor: (@fn) ->
+		super("XCCallFuncAction")
+		
+	tick: (dt) ->
+		@fn()
 ###############################
 # XCButtonNode
 #
