@@ -110,6 +110,6 @@ class XCScene
 		# is the function scheduled?  
 		unless i == -1
 			#if so, remove it
-			@_scheduledFunctions = @_scheduledFunctions[0..i].concat(@_scheduledFunctions[i+1..@scheduledFunctions.length])
+			@_scheduledFunctions = @_scheduledFunctions[0...i].concat(@_scheduledFunctions[i+1..@scheduledFunctions.length-1])
 		else
 			#TODO should throw an exception here

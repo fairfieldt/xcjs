@@ -4,7 +4,6 @@
 require 'ftools'
 require 'webrick'
 
-
 def run()
 	if ARGV[0] == 'server'
 		make_HTML('.')
@@ -69,7 +68,7 @@ def make_HTML(directory)
 	title = "XC Test"
 
 	
-	script = 'test.js'
+	script = 'main.js'
 	
 	# lets get the images from the resources directory
 	images = Dir[directory + '/resources/*'].find_all{|item| item =~ /.*\.png/}
