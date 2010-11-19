@@ -141,7 +141,7 @@ class XCNode
 				
 	runAction: (action) ->
 		if @_actions.indexOf(action) == -1 and action.owner == null
-			action.owner = this
+			action.setOwner(this)
 			@_actions.push(action)
 		else
 			throw {name:"RunDuplicateActionError", message:"Tried to add action " + action + " to " + this + " twice"}

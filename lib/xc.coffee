@@ -253,7 +253,7 @@ class XCNode
 				
 	runAction: (action) ->
 		if @_actions.indexOf(action) == -1 and action.owner == null
-			action.owner = this
+			action.setOwner(this)
 			@_actions.push(action)
 		else
 			throw {name:"RunDuplicateActionError", message:"Tried to add action " + action + " to " + this + " twice"}
@@ -324,14 +324,36 @@ class XCAction
 	# is done and should be removed.
 	tick: (dt) ->
 		return false
+	
+	# when an action is run, the owner calls this function with itself	
+	setOwner: (owner) ->
+		@owner = owner
+
 class XCSequenceAction extends XCAction
 	constructor: (@actions) ->
 		super("XCSequenceAction")
 		
 	tick: (dt) ->
+		if @actions.length == 0
+			return false
 		currentAction = @actions[0]
-					
-
+		if not currentAction.tick(dt)
+			@actions = @actions[1..@actions.length]
+		return true
+		
+	# here the sequence action acts a bit like an xcnode.
+	# it lets actions remove themselves
+	removeAction: (action) ->
+		position = @actions.indexOf(action)
+		if position != -1
+			@actions = @actions[0...position].concat(@actions[position+1..@actions.length-1])
+	
+	# since all of the actions in the sequence need to be owned by the owner of the sequence,
+	# do that here.				
+	setOwner: (owner) ->
+		super(owner)
+		for action in @actions
+			action.setOwner(@owner)
 ########################################################
 # XCScene objects are the base on-screen element.  
 # Like a flip chart, they can be pushed, popped and
@@ -605,7 +627,7 @@ class XCKeyUpEvent extends XCEvent
 	constructor: (@key) ->
 		super("keyUp")
 
-class XCDelayAction extends XCAction
+class XCDelayAction extends XCIntervalAction
 	constructor: (@time) ->
 		super('XCDelayAction')
 ###############################

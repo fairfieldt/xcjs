@@ -16,3 +16,7 @@ class XCAction
 	# is done and should be removed.
 	tick: (dt) ->
 		return false
+	
+	# when an action is run, the owner calls this function with itself	
+	setOwner: (owner) ->
+		@owner = owner
