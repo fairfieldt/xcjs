@@ -1,6 +1,4 @@
 #=require <CoffeeSpec>
-
-
 #= require xc
 #= require XCEvent
 
