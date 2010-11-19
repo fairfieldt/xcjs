@@ -132,15 +132,15 @@ describe "XCNode",
 		@node.fadeTo(1.5)
 		expect(@node.opacity()).toEqual(1.0)
 		
-	it 'starts with anchorX at .5', ->
-		expect(@node.anchorX()).toEqual(.5)
-	
-	it 'starts with anchorY at .5', ->
-		expect(@node.anchorY()).toEqual(.5)
-		
-	it 'sets anchorX to 0', ->
-		@node.setAnchorX(0)
+	it 'starts with anchorX at 0', ->
 		expect(@node.anchorX()).toEqual(0)
+	
+	it 'starts with anchorY at 0', ->
+		expect(@node.anchorY()).toEqual(0)
+		
+	it 'sets anchorX to 0.5', ->
+		@node.setAnchorX(0.5)
+		expect(@node.anchorX()).toEqual(0.5)
 		
 	it 'sets anchorY to -1.0', ->
 		@node.setAnchorY(-1.0)
