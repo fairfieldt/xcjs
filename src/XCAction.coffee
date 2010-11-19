@@ -5,7 +5,11 @@
 # All actions should extend this class
 ####################################################
 class XCAction
+	#an XCAction is created with a name
 	constructor: (@name) ->
+		#by default, there is no owner of the action.
 		@owner = null
 
+	#the default tick does nothing.  dt is the the time in milliseconds
+	# since the action was called last.
 	tick: (dt) ->

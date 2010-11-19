@@ -1,3 +1,7 @@
+########################################
+# These are the XCEvents raised by various
+# inputs.
+########################################
 class XCTapDownEvent extends XCEvent
 	constructor: (x, y, @tapNumber) ->
 		@point = {x:x, y:y}
