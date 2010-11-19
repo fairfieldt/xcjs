@@ -1,0 +1,1 @@
+class XCDelayAction extends XCAction
