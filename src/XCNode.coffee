@@ -26,13 +26,18 @@ class XCNode
 		@_anchorY = 0
 
 		
-		@parent = null
+		@_parent = null
 		@_color = new XCColor(0, 0, 0)
 		@_actions = []
 		
 		#nodes should start with their anchor at 0,0
 		this.setAnchorX(0.0)
 		this.setAnchorY(0.0)
+	
+	#getter and setter for the node's parent
+	# scene is an XCScene	
+	parent: -> @_parent
+	setParent: (scene) -> @_parent = scene
 	
 	#getters for width and height
 	# they call the implementation specific _xc methods	
@@ -134,27 +139,40 @@ class XCNode
 
 	scaleY: ->
 		_xcNodeScaleY(this)
-		
+	
+	#rotate the node by offset, in degrees	
 	rotateBy: (offset) ->
 		this.setRotation(this.rotation() + offset)
 
+	#rotate the node to a newRotation, in degrees
 	rotateTo: (newRotation) ->
 		this.setRotation(newRotation)
-	
+
+	#getter and setter for the node's rotation.
+	#rotation is in degrees and these call the 
+	# implementation specific _xc functions.
 	rotation: ->
 		_xcNodeRotation(this)
 
 	setRotation: (newRotation) ->
 		_xcNodeSetRotation(this, newRotation)
-		
+	
+	#sets the nodes opacity to newOpacity, from 0.0 - 1.0
 	fadeTo: (newOpacity) ->
 		this.setOpacity(newOpacity)
 
+	#getter and setter for node's opacity.  Opacity is
+	# a number from 0.0 to 1.0.  They call the implementation
+	# specific _xc functions.
 	opacity: -> _xcNodeOpacity(this)
 
 	setOpacity: (newOpacity) ->
 		_xcNodeSetOpacity(this, newOpacity)
 
+	# getter and setter for the node's anchors x and y.
+	# The anchors are positive or negative numbers, with .5
+	# being the center of the node. They call the implementation
+	# specific _xc functions.
 	anchorX: ->
 		_xcNodeAnchorX(this)
 	
@@ -167,32 +185,57 @@ class XCNode
 	setAnchorY: (newAnchorY) ->
 		_xcNodeSetAnchorY(this, newAnchorY)
 
+	# returns the node's visibility -
+	# true for visible and false for invisible.
+	# calls the implementation specific _xc function.
 	visible: ->
 		_xcNodeVisible(this)
-		
+	
+	# hides the node by setting its visibility to false
+	# calls the implementation specific _xc function.
 	hide: ->
 		_xcNodeSetVisible(this, false)
 	
+	#shows the node by setting its visibility to true.
+	# calls the implementation specific _xc funciton.
 	show: ->
 		_xcNodeSetVisible(this, true)
 
+	#getter for the node's Actions.  returns an
+	# array of XCActions
 	actions: ->  @_actions
 	
+	#the tick function is called once per frame.  dt
+	# is the amount of time since the last call.
 	tick: (dt) ->
+		#for every action of the node, 
 		for action in this.actions()
+			#run the action, and if it's done
 			if not action.tick(dt)
+				#remove it.
 				this.removeAction(action)
-				
+	
+	#run an action for this node.  action is an XCAction			
 	runAction: (action) ->
+		# is the action new and does it not already have an owner?
 		if @_actions.indexOf(action) == -1 and action.owner == null
+			#if so, set the owner to this node
 			action.setOwner(this)
+			# and put it on the action array
 			@_actions.push(action)
 		else
+			#otherwise throw a RunDuplicateAction error
+			#FIXME throw a different error if the action just has another owner.
 			throw {name:"RunDuplicateActionError", message:"Tried to add action " + action + " to " + this + " twice"}
 
+	#remove an action from this node's actions.  action is the
+	# XCAction to remove
 	removeAction: (action) ->
 		pos = @_actions.indexOf(action)
+		# is the action on the node's action array?
 		if pos != -1
+			# if so, remove it
 			@_actions = @_actions[0...pos].concat(@_actions[pos+1...@_actions.length]) 
 		else
+			#otherwise throw a RemoveActionError. Tried to remove an action that wasn't owned by this node.
 			throw {name:"RemoveActionError", message:"Tried to remove action " + action.name + " when it was not added"}
