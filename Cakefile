@@ -43,7 +43,7 @@ run = (args) ->
  runBuild = (args) ->
   proc =         spawn 'coffee', args
   proc.stderr.on 'data', (buffer) -> puts buffer.toString()
-  proc.stdout.on 'data', (buffer) -> fs.writeFile('./lib/xc.coffee',  buffer.toString(), ->compile('./lib/xc.coffee', './lib'))
+  proc.stdout.on 'data', (buffer) -> fs.writeFile('./lib/xc.coffee',  buffer.toString(),compile('./lib/xc.coffee', './lib'))
   proc.on        'exit', (status) -> process.exit(1) if status != 0
 
 output = ''
@@ -56,7 +56,6 @@ runTest = (args) ->
   return output
 
 compile = (fileName, outputDir)  ->
-	addLicense(fileName)
 	run(['-c', '--no-wrap', '-o', outputDir, fileName])
 
 addLicense = (fileName) -> 

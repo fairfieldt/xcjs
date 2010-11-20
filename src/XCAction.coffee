@@ -19,4 +19,6 @@ class XCAction
 	
 	# when an action is run, the owner calls this function with itself	
 	setOwner: (owner) ->
-		@owner = owner
+    @owner = owner
+    
+      
