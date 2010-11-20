@@ -3,10 +3,10 @@ class XCCompat
 	constructor: ->
 		
 _xcNodeWidth = (node) ->
-	node._width
+	node._width * node._scaleX
 	
 _xcNodeHeight = (node) ->
-	node._height
+	node._height * node._scaleY
 
 _xcTextNodeWidth = (node) ->
 	context.save()
