@@ -103,6 +103,9 @@ _xcSpriteDraw = (node) ->
 
 	context.rotate(node.rotation() * Math.PI / 180)
 	context.globalAlpha = node.opacity()
+	
+	fillStyle = 'rgb(' + node.color().r + ',' + node.color().g + ',' + node.color().b + ')'
+	context.fillStyle = fillStyle
 
 	context.drawImage(node.sprite, 
 					0,
@@ -130,9 +133,7 @@ _xcTextDraw = (node) ->
 
 
 itemLoaded = (item)->
-	console.log('item loaded!')
 	if --itemsToLoad <= 0
-		console.log('all items loaded')
 		xc_init()
 	
 xc_init = ->
