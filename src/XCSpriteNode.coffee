@@ -10,8 +10,8 @@ class XCSpriteNode extends XCNode
 		@drawable = true
 		super()
 		
-		#load the sprite with the implementation specific _xc function.
-		@sprite = _xcLoadSprite(imageName)
+		#load the image with the implementation specific _xc function.
+		@sprite = _xcLoadImage(imageName)
 		
 		#get the width and height with the 
 		#implementation specific _xc functions.

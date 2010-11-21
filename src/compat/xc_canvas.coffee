@@ -25,88 +25,76 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Tom Fairfield.
 ###
-sprites = []
+
+##########################################
+# the canvas backend works on HTML5 canvas
+# objects.  All of the functionality in
+# this file is specific to that backend.
+##########################################
+
+#oldX and oldY are used in tapMoved events to provide moveX and moveY
 oldX = 0
 oldY = 0
+#tapDown is used to only raise tapMoved events when a tap is down.
 tapDown = false
 
-_xcLoadSprite = (imageName) ->
-	sprite = null
+#load a sprite image.  Since all images are placed in the DOM
+# in a hidden div, search through the images in document.imaes
+_xcLoadImage = (imageName) ->
+	#the images should be in the /resources directory so
+	#finding /imageName$ will give the correct image
 	endsWith = new RegExp('/' + imageName + '$')
+	
+	#go through all the images in document.images
 	for image in document.images		
+		#and if it matches the regexp
 		if image.src.match(endsWith)
-			sprite = image
+			#we've found the image.
+			#return it
+			return image
+	#if the image isn't found, return null.
+	#TODO: raise an exception if this happens, instead.
 	return sprite
-	
-_xcImageWidth = (sprite) ->
-	sprite.width
 
-_xcImageHeight = (sprite) ->
-	sprite.height
-	
-_xcLoadText = (node) ->
-	return null
-	
-_xcDraw = (node) ->
-	if node.visible()
-		context.save()
-		node.draw()
-		context.restore()	
+#getting the height or width of a sprite.  
+#simply return image.width,image.height	
+_xcImageWidth = (image) ->
+	image.width
 
+_xcImageHeight = (image) ->
+	image.height
 
-_xcHandleMouseDown = (event) ->
-	x = event.pageX - canvas.offsetLeft
-	y = event.pageY - canvas.offsetTop
+# loading text in the canvas backend doesn't
+# need to do anything.  Just return null.
+_xcLoadText = (node) -> null
 	
-	oldX = x
-	oldY = y
-	tapDown = true
-	
-	e = new XCTapDownEvent(x, y, 0)
-	xc.dispatchEvent(e)
-	
-_xcHandleMouseUp = (event) ->
-	tapDown = false
-	x = event.pageX - canvas.offsetLeft
-	y = event.pageY - canvas.offsetTop
-	
-	e = new XCTapUpEvent(x, y, 0)
-	xc.dispatchEvent(e)
-	
-_xcHandleMouseMoved = (event) ->
-	if tapDown
-		x = event.pageX - canvas.offsetLeft
-		y = event.pageY - canvas.offsetTop
-		moveX = x - oldX
-		moveY = y - oldY
-		oldX = x
-		oldY = y
-		e = new XCTapMovedEvent(x, y, moveX, moveY, 0)
-		xc.dispatchEvent(e)
-
-_xcHandleKeyDown = (event) ->
-	key = event.which
-	e = new XCKeyDownEvent(key)
-	xc.dispatchEvent(e)
-
-_xcHandleKeyUp = (event) ->
-	key = event.which
-
-	e = new XCKeyUpEvent(key)
-	xc.dispatchEvent(e)
-
-
-
-	
+# canvas implementation of drawing a sprite.
+# this is called by the SpriteNode's draw() function.	
+# The big picture is: setup the context with the node's
+# coords, rotation, and opacity, and then draw it based
+# on the scale and anchor positions.  node is an XCSpriteNode
 _xcSpriteDraw = (node) ->
+	#move the context to the node's coordinates
 	context.translate(node.X(), node.Y())
-
+	
+	#rotate the context to the node's rotation
+	#since rotation is stored in degrees and the
+	# context wants radians, convert.
+	#TODO: move this into the node so the conversion
+	#only has to be done when it changes.
 	context.rotate(node.rotation() * Math.PI / 180)
+	
+	#set up the context's drawing opacity
 	context.globalAlpha = node.opacity()
 	
-	fillStyle = 'rgb(' + node.color().r + ',' + node.color().g + ',' + node.color().b + ')'
-	context.fillStyle = fillStyle
-
+	#now draw the sprite's image.  
+	#the first 4 parameter values are the x,y with, height, to draw
+	#from the source image.  These will always be 0,0 and the image height
+	#The next 4 are the x, y, width, height to draw onto the canvas.
+	# since we've already moved the context to the node's x and y, the
+	#destination x and y here are simply a factor of the node's anchor.
+	# the destination width and height are the image width/height multiplied by
+	# the sprite's scale
 	context.drawImage(node.sprite, 
 					0,
 					0,
@@ -116,66 +104,212 @@ _xcSpriteDraw = (node) ->
 					0 - (node.height() * node.anchorY()), 
 					node.sprite.width * node.scaleX(), 
 					node.sprite.height * node.scaleY())
-	
+
+# canvas implementation of drawing a textnode.
+# the big picture is: setup the context with all of 
+# the node's attributes and then fillText with the text.
+# node is an XCTextNode
 _xcTextDraw = (node) ->
+	#set the node font to a version that is readable by a canvas context
+	#TODO: move this out into the node so it's not done every frame.
 	node.font = node.fontSize + "pt " + node.fontName
+	#set the context's font to the correct font.
 	context.font = node.font
-	fillStyle = 'rgb(' + node.color().r + ',' + node.color().g + ',' + node.color().b + ')'
+	
+	#set the context's fillstyle to rgb with the text node's color values.
+	color = node.color()
+	fillStyle = 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')'
 	context.fillStyle = fillStyle
+	
+	#now move the context to the node's x and y
 	context.translate(node.X(), node.Y())
-						
+				
+	#rotate the context to the node's rotation,		
 	context.rotate(node.rotation() * Math.PI / 180)
+	#scale the context to the node's scale,
 	context.scale(node.scaleX(), node.scaleY())
+	#and set the context's opacity.
 	context.globalAlpha = node.opacity()
 	
+	#finally, draw the text.  since we've already moved the context
+	#to the node's x and y coordinates, the x and y here are simply
+	# based on the node's anchor points.
 	context.fillText(node.text(), 0 - (node.width() * node.anchorX()),
 									0 - (node.height() * node.anchorY()))
 
 
+#to get mousedown events (which are converted to xc tapDown events),
+#listen for jquery mousedown events on the canvas.
+handleMouseDown = (event) ->
+	#get the x and y relative to the canvas
+	x = event.pageX - canvas.offsetLeft
+	y = event.pageY - canvas.offsetTop
+	
+	#since the tap just started, oldX and oldY are the x and y
+	#they will change on a mouse move.
+	oldX = x
+	oldY = y
+	#a tap is down.
+	tapDown = true
+	
+	#now raise an XCTapDown event
+	e = new XCTapDownEvent(x, y, 0)
+	#and dispatch it.
+	xc.dispatchEvent(e)
+
+#to get mouseup events (which are converted to xc tapUp events),	
+# listen for jquery mouseup events.  This listener should be global
+# because if a tap starts on the canvas, it can still stop outside of it
+# and we don't want to lose the tap.    
+handleMouseUp = (event) ->
+	#was the tap started within the canvas?
+	if tapDown
+		#if so, there is no longer a tap donw
+		tapDown = false
+		#get x and y relative to the canvas
+		x = event.pageX - canvas.offsetLeft
+		y = event.pageY - canvas.offsetTop
+		#if x or y are larger than the canvas width/height or negative,
+		#that means the tapup happened outside of the canvas.  To make sense
+		#in the context of the canvas, they should be set to 0 or the canvas 
+		#width/height
+		if x > canvasWidth then x = canvasWidth
+		if x < 0 then x = 0
+		if y > canvasHeight then x = canvasHeight
+		if y < 0 then y = 0
+		
+		#now make a new TapUp event
+		e = new XCTapUpEvent(x, y, 0)
+		#and dispatch it
+		xc.dispatchEvent(e)
+		
+	#otherwise, don't do anything; we don't care about the tapup
+
+#to get mousemoved events, (which are converted to xc tapMoved events),
+# list for jquery mousemoved events on the canvas.  
+handleMouseMoved = (event) ->
+	#is there currently a tap down?
+	if tapDown
+		#if so, get the x and y relative to the canvas
+		x = event.pageX - canvas.offsetLeft
+		y = event.pageY - canvas.offsetTop
+		
+		#now get the amount the tap moved in x and y by subtracting the
+		#last coords from the current coords.
+		moveX = x - oldX
+		moveY = y - oldY
+		#now the new old coords are the current coords.
+		oldX = x
+		oldY = y
+		#now make a new TapMoved event
+		e = new XCTapMovedEvent(x, y, moveX, moveY, 0)
+		#and dispatch it.
+		xc.dispatchEvent(e)
+
+#keyup and keydown events are specific to the canvas implementation.
+#They allow for keyboard input.  They listen for jquery keydown events.
+#TODO: figure out if keys can be blocked from doing stuff like the arrow
+# keys scrolling the window.
+#TODO: make a nicer way to figure out what a key is from its 'event.which'
+
+handleKeyDown = (event) ->
+	#they key that is down is stored in event.which
+	key = event.which
+	#create a new keydown event with the appropriate key
+	e = new XCKeyDownEvent(key)
+	#and dispatch it.
+	xc.dispatchEvent(e)
+
+handleKeyUp = (event) ->
+	#they key that is down is stored in event.which
+	key = event.which
+
+	#create a new keyup event with the appropriate key
+	e = new XCKeyUpEvent(key)
+	#and dispatch it.
+	xc.dispatchEvent(e)
+
+# this is the function that is called when a resource, for example an image,
+# is loaded into the DOM.  (it should be the image tag's onLoad event)
 itemLoaded = (item)->
+	# have all of the items loaded?
 	if --itemsToLoad <= 0
+		#if so, start up xc
 		xc_init()
-	
+
+# xc_init is the function that starts everything off.  It is called when
+# all of the resources have been loaded.  It calls the user defined onLoad
+# function and then starts an update loop.	
 xc_init = ->
-	window.canvas = document.getElementById('gameCanvas')
-	
+	#find the canvas to attach to
+	window.canvas = document.getElementById('xcCanvas')
+	# and get its context.
 	window.context = canvas.getContext('2d')
+	
+	#register the appropriate event handlers to get
+	#input events.  
+	$(canvas).mousedown(handleMouseDown)
+	$(canvas).mousemove(handleMouseMoved)
+	$(document).mouseup(handleMouseUp)
+	$(document).keydown(handleKeyDown)
+	$(document).keyup(handleKeyUp)
 
-	$(canvas).mousedown(_xcHandleMouseDown)
-	$(canvas).mousemove(_xcHandleMouseMoved)
-	$(canvas).mouseup(_xcHandleMouseUp)
-	$(document).keydown(_xcHandleKeyDown)
-	$(document).keyup(_xcHandleKeyUp)
-
-
+	#call the user defined onLoad function.  This is the code
+	# that a game written using this framework will provide.  
 	onLoad()
 
-	date = new Date()
-	previousTime = date.getTime()
+	#to keep track of the time between frames, start off a previous time
+	previousTime = (new Date()).getTime()
+	
+	#when a scene is paused, things must be changed when it is resumed
+	#so that the dt between frames isn't huge.  wasPaused keeps track of
+	# whether the scene was paused.
 	wasPaused = false
 	
+	#update is the updateDate loop that will be called 60 times a second.
 	update =  ->
+		#calculate the time since the last call to update
 		currentTime = new Date().getTime()
 		delta = (currentTime - previousTime) / 1000
 		previousTime = currentTime
+		
+		#get a reference to the current scene.
 		currentScene = xc.getCurrentScene()
 		
+		#is the scene paused?
 		if currentScene.paused()
+			#if so, set wasPaused to true so
+			# we know to handle the time correctly
+			# when it resumes
 			wasPaused = true
+			#and then return, we don't need to do
+			#anything else if the active scene is paused.
 			return
 		else
+		#otherwise, was the scene paused before this tick?
 			if wasPaused
+				#if so, delta is going to be a huge number.
+				#just make it 0 for this frame.
 				delta = 0
 				wasPaused = false
+			#now call the scene's tick function.  This will run scheduled
+			#functions and the tick function of all its children.  
 			currentScene.tick(delta)
-			clear()
+			#then clear the canvas
+			context.clearRect(0, 0, canvasWidth, canvasHeight)
+			#and, for ever child of the scene
 			for child in currentScene.children()
-					_xcDraw(child)
+				#is the child visible?
+				if child.visible()
+					#if so, save the context,
+					context.save()
+					#draw the child, 
+					child.draw()
+					#and then restore the context.
+					context.restore()	
+	#call the update function 60 times a second.
+	setInterval(update, 1000/60)
 
-	clear = -> context.clearRect(0, 0, canvasWidth, canvasHeight)
 
-	fps = 60
-	setInterval(update, 1000/fps)
-
-
+#when the document is ready, create a new xc object
 $(xc = new xc())
