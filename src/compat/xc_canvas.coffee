@@ -238,7 +238,7 @@ itemLoaded = (item)->
 		xc_init()
 
 # xc_init is the function that starts everything off.  It is called when
-# all of the resources have been loaded.  It calls the user defined onLoad
+# all of the resources have been loaded.  It calls the user defined main
 # function and then starts an update loop.	
 xc_init = ->
 	#find the canvas to attach to
@@ -254,9 +254,9 @@ xc_init = ->
 	$(document).keydown(handleKeyDown)
 	$(document).keyup(handleKeyUp)
 
-	#call the user defined onLoad function.  This is the code
+	#call the user defined main function.  This is the code
 	# that a game written using this framework will provide.  
-	onLoad()
+	main()
 
 	#to keep track of the time between frames, start off a previous time
 	previousTime = (new Date()).getTime()

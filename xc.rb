@@ -13,7 +13,11 @@ def run()
 		command = ARGV[1]
 		if command == 'create'
 			if !File::directory?(project)
-				dimensions = ARGV[2].split('x')
+				if ARGV.length > 2
+					dimensions = ARGV[2].split('x')
+				else
+					dimensions = ['320','480']
+				end
 				new_project(project, dimensions[0], dimensions[1])
 			else
 				puts 'project directory already exists'
@@ -40,7 +44,7 @@ def new_project(name, width, height)
 	
 	File.copy('./lib/resources/man.png', name + '/resources')
 	
-	File.copy('./lib/test.js' , name)
+	File.copy('./lib/main.js' , name)
 	
 	File.copy('./xc.rb', name)
 	

@@ -5,7 +5,7 @@
     <script type="text/javascript">var itemsToLoad = @ITEMCOUNT;var canvasWidth = @CANVASWIDTH;var canvasHeight = @CANVASHEIGHT;</script>
   </head>
   <body bgcolor="white">
-    <canvas id="xcCanvas" width="@WIDTH" height="@HEIGHT" style="background: #ccc">
+    <canvas id="xcCanvas" width="@WIDTH" height="@HEIGHT" style="background: #fff">
       <p>Your browser does not support canvas. Please use an HTML5 compatible browser.</p>
     </canvas>
 	<script type="text/javascript" language="javascript" src="lib/jquery-1.4.2.min.js"></script>
