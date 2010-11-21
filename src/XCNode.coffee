@@ -30,9 +30,9 @@ class XCNode
 		@_color = new XCColor(0, 0, 0)
 		@_actions = []
 		
-		#nodes should start with their anchor at 0,0
-		this.setAnchorX(0.0)
-		this.setAnchorY(0.0)
+		#nodes should start with their anchor at .5,.5
+		this.setAnchorX(0.5)
+		this.setAnchorY(0.5)
 	
 	#getter and setter for the node's parent
 	# scene is an XCScene	
