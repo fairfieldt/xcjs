@@ -4,10 +4,11 @@ oldY = 0
 tapDown = false
 gcCounter = 0
 
-_xcLoadSprite = (imageName) ->
-	xc_load_sprite(imageName, 0)
-	
-_xcHandleMouseDown = (event) ->
+#drawing is taken care of by the backend.
+_xcSpriteDraw = (node) -> 
+_xcTextDraw = (node) -> 
+
+handleMouseDown = (event) ->
 	x = event.x
 	y = event.y
 
@@ -16,7 +17,7 @@ _xcHandleMouseDown = (event) ->
 	e = new XCTapDownEvent(x, y, 0)
 	xc.dispatchEvent(e)
 	
-_xcHandleMouseUp = (event) ->
+handleMouseUp = (event) ->
 	tapDown = false
 	x = event.x
 	y = event.y
@@ -24,7 +25,7 @@ _xcHandleMouseUp = (event) ->
 	e = new XCTapUpEvent(x, y, 0)
 	xc.dispatchEvent(e)
 	
-_xcHandleMouseMoved = (event) ->
+handleMouseMoved = (event) ->
 	if tapDown
 		x = event.x
 		y = event.y
@@ -34,28 +35,18 @@ _xcHandleMouseMoved = (event) ->
 		e = new XCTapMovedEvent(x, y, moveX, moveY, 0)
 		xc.dispatchEvent(e)
 
-_xcHandleKeyDown = (event) ->
-	key = event.which
-	e = new XCKeyDownEvent(key)
-	xc.dispatchEvent(e)
-
-_xcHandleKeyUp = (event) ->
-	key = event.which
-
-	e = new XCKeyUpEvent(key)
-	xc.dispatchEvent(e)
+#no keys in ios
+handleKeyDown = (event) ->
+handleKeyUp = (event) ->
 
 ################# XCNode platform specific implementations #################
 ############################ are now in obj-c code##########################
 
-	
-_xcTextDraw = (node) ->
-	#stub
 
 xc_init = ->
 	xc_print("xc_init called")	
-	
-	onLoad()
+	console.log = xc_print;
+	main()
 
 	date = new Date()
 	previousTime = date.getTime()
@@ -66,19 +57,18 @@ xc_update = (delta) ->
 	tapEvent = xc_get_tap()
 	while tapEvent != null
 		if tapEvent.name == 'tapDown'
-			_xcHandleMouseDown(tapEvent)
+			handleMouseDown(tapEvent)
 		else if tapEvent.name == 'tapMoved'
-			_xcHandleMouseMoved(tapEvent)
+			handleMouseMoved(tapEvent)
 		else if tapEvent.name == 'tapUp'
-			_xcHandleMouseUp(tapEvent)
+			handleMouseUp(tapEvent)
 		tapEvent = xc_get_tap()
 	
-	for action in xc.actions	
-		action.tick(delta)
+	currentScene.tick(delta)
 
 	if gcCounter++ > 30
 		xc_gc()
 
 
-xc = new xc()
+xc = new XC()
 console = []
