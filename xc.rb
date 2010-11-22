@@ -41,6 +41,8 @@ def new_project(name, width, height)
 	File.copy('./lib/xc.js' , name + '/lib')
 	File.copy('./lib/jquery-1.4.2.min.js' , name + '/lib')
 	File.copy('./lib/xc_canvas.js' , name + '/lib')
+	File.copy('./lib/xc_ios.js' , name + '/lib')
+	
 	
 	File.copy('./lib/resources/man.png', name + '/resources')
 	

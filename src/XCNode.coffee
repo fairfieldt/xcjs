@@ -27,7 +27,7 @@ class XCNode
 
 		
 		@_parent = null
-		@_color = new XCColor(0, 0, 0)
+		@_color = new XCColor(0xFF, 0xFF, 0xFF)
 		@_actions = []
 		
 		#nodes should start with their anchor at .5,.5
@@ -38,6 +38,14 @@ class XCNode
 	# scene is an XCScene	
 	parent: -> @_parent
 	setParent: (scene) -> @_parent = scene
+	
+	open: (scene) ->
+		this.setParent(scene)
+		this.show()
+		
+	close: ->
+		this.setParent(null)
+		this.hide()
 	
 	#getters for width and height
 	# they call the implementation specific _xc methods	

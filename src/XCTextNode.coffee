@@ -12,7 +12,7 @@ class XCTextNode extends XCNode
 		# it's implementation specific and, as such
 		# is loaded by an _xc function.  Some implementations
 		# may not use it at all.
-		@ref = _xcLoadText(this)
+		@sprite = _xcLoadText(this)
 		
 		#store the font as needed by the canvas implementation
 		#TODO: move this to a better place.

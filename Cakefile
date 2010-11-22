@@ -74,8 +74,8 @@ task 'test', 'run the xc test suite', (options) ->
 task 'build', 'build the xc library - final lib will be in lib/xc.js', (options) ->
 	invoke('concat')
 	compile('./src/compat/xc_canvas.coffee', './lib')
+	compile('./src/compat/xc_ios.coffee', './lib')
 
-task 'concat_canvas', 'build the canvas compatability'
 task 'concat', 'concat the xc library', (options) ->
 	args = ['./tools/coffeescript-concat.coffee', '-I', './src', '-I', './src/compat']
 	args.push('./src/' + fileName) for fileName in fs.readdirSync('./src')

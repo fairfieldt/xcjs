@@ -61,8 +61,8 @@ class XCScene
 		if @_children.indexOf(child) == -1
 			#if not, add it
 			@_children.push(child)
-			# and make this scene its parent.
-			child.setParent(this)
+			# and open it.
+			child.open()
 		else
 			#otherwise throw a DuplicateChildError.  The node is already this scene's child.
 			throw {name:'DuplicateChildError', message:'Can\'t add the same child twice'}
@@ -75,8 +75,8 @@ class XCScene
 		if pos != -1
 			#if so, remove it
 			@_children = @_children[0...pos].concat(@_children[pos+1...@_children.length])
-			#and set its parent to null
-			child.setParent(null)
+			#and close it
+			child.close()
 		else
 			#otherwise throw a NodeNotChildError.  You tried to remove a node that wasn't this scene's child.
 			throw {name:'NodeNotChildError', message:'Can\'t remove a node that is not a child'}
