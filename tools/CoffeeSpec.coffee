@@ -6,7 +6,10 @@ describe = (testName, tests...) ->
 	
 	setup = ->
 	teardown = ->
+	console.log(typeof(tests))
 	for test in tests
+		if not test
+			continue
 		foundSetup = false
 		foundTeardown = false
 		if test.name == 'setup'

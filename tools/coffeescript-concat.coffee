@@ -83,7 +83,7 @@ mapDependencies = (sourceFiles, searchDirectories) ->
 concatFiles = (sourceFiles, fileDefs) ->	
 	usedFiles = []
 	allFileDefs = fileDefs.slice(0)
-	sourceFileDefs = fd for fd in fileDefs when fd.name in sourceFiles
+	sourceFileDefs = (fd for fd in fileDefs when fd.name in sourceFiles)
 
 	# Given a class name, find the file that contains that
 	# class definition.  If it doesn't exist or we don't know
@@ -153,8 +153,8 @@ concatFiles = (sourceFiles, fileDefs) ->
 		if resolvedDef
 			fileDefStack = fileDefStack.concat(resolvedDef)
 
-	#for f in fileDefStack
-	#	console.error(f.name)
+#	for f in fileDefStack
+#		console.error(f.name)
 	output = ''
 	for nextFileDef in fileDefStack
 		output += nextFileDef.contents + '\n'

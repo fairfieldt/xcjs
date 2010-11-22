@@ -31,6 +31,8 @@ or implied, of Tom Fairfield.
 CoffeeScript  = require 'coffee-script'
 fs = require('fs')
 require('underscore')
+sys = require('sys')
+puts = sys.puts
 {spawn, exec} = require 'child_process'
 
 
@@ -49,14 +51,14 @@ run = (args) ->
 output = ''
 runTest = (args) ->
   proc =         spawn 'coffee', args
-  proc.stderr.on 'data', (buffer) -> puts buffer.toString()
+  proc.stderr.on 'data', (buffer) -> console.log buffer.toString()
   proc.stdout.on 'data', (buffer) -> CoffeeScript.run(buffer.toString(), {'test'})
   proc.on        'exit', (status) -> process.exit(1) if status != 0
   
   return output
 
 compile = (fileName, outputDir)  ->
-	run(['-c', '--no-wrap', '-o', outputDir, fileName])
+	run(['-c', '--bare', '-o', outputDir, fileName])
 
 addLicense = (fileName) -> 
 	f = "###\n" + fs.readFileSync('./lib/license.txt').toString() + "\n###\n"

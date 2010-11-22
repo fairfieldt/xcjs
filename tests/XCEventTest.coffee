@@ -1,10 +1,10 @@
 #=require <CoffeeSpec>
-#= require xc
+#= require XC
 #= require XCEvent
 
 describe "XCEvent",
 	beforeEach ->
-		@xc = new xc()
+		@xc = new XC()
 		@listener = {Event1: (event) -> }
 		
 	it 'adds an event listener', ->

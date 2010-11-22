@@ -6,7 +6,7 @@
 
 #= require XCScene
 
-class xc
+class XC
 	constructor: ->
 		#_scenes is the array of scenes, the last one is the current scene
 		@_scenes = []

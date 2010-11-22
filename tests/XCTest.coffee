@@ -4,7 +4,7 @@
 
 describe 'xc', 
 	beforeEach ->
-		@xc = new xc()
+		@xc = new XC()
 		@scene2 = new XCScene('Scene2')
 		
 	it 'has a default scene', ->

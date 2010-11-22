@@ -312,4 +312,4 @@ xc_init = ->
 
 
 #when the document is ready, create a new xc object
-$(xc = new xc())
+$(xc = new XC())
