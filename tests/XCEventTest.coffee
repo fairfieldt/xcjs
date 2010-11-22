@@ -9,20 +9,20 @@ describe "XCEvent",
 		
 	it 'adds an event listener', ->
 		@xc.addEventListener('Event1', @listener)
-		expect(@xc['Event1']).toHaveLength(1)
+		expect(@xc._events['Event1']).toHaveLength(1)
 		
 	it 'removes an event listener', ->
 		@xc.addEventListener('Event1', @listener)
 		@xc.removeEventListener('Event1', @listener)
-		expect(@xc['Event1']).toHaveLength(0)
+		expect(@xc._events['Event1']).toHaveLength(0)
 		
-	it 'removes an event listener', ->
+	it 'removes an event listener with more than one listener', ->
 		@xc.addEventListener('Event1', @listener)
 		
 		@listener2 = {Event1: (event) ->}
 		@xc.addEventListener('Event1', @listener2)
 		@xc.removeEventListener('Event1', @listener)
-		expect(@xc['Event1']).toHaveLength(1)
+		expect(@xc._events['Event1']).toHaveLength(1)
 
 	it 'removes an event that wasn\'t added', ->
 		expect(=>@xc.removeEventListener('Event1', @listener)).toThrow('NoSuchEventListenerError')

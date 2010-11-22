@@ -1,7 +1,11 @@
 <html>
   <head>
     <title>@TITLE</title>
-    
+    <style TYPE="text/css">
+    body {
+		background-color:#A7C979;
+	}
+	</style>
     <script type="text/javascript">var itemsToLoad = @ITEMCOUNT;var canvasWidth = @CANVASWIDTH;var canvasHeight = @CANVASHEIGHT;</script>
   </head>
   <body bgcolor="white">

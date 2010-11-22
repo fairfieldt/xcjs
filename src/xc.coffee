@@ -12,19 +12,19 @@ class xc
 		@_scenes = []
 		#add an empty scene for the default scene
 		@_scenes.push new XCScene('DefaultScene')
-
+		@_events = []
 	# add an object to listen for an event
 	# eventName is the name of the event to listen to
 	# and listener is an object that has a method with that name
 	addEventListener: (eventName, listener) ->
 		# are there currently any listeners for the specified event?
-		if not @[eventName]
+		if not @_events[eventName]
 			# if not, make an empty array to hold them
-			@[eventName] = []
+			@_events[eventName] = []
 		# is the object already listening for this event?
-		if @[eventName].indexOf(listener) == -1
+		if @_events[eventName].indexOf(listener) == -1
 			#if not, put it on the array of listeners
-			@[eventName].push(listener)
+			@_events[eventName].push(listener)
 		else
 			#otherwise throw an EventListenerAlreadyAddedError
 			message = 'The event listener for ' + eventName + ' ' + listener +
@@ -36,21 +36,22 @@ class xc
 	# listener is the object to remove from listeners
 	removeEventListener: (eventName, listener) ->
 		#are there any listeners for that event and is listener one of them?
-		if @[eventName]? and (pos = @[eventName].indexOf(listener)) != -1
+		if @_events[eventName]? and (pos = @_events[eventName].indexOf(listener)) != -1
 			#if so, remove it.
-			@[eventName] = @[eventName][0...pos].concat(@[eventName][pos+1..@[eventName].length-1])
+			@_events[eventName] = @_events[eventName][0...pos].concat(@_events[eventName][pos+1..@_events[eventName].length-1])
 		else
 			#otherwise throw a NoSuchEventListenerError
 			message = 'There is no listener for ' + eventName + ' ' + listener
 			throw {name:'NoSuchEventListenerError', message:message}
-		
+	clearEvents: ->
+		@_events = []
 
 	# given an event, pass it to all of the listeners
 	dispatchEvent: (event) ->
 		# are there any listeners?
-		if @[event.name]?
+		if @_events[event.name]?
 			#if so, call the appropriate handler for each of them.
-			for listener in @[event.name]
+			for listener in @_events[event.name]
 				listener[event.name](event)
 	
 	# given a scene, replace the current scene with the new scene
