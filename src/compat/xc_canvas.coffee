@@ -163,11 +163,11 @@ _xcLoadImage = (imageName) ->
 
 #getting the height or width of a sprite.  
 #simply return image.width,image.height	
-_xcImageWidth = (image) ->
-	image.width
+_xcImageWidth = (node) ->
+	node.sprite.width
 
 _xcImageHeight = (image) ->
-	image.height
+	node.sprite.height
 
 # loading text in the canvas backend doesn't
 # need to do anything.  Just return null.

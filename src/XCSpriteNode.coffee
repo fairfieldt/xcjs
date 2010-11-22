@@ -15,8 +15,8 @@ class XCSpriteNode extends XCNode
 		
 		#get the width and height with the 
 		#implementation specific _xc functions.
-		@_width = _xcImageWidth(@sprite)
-		@_height = _xcImageHeight(@sprite)
+		@_width = _xcImageWidth(this)
+		@_height = _xcImageHeight(this)
 		
 		#FIXME this doesn't do anything
 		@frame = 0
