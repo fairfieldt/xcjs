@@ -68,8 +68,8 @@ end
 def make_HTML(directory)
 	
 	config = IO.readlines(directory + '/config.xc')
-	width = config[0].split('=')[1]
-	height = config[1].split('=')[1]
+	width = config[0].split('=')[1].strip
+	height = config[1].split('=')[1].strip
 	
 	title = "XC Test"
 
@@ -80,7 +80,7 @@ def make_HTML(directory)
 	images = Dir[directory + '/resources/*'].find_all{|item| item =~ /.*\.png/}
 	item_count = images.length.to_s()
 	file_names = ''
-	images.each {|image|image[directory]='';file_names += '<img src="' + image + '" onLoad="itemLoaded(this);"></img>'}
+	images.each {|image|image[directory]='';file_names += '<img src="' + image + '" onLoad="itemLoaded(this);"/>'}
 
 	
 	#now read in the html tempate
