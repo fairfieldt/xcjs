@@ -166,7 +166,7 @@ _xcLoadImage = (imageName) ->
 _xcImageWidth = (node) ->
 	node.sprite.width
 
-_xcImageHeight = (image) ->
+_xcImageHeight = (node) ->
 	node.sprite.height
 
 # loading text in the canvas backend doesn't
