@@ -46,9 +46,9 @@ describe "XCNode",
 
 	it 'starts with color white', ->
 		@color = @node.color()
-		expect(@color.r).toEqual(0) and
-		expect(@color.g).toEqual(0) and
-		expect(@color.b).toEqual(0)
+		expect(@color.r).toEqual(0xFF) and
+		expect(@color.g).toEqual(0xFF) and
+		expect(@color.b).toEqual(0xFF)
 	
 	it 'sets color to grey', ->
 		@node.setColor(new XCColor(128,128,128))

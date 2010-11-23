@@ -18,6 +18,7 @@ class XCTextNode extends XCNode
 		#TODO: move this to a better place.
 		@font = @fontSize + "pt " + @fontName
 		super()
+		this.setColor(new XCColor(0,0,0));
 	
 	#getters for the width and height.
 	#these need to be different than the
