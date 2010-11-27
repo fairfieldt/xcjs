@@ -9,8 +9,10 @@ class XCAnimateAction extends XCAction
 	tick: (dt) ->
 		@et -= dt
 		if @et <= 0
+			@et = @delay
 			@owner.setFrame(@frames[@currentFrame++])
 			if @currentFrame == @frames.length
-				@currentFrame = 0
-			@et = @delay
+				#the animation is done running
+				return false
 		return true
+			
