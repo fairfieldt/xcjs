@@ -4,8 +4,8 @@
 ###############################################
 class XCIntervalAction extends XCAction
 	# to create an XCIntervalAction, give it the @duration of time to run
-	constructor: (@duration, name) ->
-		super(name)
+	constructor: (@duration, name, tag) ->
+		super(name, tag)
 	
 	# the interval action's tick subtracts
 	# the time since it was last called from the total

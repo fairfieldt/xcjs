@@ -6,8 +6,8 @@
 class XCCallFuncAction extends XCAction
 	# create an XCCallFuncAction with the desired function,
 	# @fn
-	constructor: (@fn) ->
-		super("XCCallFuncAction")
+	constructor: (@fn, tag) ->
+		super("XCCallFuncAction", tag)
 	
 	#when the action is fired, @fn is called and then the
 	# action requests to be removed by returning false. 

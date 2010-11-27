@@ -6,9 +6,11 @@
 ####################################################
 class XCAction
 	#an XCAction is created with a name
-	constructor: (@name) ->
+	constructor: (@name, @tag) ->
 		#by default, there is no owner of the action.
 		@owner = null
+		#if we aren't given a tag, just make it an empty string
+		@tag ?= ""
 
 	#the default tick does nothing.  dt is the the time in milliseconds
 	# since the action was called last.  An action's tick method should

@@ -7,8 +7,8 @@
 class XCScaleAction extends XCIntervalAction
 	#duration is the time to take to scale, and name is the name
 	# of the specific scale action
-	constructor: (duration, name) ->
-		super(duration, name)
+	constructor: (duration, name, tag) ->
+		super(duration, name, tag)
 		#etX and etY are the accumulated elapsed time since
 		#the last actual change.  They should start at 0
 		@etX = 0
@@ -65,8 +65,8 @@ class XCScaleAction extends XCIntervalAction
 # @scale
 ####################################################
 class XCScaleToAction extends XCScaleAction
-	constructor: (duration, @scale) ->
-		super(duration, "XCScaleTo")
+	constructor: (duration, @scale, tag) ->
+		super(duration, "XCScaleTo", tag)
 		
 	tick: (dt) ->
 		#is it the first tick?
@@ -92,8 +92,8 @@ class XCScaleToAction extends XCScaleAction
 # the scale is multiplicative.
 ####################################################
 class XCScaleByAction extends XCScaleAction
-	constructor: (duration, @scale) ->
-		super(duration, "XCScaleTo")
+	constructor: (duration, @scale, tag) ->
+		super(duration, "XCScaleTo", tag)
 
 	tick: (dt) ->
 		#is it the first tick?

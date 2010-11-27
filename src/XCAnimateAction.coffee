@@ -1,8 +1,9 @@
 class XCAnimateAction extends XCAction
 	#delay is the time to show each frame and frames is an array of
 	#frame ids
-	constructor: (@delay, @frames) ->
-		super('XCAnimationAction')
+	constructor: (@delay, @frames, @repeat, tag) ->
+		repeat ?= false
+		super('XCAnimationAction', tag)
 		@currentFrame = 0
 		@et = 0
 		
@@ -12,7 +13,13 @@ class XCAnimateAction extends XCAction
 			@et = @delay
 			@owner.setFrame(@frames[@currentFrame++])
 			if @currentFrame == @frames.length
-				#the animation is done running
-				return false
+				#should we repeat?
+				if @repeat
+					@currentFrame = 0
+				else
+					console.log('done animating')
+					return false
 		return true
 			
+
+

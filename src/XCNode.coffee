@@ -247,3 +247,8 @@ class XCNode
 		else
 			#otherwise throw a RemoveActionError. Tried to remove an action that wasn't owned by this node.
 			throw {name:"RemoveActionError", message:"Tried to remove action " + action.name + " when it was not added"}
+			
+	removeActionByTag: (tag) ->
+		for action in @_actions
+			if action.tag == tag
+				removeAction(action)

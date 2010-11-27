@@ -6,8 +6,8 @@
 class XCRotateAction extends XCIntervalAction
 	#create an XCRotateAction with duration, the time in seconds to run
 	# and name, the name of the action.  
-	constructor: (duration, name) ->
-		super(duration, name)
+	constructor: (duration, name, tag) ->
+		super(duration, name, tag)
 		@et = 0
 	
 	tick: (dt) ->
@@ -48,8 +48,8 @@ class XCRotateAction extends XCIntervalAction
 ####################################################
 class XCRotateToAction extends XCRotateAction
 	#duration is the time to take to rotate and @angle is the angle to rotate to, in degrees
-	constructor: (duration, @angle) ->
-		super(duration, "XCRotateTo")
+	constructor: (duration, @angle, tag) ->
+		super(duration, "XCRotateTo", tag)
 		#need to do some special processing on the first tick, so make sure
 		#we know when that is.
 		@firstTick = true
@@ -79,8 +79,8 @@ class XCRotateToAction extends XCRotateAction
 ####################################################
 class XCRotateByAction extends XCRotateAction
 	#duration is the time to take to rotate and @angle is the angle to rotate by, in degrees
-	constructor: (duration, @angle) ->
-		super(duration, "XCRotateBy")
+	constructor: (duration, @angle, tag) ->
+		super(duration, "XCRotateBy", tag)
 		#calculate the degrees to rotate per second
 		@stepAngle = @angle / @duration
 		

@@ -7,8 +7,8 @@ class XCMoveAction extends XCIntervalAction
 	# to create an XCMoveAction, the duration, in seconds,
 	# and the name is required.  XCMoveAction objects
 	# should never be created directly, only sub-classed.
-	constructor: (duration, name) ->
-		super(duration, name)
+	constructor: (duration, name, tag) ->
+		super(duration, name, tag)
 		#set the elapsed time for x and y moves to 0
 		@etX = 0
 		@etY = 0
@@ -71,8 +71,8 @@ class XCMoveAction extends XCIntervalAction
 class XCMoveToAction extends XCMoveAction
 	
 	#x and y are absolute coordinates to move to
-	constructor: (duration, @x, @y) ->
-		super(duration, "XCMoveTo")
+	constructor: (duration, @x, @y, tag) ->
+		super(duration, "XCMoveTo", tag)
 		
 		#we need to do some special calculations on the first tick,
 		#so make sure we know when it is.
@@ -112,8 +112,8 @@ class XCMoveToAction extends XCMoveAction
 class XCMoveByAction extends XCMoveAction
 	
 	#x and y are coordinates relative to the owner
-	constructor: (duration, @x, @y) ->
-		super(duration, "XCMoveBy")
+	constructor: (duration, @x, @y, tag) ->
+		super(duration, "XCMoveBy", tag)
 		#calculate the distance we want to move in each direction
 		#per second. 
 		@stepX = @x / @duration
