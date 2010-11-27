@@ -5,7 +5,7 @@
 class XCSequenceAction extends XCAction
 	#to create an XCSequenceAction, give it an array of the actions
 	# it should run.
-	constructor: (@actions) ->
+	constructor: (@actions...) ->
 		super("XCSequenceAction")
 		
 	tick: (dt) ->

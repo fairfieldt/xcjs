@@ -142,6 +142,22 @@ _xcTextNodeText = (node) ->
 
 _xcTextSetText = (node, newText) ->
 	node._text = newText
+	
+_xcSpriteFrameHeight = (node) ->
+	if node._frameHeight
+		node._frameHeight
+	else
+		node.sprite.height
+	
+_xcSpriteFrameWidth = (node) ->
+	if node._frameWidth?
+		return node._frameWidth
+	else
+		return node.sprite.width
+		
+_xcSpriteFrame = (node) -> node._frame
+
+_xcSpriteSetFrame = (node, newFrame) -> node._frame = newFrame
 
 #load a sprite image.  Since all images are placed in the DOM
 # in a hidden div, search through the images in document.imaes
@@ -159,7 +175,7 @@ _xcLoadImage = (imageName) ->
 			return image
 	#if the image isn't found, return null.
 	#TODO: raise an exception if this happens, instead.
-	return sprite
+	return image
 
 #getting the height or width of a sprite.  
 #simply return image.width,image.height	
@@ -193,22 +209,32 @@ _xcSpriteDraw = (node) ->
 	context.globalAlpha = node.opacity()
 	
 	#now draw the sprite's image.  
-	#the first 4 parameter values are the x,y with, height, to draw
+	#the first 4 p arameter values are the x,y with, height, to draw
 	#from the source image.  These will always be 0,0 and the image height
 	#The next 4 are the x, y, width, height to draw onto the canvas.
 	# since we've already moved the context to the node's x and y, the
 	#destination x and y here are simply a factor of the node's anchor.
 	# the destination width and height are the image width/height multiplied by
 	# the sprite's scale
+	w = node.frame() * (node.frameWidth() + node._padding)
+	#if w > 0 then w--
+	frameWidth = node.frameWidth()
+	frameHeight = node.frameHeight()
+	console.log('w: ' + w + ' frameWidth: ' + frameWidth + ' frameHeight: ' + frameHeight)
+	width = node.width()
+	height = node.height()
+	offsetX = 0 - (node.width() * node.anchorX())
+	offsetY = 0 - (node.height() * node.anchorY())
+	console.log(width + ' ' + height)
 	context.drawImage(node.sprite, 
+					w,
 					0,
-					0,
-					node.sprite.width, 
-					node.sprite.height, 
-					0 - (node.width() * node.anchorX()), 
-					0 - (node.height() * node.anchorY()), 
-					node.sprite.width * node.scaleX(), 
-					node.sprite.height * node.scaleY())
+					frameWidth, 
+					frameHeight, 
+					offsetX, 
+					offsetY, 
+					width, 
+					height)
 
 # canvas implementation of drawing a textnode.
 # the big picture is: setup the context with all of 

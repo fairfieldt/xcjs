@@ -18,11 +18,18 @@ class XCSpriteNode extends XCNode
 		@_width = _xcImageWidth(this)
 		@_height = _xcImageHeight(this)
 		
-		#FIXME this doesn't do anything
-		@frame = 0
+		#The index into the image to draw.  For normal sprites it's always 0.
+		#Animated sprites will change this to animate.
+		@_frame = 0
 
 	#draw is called every tick for @drawable nodes
 	draw: ->
 		#to draw the node, call the implementation specific
 		# _xcSpriteDraw function.
 		_xcSpriteDraw(this)
+		
+	frameHeight: -> _xcSpriteFrameHeight(this)
+	frameWidth: -> _xcSpriteFrameWidth(this)
+	
+	frame: -> _xcSpriteFrame(this)
+	setFrame: (newFrame) -> _xcSpriteSetFrame(this, newFrame)
