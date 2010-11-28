@@ -8,11 +8,11 @@ Building xc.js
 xc.js requires [node.js](http://www.nodejs.org), [coffeescript](http://jashkenas.github.com/coffee-script/) (0.9.5 or later), and [Ruby](http://www.ruby-lang.org/) for the build utility.
 
 From the root directory, run cake:  
-    `$ cake build  
-    xc.js built.`
+	$ cake build  
+	xc.js built.
 
 You can also run some unit tests:
-    `$cake test`
+	$cake test
 
 Using xc.js
 -----------
