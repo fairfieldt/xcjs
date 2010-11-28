@@ -15,6 +15,7 @@ You can also run some unit tests:
     `$cake test`
 
 Using xc.js
+-----------
 
 To create an xc.js project, use the xc.rb utility:  
 
