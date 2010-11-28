@@ -75,6 +75,7 @@ task 'build', 'build the xc library - final lib will be in lib/xc.js', (options)
 	invoke('concat')
 	compile('./src/compat/xc_canvas.coffee', './lib')
 	compile('./src/compat/xc_ios.coffee', './lib')
+	console.log('xc.js built.')
 
 task 'concat', 'concat the xc library', (options) ->
 	args = ['./tools/coffeescript-concat.coffee', '-I', './src', '-I', './src/compat']
