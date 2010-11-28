@@ -22,13 +22,13 @@ To create an xc.js project, use the xc.rb utility:
 `$ ruby xc.rb myProject create`
 will create a directory named myProject. The directory contains:  
 
-    myProject/  
-	lib/  
-	resources/  
-	config.xc  
-	index.html  
-	main.js  
-	xc.rb  
+	myProject/  
+		lib/  
+		resources/  
+		config.xc  
+		index.html  
+		main.js  
+		xc.rb  
 
 The **lib** directory contains the xc.js framework.  
 
