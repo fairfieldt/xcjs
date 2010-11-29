@@ -52,7 +52,7 @@ output = ''
 runTest = (args) ->
   proc =         spawn 'coffee', args
   proc.stderr.on 'data', (buffer) -> console.log buffer.toString()
-  proc.stdout.on 'data', (buffer) -> CoffeeScript.run(buffer.toString(), {'test'})
+  proc.stdout.on 'data', (buffer) -> console.log(buffer.toString())#CoffeeScript.run(buffer.toString(), {'test'})
   proc.on        'exit', (status) -> process.exit(1) if status != 0
   
   return output

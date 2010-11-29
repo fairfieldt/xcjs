@@ -442,5 +442,7 @@ xc_init = ->
 	setInterval(update, 1000/60)
 
 
+#hack to let the tests work:
+$ = -># ?= (fn) -> fn()
 #when the document is ready, create a new xc object
-$(xc = new XC())
+$(-> xc = new XC())

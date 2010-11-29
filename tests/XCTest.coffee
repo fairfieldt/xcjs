@@ -1,4 +1,3 @@
-#= require <xc>
 #= require <CoffeeSpec>
 #= require XCScene
 

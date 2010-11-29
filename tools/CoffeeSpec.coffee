@@ -6,10 +6,11 @@ describe = (testName, tests...) ->
 	
 	setup = ->
 	teardown = ->
-	console.log(typeof(tests))
 	for test in tests
+		console.log(1)
 		if not test
 			continue
+		console.log(2)
 		foundSetup = false
 		foundTeardown = false
 		if test.name == 'setup'
@@ -17,14 +18,16 @@ describe = (testName, tests...) ->
 			i = tests.indexOf(test)
 			tests = tests[0...i].concat(tests[i+1..])
 			foundSetup = true
-			
+		console.log(3)
 		if test.name == 'teardown'
 			teardown = test.run
 			i = tests.indexOf(test)
 			tests = tests[0...i].concat(tests[i+1..])
 			foundTeardown = true
+		console.log(4)
 		if foundSetup and foundTeardown
 			break
+		console.log(5)
 	testCount = tests.length
 	failCount = 0
 	for test in tests
