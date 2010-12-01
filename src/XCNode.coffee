@@ -44,6 +44,7 @@ class XCNode
 		this.show()
 		
 	close: ->
+		xc.removeAllEventListeners(this)
 		this.setParent(null)
 		this.hide()
 	

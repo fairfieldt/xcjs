@@ -1,3 +1,4 @@
+#= require XC
 #= require <CoffeeSpec>
 #= require XCNode
 

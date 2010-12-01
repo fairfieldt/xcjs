@@ -216,16 +216,21 @@ _xcSpriteDraw = (node) ->
 	#destination x and y here are simply a factor of the node's anchor.
 	# the destination width and height are the image width/height multiplied by
 	# the sprite's scale
-	w = node.frame() * (node.frameWidth() + node._padding)
+	if node instanceof XCSpriteNode
+		w = 0
+	else
+		w = node.frame() * (node.frameWidth() + node._padding)
 	#if w > 0 then w--
+
 	frameWidth = node.frameWidth()
 	frameHeight = node.frameHeight()
-	console.log('w: ' + w + ' frameWidth: ' + frameWidth + ' frameHeight: ' + frameHeight)
+
 	width = node.width()
 	height = node.height()
+
 	offsetX = 0 - (node.width() * node.anchorX())
 	offsetY = 0 - (node.height() * node.anchorY())
-	console.log(width + ' ' + height)
+
 	context.drawImage(node.sprite, 
 					w,
 					0,
@@ -442,7 +447,6 @@ xc_init = ->
 	setInterval(update, 1000/60)
 
 
-#hack to let the tests work:
-$ = -># ?= (fn) -> fn()
+
 #when the document is ready, create a new xc object
-$(-> xc = new XC())
+$(xc = new XC())

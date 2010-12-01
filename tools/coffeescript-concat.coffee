@@ -21,7 +21,6 @@ findClasses = (file) ->
 #
 findClassDependencies = (file) ->
 	file = '\n' + file
-	
 	dependencyRegex = /\n[^#\n]*extends\s([A-Za-z_$-][A-Za-z0-9_$-]*)/g
 	
 	dependencies = []
@@ -42,7 +41,6 @@ findClassDependencies = (file) ->
 #
 findFileDependencies = (file) ->
 	file = '\n' + file
-	
 	dependencies = []
 	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-.]*)>/g
 	
@@ -155,6 +153,7 @@ concatFiles = (sourceFiles, fileDefs) ->
 
 #	for f in fileDefStack
 #		console.error(f.name)
+
 	output = ''
 	for nextFileDef in fileDefStack
 		output += nextFileDef.contents + '\n'
@@ -167,8 +166,9 @@ removeDirectives = (file) ->
 	fileDirectiveRegex = /#=\s*require\s+<([A-Za-z_$-][A-Za-z0-9_$-.]*)>/g
 	classDirectiveRegex = /#=\s*require\s+([A-Za-z_$-][A-Za-z0-9_$-]*)/g
 	file = file.replace(fileDirectiveRegex, '')
-	file = file.replace(classDirectiveRegex, '')
-	
+
+	#file = file.replace(classDirectiveRegex, '')
+
 	return file
 	
 # Given a source directory, a relative filename to output
@@ -180,6 +180,7 @@ concatenate = (sourceFiles, includeDirectories) ->
 
 	output = concatFiles(sourceFiles, deps)
 	output = removeDirectives(output)
+
 	console.log(output)
 
 args = process.argv

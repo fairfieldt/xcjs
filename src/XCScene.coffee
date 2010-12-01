@@ -33,6 +33,22 @@ class XCScene
 	#tick is called once per frame.  dt is the time in milliseconds
 	#since it was called last.
 	tick: (dt) ->
+		#check for collisions
+		children = this.children()
+		#console.log('starting at ' + children.length)
+		while children.length > 0
+		#	console.log('now ' + children.length)
+			firstChild = children[0]
+			children = children[1...]
+			for child in children
+		#		console.log('checking...')
+		#		console.log(firstChild.rect())
+		#		console.log(child.rect())
+				if xc.rectContainsRect(firstChild.rect(), child.rect())
+					collisionEvent = new XCEvent('CollisionEvent')
+					collisionEvent.nodes = [firstChild, child]
+					xc.dispatchEvent(collisionEvent)
+			
 		#for all of the children XCNodes, call their tick function.
 		for child in this.children()
 			child.tick(dt)
@@ -63,6 +79,7 @@ class XCScene
 			@_children.push(child)
 			# and open it.
 			child.open()
+			child.setParent(this)
 		else
 			#otherwise throw a DuplicateChildError.  The node is already this scene's child.
 			throw {name:'DuplicateChildError', message:'Can\'t add the same child twice'}

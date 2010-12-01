@@ -45,7 +45,13 @@ class XC
 			throw {name:'NoSuchEventListenerError', message:message}
 	clearEvents: ->
 		@_events = []
-
+	#remove all event listeners for a given node
+	removeAllEventListeners: (listener) ->
+		for eventList in @_events
+			pos = eventList.indexOf(listener)
+			if pos != -1
+				eventList = eventList[0...pos].concat(eventList[pos+1..eventList.length-1])
+				
 	# given an event, pass it to all of the listeners
 	dispatchEvent: (event) ->
 		# are there any listeners?
@@ -100,4 +106,10 @@ class XC
 	rectContainsPoint: (rect, point) ->
 		(point.x > rect.x) and (point.x < (rect.x + rect.w)) and
 		(point.y > rect.y) and (point.y < (rect.y + rect.h))
+		
+	rectContainsRect: (rect1, rect2) ->
+		not ((rect1.x + rect1.w) <= rect2.x) and
+		not (rect1.x >= (rect2.x + rect2.w)) and
+		not ((rect1.y + rect1.h) <= rect2.y) and
+		not (rect1.y >= (rect2.y + rect2.h))
 		
