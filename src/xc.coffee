@@ -52,13 +52,17 @@ class XC
 			if pos != -1
 				eventList = eventList[0...pos].concat(eventList[pos+1..eventList.length-1])
 				
-	# given an event, pass it to all of the listeners
-	dispatchEvent: (event) ->
-		# are there any listeners?
-		if @_events[event.name]?
-			#if so, call the appropriate handler for each of them.
-			for listener in @_events[event.name]
-				listener[event.name](event)
+	# given an event, pass it to all of the listeners, or a specific target
+	# if specificed
+	dispatchEvent: (event, target) ->
+		if target
+			target[event.name](event)
+		else
+			# are there any listeners?
+			if @_events[event.name]?
+				#if so, call the appropriate handler for each of them.
+				for listener in @_events[event.name]
+					listener[event.name](event)
 	
 	# given a scene, replace the current scene with the new scene
 	# newScene is an XCScene

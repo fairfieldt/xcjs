@@ -34,28 +34,35 @@ class XCScene
 	#get the nodes that are being checked for collision
 	collisionNodes: -> @_collisionNodes
 	
-	addCollisionNode: (node) -> 
-		@_collisionNodes.push(node)
+	addCollisionNode: (node, target) -> 
+		@_collisionNodes.push({node:node, target:target})
+		xc.addEventListener('CollisionEvent', node)
 	
-	removeCollisionNode: (node) ->
-		i = @_collisionNodes.indexOf(node)
-		unless i == -1
-			@_collisionNodes = @_collisionNodes[...i].concat(@_collisionNodes[i+1...])
+	removeCollisionNode: (node, target) ->
+		for entry in @_collisionNodes
+			if entry.node == node and entry.target == target
+				@_collisionNodes = @_collisionNodes[...i].concat @_collisionNodes[i+1...]
+				break
 	
 	#tick is called once per frame.  dt is the time in milliseconds
 	#since it was called last.
 	tick: (dt) ->
 	
 		#check for collisions
-		collisionNodes = @collisionNodes()
-		while collisionNodes.length > 0
-			firstChild = collisionNodes[0]
-			collisionNodes = collisionNodes[1...]
-			for child in collisionNodes
-				if xc.rectContainsRect(firstChild.rect(), child.rect())
+		for entry in @collisionNodes()
+			node = entry.node
+			target = entry.target
+			if typeof target == 'string'
+				for child in @children()
+					if child.tag == target and xc.rectContainsRect(child.rect(), node.rect())
+						collisionEvent = new XCEvent('CollisionEvent')
+						collisionEvent.node = child
+						xc.dispatchEvent(collisionEvent, node)
+			else
+				if xc.rectContainsRect(node.rect(), target.rect())
 					collisionEvent = new XCEvent('CollisionEvent')
-					collisionEvent.nodes = [firstChild, child]
-					xc.dispatchEvent(collisionEvent)
+					collisionEvent.node = target
+					xc.dispatchEvent(collisionEvent, node)		
 			
 		#for all of the children XCNodes, call their tick function.
 		for child in this.children()
