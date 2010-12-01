@@ -113,3 +113,9 @@ class XC
 		not ((rect1.y + rect1.h) <= rect2.y) and
 		not (rect1.y >= (rect2.y + rect2.h))
 		
+	circleContainsPoint: (circle, point) ->
+		xSquared = Math.pow(2, circle.x - point.x);
+		ySquared = Math.pow(2, circle.y - point.y);
+		
+		Math.sqrt(xSquared + ySquared) > circle.r
+		

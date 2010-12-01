@@ -270,8 +270,9 @@ _xcTextDraw = (node) ->
 	#finally, draw the text.  since we've already moved the context
 	#to the node's x and y coordinates, the x and y here are simply
 	# based on the node's anchor points.
-	context.fillText(node.text(), 0 - (node.width() * node.anchorX()),
-									0 - (node.height() * node.anchorY()))
+
+	context.fillText(node.text(), 0 - (node.width() * node.anchorX() / node.scaleX()),
+									 (node.height() * node.anchorY() / node.scaleY()))
 
 
 #to get mousedown events (which are converted to xc tapDown events),

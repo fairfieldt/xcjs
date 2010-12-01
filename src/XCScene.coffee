@@ -12,6 +12,7 @@ class XCScene
 		@_paused = false
 		@_children = []
 		@_scheduledFunctions = []
+		@_collisionNodes = []
 	
 	#pause the scene.  Actions stop running.
 	#TODO: make this work so input is still processed (I think it is)
@@ -30,20 +31,27 @@ class XCScene
 	#implementation specific, should happen here.
 	close: ->
 	
+	#get the nodes that are being checked for collision
+	collisionNodes: -> @_collisionNodes
+	
+	addCollisionNode: (node) -> 
+		@_collisionNodes.push(node)
+	
+	removeCollisionNode: (node) ->
+		i = @_collisionNodes.indexOf(node)
+		unless i == -1
+			@_collisionNodes = @_collisionNodes[...i].concat(@_collisionNodes[i+1...])
+	
 	#tick is called once per frame.  dt is the time in milliseconds
 	#since it was called last.
 	tick: (dt) ->
+	
 		#check for collisions
-		children = this.children()
-		#console.log('starting at ' + children.length)
-		while children.length > 0
-		#	console.log('now ' + children.length)
-			firstChild = children[0]
-			children = children[1...]
-			for child in children
-		#		console.log('checking...')
-		#		console.log(firstChild.rect())
-		#		console.log(child.rect())
+		collisionNodes = @collisionNodes()
+		while collisionNodes.length > 0
+			firstChild = collisionNodes[0]
+			collisionNodes = collisionNodes[1...]
+			for child in collisionNodes
 				if xc.rectContainsRect(firstChild.rect(), child.rect())
 					collisionEvent = new XCEvent('CollisionEvent')
 					collisionEvent.nodes = [firstChild, child]
@@ -94,6 +102,7 @@ class XCScene
 			@_children = @_children[0...pos].concat(@_children[pos+1...@_children.length])
 			#and close it
 			child.close()
+			@removeCollisionNode(child)
 		else
 			#otherwise throw a NodeNotChildError.  You tried to remove a node that wasn't this scene's child.
 			throw {name:'NodeNotChildError', message:'Can\'t remove a node that is not a child'}
