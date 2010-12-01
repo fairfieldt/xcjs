@@ -58,7 +58,7 @@ _xcTextNodeWidth = (node) ->
 _xcTextNodeHeight = (node) ->
 	context.save()
 	context.font = node.font
-	height = context.measureText('m').width
+	height = context.measureText('e').width
 	context.restore()
 	node.scaleY() * height
 
