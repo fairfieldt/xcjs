@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>XC Test</title>
+    <style TYPE="text/css">
+    	body {
+			background-color:#A7C979;
+		}
+		#xcCanvas {
+			background-color:#FFFFFF;
+		}
+		#images {
+			visibility=hidden; 
+			width:1px; 
+			height:1px; 
+			overflow:hidden
+		}
+	</style>
+	
+    <script type="text/javascript">
+		var itemsToLoad = 4;
+		var canvasWidth = 320;
+		var canvasHeight = 480;
+	</script>
+	<script type="text/javascript" src="lib/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="lib/xc.js"></script>
+	<script type="text/javascript" src="lib/xc_canvas.js"></script>
+  </head>
+  <body>
+    <canvas id="xcCanvas" width=320 height=480>
+      <p>Your browser does not support canvas. :-(</p>
+    </canvas>
+	
+	<div id="images">
+		<img src="/resources/paddle.png" onLoad="itemLoaded(this);"/><img src="/resources/man.png" onLoad="itemLoaded(this);"/><img src="/resources/ball.png" onLoad="itemLoaded(this);"/><img src="/resources/brick.png" onLoad="itemLoaded(this);"/>
+	</div>
+
+  </body>
+</html>

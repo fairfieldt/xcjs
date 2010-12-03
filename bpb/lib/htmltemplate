@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>@TITLE</title>
+    <style TYPE="text/css">
+    	body {
+			background-color:#A7C979;
+		}
+		#xcCanvas {
+			background-color:#FFFFFF;
+		}
+		#images {
+			visibility=hidden; 
+			width:1px; 
+			height:1px; 
+			overflow:hidden
+		}
+	</style>
+	
+    <script type="text/javascript">
+		var itemsToLoad = @ITEMCOUNT;
+		var canvasWidth = @CANVASWIDTH;
+		var canvasHeight = @CANVASHEIGHT;
+	</script>
+	<script type="text/javascript" src="lib/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="@SCRIPT"></script>
+	<script type="text/javascript" src="lib/xc.js"></script>
+	<script type="text/javascript" src="lib/xc_canvas.js"></script>
+  </head>
+  <body>
+    <canvas id="xcCanvas" width=@WIDTH height=@HEIGHT>
+      <p>Your browser does not support canvas. :-(</p>
+    </canvas>
+	
+	<div id="images">
+		@IMAGES
+	</div>
+
+  </body>
+</html>
