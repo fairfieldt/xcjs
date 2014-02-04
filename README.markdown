@@ -1,7 +1,8 @@
 xc.js - a Javascript framework for cross platform 2d games
 ==========================================================
 
-This project is not maintained.  If you're interested in a cross platform JavaScript game framework, check out the [GameClosure Devkit](http://gihtub.com/gameclosure/devkit)
+**This project is not maintained.**
+If you're interested in a cross platform JavaScript game framework, check out the [GameClosure Devkit](http://gihtub.com/gameclosure/devkit)
 
 Building xc.js
 --------------
